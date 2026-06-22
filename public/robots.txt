@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /uploads/drhp/
+Disallow: /ipo-blogs/hero-fincorp-limited-ipo
+Disallow: /ipo-calculator
+
+Sitemap: https://www.indiaipo.co.in/sitemap.xml

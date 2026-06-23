@@ -26,6 +26,7 @@ export default function VideoUpdatesClient() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [playingVideoId, setPlayingVideoId] = useState<string | number | null>(null);
   const [bannerVideo, setBannerVideo] = useState<string | null>(null);
+  const [bannerImage, setBannerImage] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -34,8 +35,11 @@ export default function VideoUpdatesClient() {
         const res = await fetch(`/api/banners?page=${encodeURIComponent(pathname)}`);
         if (res.ok) {
           const data = await res.json();
-          const videoBanner = data.find((b: any) => b.video_url);
-          if (videoBanner) setBannerVideo(videoBanner.video_url);
+          const activeBanner = data[0];
+          if (activeBanner) {
+            setBannerVideo(activeBanner.video_url || null);
+            setBannerImage(activeBanner.image_url || null);
+          }
         }
       } catch (err) {
         console.error(err);
@@ -147,18 +151,29 @@ export default function VideoUpdatesClient() {
       <Header />
 
       <main className="flex-1">
-        <section className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden bg-[#010b14] text-white">
-          <div className="absolute inset-0 z-0">
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full h-full object-cover opacity-30"
-              src={getImageUrl(bannerVideo || "/uploads/video/ccvindia1.mp4")}
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#010b14]/80 via-[#010b14]/40 to-[#010b14]" />
-          </div>
+        <section
+          className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden text-white"
+          style={(!bannerVideo && bannerImage) ? {
+            backgroundImage: `url(${getImageUrl(bannerImage)})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          } : undefined}
+        >
+          {bannerVideo || (!bannerVideo && !bannerImage) ? (
+            <div className="absolute inset-0 z-0">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover opacity-30"
+                src={getImageUrl(bannerVideo || "/uploads/video/ccvindia1.mp4")}
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#010b14]/80 via-[#010b14]/40 to-[#010b14]" />
+            </div>
+          ) : (
+            <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#010b14]/80 via-[#010b14]/40 to-[#010b14]" />
+          )}
 
           <div className="container relative z-10 px-4 text-center mx-auto">
             <motion.div
@@ -170,7 +185,7 @@ export default function VideoUpdatesClient() {
                 Watch Our <br className="md:hidden" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-gold-light">IPO Video Updates</span>
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg md:text-xl text-white max-w-2xl mx-auto leading-relaxed">
                 Stay ahead of the curve with our expert daily visual briefings, deep-dive IPO analyses, and real-time market sentiment breakdowns.
               </p>
             </motion.div>

@@ -223,26 +223,26 @@ export default function ContactClient() {
         whileHover={{ scale: 1.06, y: -4 }}
         className="flex flex-col items-center gap-2 py-5 px-4 rounded-2xl cursor-default"
         style={{
-          background: "linear-gradient(145deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04))",
-          border: "1px solid rgba(255,255,255,0.14)",
+          background: "linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.06))",
+          border: "1px solid rgba(255,255,255,0.25)",
           backdropFilter: "blur(16px)",
-          boxShadow: "0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.1)",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.2)",
         }}
       >
         <div
           className="w-11 h-11 rounded-2xl flex items-center justify-center"
           style={{
             background: "linear-gradient(135deg, hsl(35 95% 52% / 0.3), hsl(45 93% 60% / 0.15))",
-            color: "hsl(35 95% 70%)",
+            color: "hsl(35 95% 45%)",
             border: "1px solid hsl(35 95% 52% / 0.25)",
           }}
         >
           {s.icon}
         </div>
-        <span className="text-white font-extrabold text-2xl tracking-tight">
+        <span className="text-black font-extrabold text-2xl tracking-tight">
           {count.toLocaleString("en-IN")}{s.suffix}
         </span>
-        <span className="text-white/55 text-xs text-center font-medium tracking-wide uppercase">{s.label}</span>
+        <span className="text-black/65 text-xs text-center font-medium tracking-wide uppercase">{s.label}</span>
       </motion.div>
     );
   };
@@ -257,7 +257,7 @@ export default function ContactClient() {
           style={{
             minHeight: "520px",
             backgroundImage: (!bannerVideo && bannerImage)
-              ? `linear-gradient(135deg, hsl(222 47% 11% / 0.95), hsl(222 47% 15% / 0.85)), url('${bannerImage}')`
+              ? ` url('${bannerImage}')`
               : "linear-gradient(135deg, hsl(222 47% 11%), hsl(222 47% 15%))",
             backgroundSize: "cover",
             backgroundPosition: "center",
@@ -295,7 +295,7 @@ export default function ContactClient() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-5 leading-[1.12] tracking-tight"
+              className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-black mb-5 leading-[1.12] tracking-tight"
               style={{ fontFamily: "var(--font-heading)" }}
             >
               Get In{" "}
@@ -309,7 +309,7 @@ export default function ContactClient() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.35 }}
-              className="text-white/60 text-lg max-w-2xl mx-auto leading-relaxed mb-14"
+              className="text-black text-lg max-w-2xl mx-auto leading-relaxed mb-14"
             >
               Whether you're planning your IPO journey or looking for capital market advisory —
               our expert team is just a message away.
@@ -319,7 +319,7 @@ export default function ContactClient() {
               variants={stagger}
               initial="hidden"
               animate="visible"
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 font-black max-w-3xl mx-auto"
             >
               {statsData.map((s) => (
                 <StatItem key={s.label} s={s} />

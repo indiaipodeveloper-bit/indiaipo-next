@@ -275,7 +275,7 @@ export default function ReportsClient({
               <ChevronRight className="h-3 w-3 text-white/30" />
               <span className="text-white/70">Reports</span>
               <ChevronRight className="h-3 w-3 text-white/30" />
-              <span className="text-white/90 font-semibold">{title}</span>
+              <h1 className="text-white/90 font-semibold">{title}</h1>
             </div>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>

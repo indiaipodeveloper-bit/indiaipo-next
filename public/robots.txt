@@ -3,5 +3,7 @@ Allow: /
 Disallow: /uploads/drhp/
 Disallow: /ipo-blogs/hero-fincorp-limited-ipo
 Disallow: /ipo-calculator
+Disallow: /admin/
+Disallow: /login
 
 Sitemap: https://www.indiaipo.co.in/sitemap.xml

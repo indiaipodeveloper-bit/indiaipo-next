@@ -275,11 +275,11 @@ export default function ReportsClient({
               <ChevronRight className="h-3 w-3 text-white/30" />
               <span className="text-white/70">Reports</span>
               <ChevronRight className="h-3 w-3 text-white/30" />
-              <h1 className="text-white/90 font-semibold">{title}</h1>
+              <span className="text-white/90 font-semibold">{title}</span>
             </div>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-              <h1 className="text-2xl md:text-4xl font-black text-white mb-2 leading-tight">
+              <h1 className="text-3xl md:text-5xl gap-3 font-black flex text-white mb-2 leading-tight">
                 {title.split(" ").map((word, i) => (
                   <span key={i} className={i % 2 === 1 ? "text-[#f59e08]" : ""}>{word} </span>
                 ))}

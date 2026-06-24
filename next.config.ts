@@ -4,6 +4,21 @@ const nextConfig: NextConfig = {
   experimental: {
     middlewareClientMaxBodySize: "50mb",
   },
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "indiaipo.in",
+          },
+        ],
+        destination: "https://www.indiaipo.in/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {

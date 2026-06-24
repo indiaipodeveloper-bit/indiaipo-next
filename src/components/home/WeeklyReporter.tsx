@@ -12,8 +12,9 @@ import {
 } from "lucide-react";
 import { useRecaptcha } from "@/hooks/useRecaptcha";
 import { toast } from "sonner";
-import weeklyReporterImg from "@/assets/weekly-reporter1.jpg";
+import weeklyReporterImg from "@/assets/weekly-reporter-image.webp";
 import Ribbon from "@/components/Ribbon";
+import { API_URL } from "@/lib/constants";
 
 const validateEmail = (email: string) => {
     const trimmed = email.trim();
@@ -43,7 +44,7 @@ const WeeklyReporter = () => {
 
         try {
             const recaptchaToken = await getToken("newsletter_subscribe");
-            const res = await fetch("/api/subscriptions", {
+            const res = await fetch(`${API_URL}/api/subscriptions`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: email.trim(), recaptchaToken }),

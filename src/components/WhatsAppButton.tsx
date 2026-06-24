@@ -3,9 +3,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import { usePathname } from "next/navigation";
-
-const WHATSAPP_NUMBER = "917428337280";
-const DEFAULT_MESSAGE = "Hi! I'm interested in IPO advisory services. Can you help?";
+import { DEFAULT_MESSAGE, WHATSAPP_NUMBER } from "@/lib/constants";
 
 const WhatsAppButton = () => {
   const [showTooltip, setShowTooltip] = useState(false);

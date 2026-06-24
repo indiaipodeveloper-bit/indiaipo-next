@@ -9,9 +9,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Users, TrendingUp, Shield, CheckCircle, ArrowRight, BarChart3, Briefcase, ChevronRight, Loader2 } from "lucide-react";
+import { Users, TrendingUp, Shield, CheckCircle, BarChart3, Briefcase, ChevronRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import investor from "@/assets/investor.webp";
+import { API_URL } from "@/lib/constants";
 
 const benefits = [
   { icon: TrendingUp, title: "Expert Market Analysis", desc: "Access real-time GMP data, subscription status, and listing performance analysis." },
@@ -107,7 +108,7 @@ export default function InvestorsClient() {
 
     try {
       const recaptchaToken = await getToken("investor_form");
-      const res = await fetch("/api/investor", {
+      const res = await fetch(`${API_URL}/api/investor`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, recaptchaToken }),
@@ -272,16 +273,14 @@ export default function InvestorsClient() {
                       viewport={{ once: true }}
                       className="shrink-0 w-[280px] md:w-auto group bg-card shadow-lg border border-border rounded-2xl p-8 hover:shadow-xl hover:border-primary/40 transition-all duration-300 relative overflow-hidden snap-center"
                     >
-                      <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-150 transition-transform duration-500 pointer-events-none">
-                        <Icon className="w-32 h-32" />
+                      <div className="absolute top-0 right-0 p-6 opacity-50 group-hover:scale-150 transition-transform duration-500 pointer-events-none">
+                        <Icon className="w-32 h-32 text-yellow-200" />
                       </div>
                       <div className="relative z-10">
                         <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                           <Icon className="h-8 w-8 text-primary shadow-primary/20 drop-shadow-sm" />
                         </div>
-                        <h3 className="text-xl font-bold font-heading text-foreground mb-3" style={{ fontFamily: "var(--font-heading)" }}>
-                          {item.title}
-                        </h3>
+                        <h3 className="text-xl font-bold font-heading text-foreground mb-3">{item.title}</h3>
                         <p className="text-muted-foreground leading-relaxed">{item.desc}</p>
                       </div>
                     </motion.div>

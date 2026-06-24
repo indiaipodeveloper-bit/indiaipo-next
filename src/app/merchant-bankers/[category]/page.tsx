@@ -1,3 +1,4 @@
+import { API_URL } from "@/lib/constants";
 import MerchantBankersClient from "./MerchantBankersClient";
 import type { Metadata } from "next";
 
@@ -13,11 +14,8 @@ async function getCategoryInfo(category: string): Promise<{ type: "SME" | "Mainb
     return { type: "Mainboard", name: "List of Mainboard Merchant Bankers" };
   }
 
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : "https://www.indiaipo.in";
-
   try {
-    const res = await fetch(`${apiBase}/api/banker-subcategories`, {
+    const res = await fetch(`${API_URL}/api/banker-subcategories`, {
       next: { revalidate: 60 }
     });
     if (res.ok) {
@@ -40,18 +38,16 @@ async function getCategoryInfo(category: string): Promise<{ type: "SME" | "Mainb
 }
 
 async function getInitialBankers(category: string, type: "SME" | "Mainboard") {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : "https://www.indiaipo.in";
   const apiPath = type === "SME" ? "/api/bankers" : "/api/mainboard-bankers";
 
   try {
-    const res = await fetch(`${apiBase}${apiPath}?page=1&limit=9&category=${category}`, {
+    const res = await fetch(`${API_URL}${apiPath}?page=1&limit=9&category=${category}`, {
       next: { revalidate: 60 }
     });
     let bannerVideo: string | null = null;
 
     try {
-      const bannerRes = await fetch(`${apiBase}/api/banners?page=%2Fmerchant-bankers%2F${category}`, {
+      const bannerRes = await fetch(`${API_URL}/api/banners?page=%2Fmerchant-bankers%2F${category}`, {
         next: { revalidate: 60 }
       });
       if (bannerRes.ok) {

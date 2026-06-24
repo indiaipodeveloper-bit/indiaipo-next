@@ -2,6 +2,7 @@ import MerchantBankerDetailClient from "./MerchantBankerDetailClient";
 import type { Metadata } from "next";
 import { getImageUrl } from "@/lib/utils";
 import { redirect } from "next/navigation";
+import { API_URL } from "@/lib/constants";
 
 const BASE_URL = "https://www.indiaipo.in";
 
@@ -60,12 +61,10 @@ interface Banker {
 }
 
 async function fetchBankerOnServer(slug: string): Promise<Banker | null> {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : "https://www.indiaipo.in";
 
   try {
     // Try SME first
-    let res = await fetch(`${apiBase}/api/bankers/slug/${slug}`, {
+    let res = await fetch(`${API_URL}/api/bankers/slug/${slug}`, {
       next: { revalidate: 60 }
     });
     if (res.ok) {
@@ -73,7 +72,7 @@ async function fetchBankerOnServer(slug: string): Promise<Banker | null> {
     }
 
     // Try Mainboard
-    res = await fetch(`${apiBase}/api/mainboard-bankers/slug/${slug}`, {
+    res = await fetch(`${API_URL}/api/mainboard-bankers/slug/${slug}`, {
       next: { revalidate: 60 }
     });
     if (res.ok) {
@@ -86,13 +85,11 @@ async function fetchBankerOnServer(slug: string): Promise<Banker | null> {
 }
 
 async function fetchRelatedBankersOnServer(banker: Banker): Promise<Banker[]> {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : "https://www.indiaipo.in";
 
   try {
     const relatedIds = JSON.parse(banker.ipos || "[]");
     if (Array.isArray(relatedIds) && relatedIds.length > 0) {
-      const res = await fetch(`${apiBase}/api/bankers?ids=${relatedIds.join(",")}`, {
+      const res = await fetch(`${API_URL}/api/bankers?ids=${relatedIds.join(",")}`, {
         next: { revalidate: 60 }
       });
       if (res.ok) {

@@ -2,18 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   Search,
   Building2,
   ArrowRight,
   ChevronRight,
   X,
-  Phone,
-  Mail,
-  Shield,
-  TrendingUp,
-  Award,
   Home,
   Zap,
   GitCompare,
@@ -120,7 +115,7 @@ const ConnectModal = ({
       <div className="p-8">
         <div className="pt-2">
           <Link
-            href={`/merchant-contact?ipo_type=${isSME ? "SME IPO" : "Mainboard IPO"}&banker=${encodeURIComponent(banker.title)}`}
+            href={`/merchant-contact?ipo_type=${isSME ? "SME-IPO" : "Mainboard-IPO"}`}
             className="block"
           >
             <button
@@ -592,7 +587,7 @@ export default function MerchantBankersClient({
                           onClick={(e) => {
                             e.stopPropagation();
                             router.push(
-                              `/merchant-contact?ipo_type=${isSME ? "SME IPO" : "Mainboard IPO"}&banker=${encodeURIComponent(banker.title)}`
+                              `/merchant-contact?ipo_type=${isSME ? "SME-IPO" : "Mainboard-IPO"}`
                             );
                           }}
                           className="flex-1 h-11 rounded-xl font-black text-sm transition-all hover:scale-105 cursor-pointer text-white"

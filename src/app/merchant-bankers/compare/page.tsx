@@ -1,8 +1,8 @@
+import { API_URL, BASE_URL } from "@/lib/constants";
 import MerchantBankerCompareClient from "./MerchantBankerCompareClient";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-const BASE_URL = "https://www.indiaipo.in";
 
 interface Banker {
   id: string | number;
@@ -37,12 +37,10 @@ interface Banker {
 }
 
 async function fetchBankerOnServer(id: string, type: string): Promise<Banker | null> {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : "https://www.indiaipo.in";
   const apiPath = type === "mainboard" ? "/api/mainboard-bankers" : "/api/bankers";
 
   try {
-    const res = await fetch(`${apiBase}${apiPath}/${id}`, {
+    const res = await fetch(`${API_URL}${apiPath}/${id}`, {
       next: { revalidate: 60 }
     });
     if (res.ok) {

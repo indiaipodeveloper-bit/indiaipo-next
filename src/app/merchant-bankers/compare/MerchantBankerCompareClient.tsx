@@ -5,13 +5,8 @@ import Link from "next/link";
 import {
   ChevronLeft,
   Mail,
-  Phone,
-  Globe,
-  MapPin,
-  Building2,
   GitCompare,
   TrendingUp,
-  Award,
   Users,
   BarChart3,
   LineChart,

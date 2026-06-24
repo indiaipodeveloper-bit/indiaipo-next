@@ -7,8 +7,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import {
-  Mail, Phone, Building2, MessageSquare, Send, CheckCircle2,
-  MapPin, ShieldCheck, TrendingUp, Info, Users, Globe
+  Mail, Phone, MessageSquare, Send, CheckCircle2,
+  MapPin, ShieldCheck, TrendingUp, Users
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -156,7 +156,7 @@ export default function MerchantContactClient() {
   });
 
   useEffect(() => {
-    const type = searchParams.get("ipo_type");
+    const type = searchParams.get("ipo_type")?.replaceAll("-", " ");
     setFormData(prev => ({
       ...prev,
       ipo_type: type || prev.ipo_type,
@@ -248,7 +248,7 @@ export default function MerchantContactClient() {
                 transition={{ duration: 0.6 }}
               >
                 <div className="inline-flex items-center gap-2 bg-primary/20 text-primary border border-primary/30 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest mb-6">
-                  <ShieldCheck className="w-4 h-4" /> Professional IPO Support
+                  <ShieldCheck className="w-4 h-4 text-primary" /> Professional IPO Support
                 </div>
                 <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
                   Connect with Our Network of <span className="text-primary">40+ Top Merchant Bankers</span>
@@ -259,7 +259,7 @@ export default function MerchantContactClient() {
                 <div className="flex flex-wrap gap-6">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20">
-                      <TrendingUp className="text-primary w-6 h-6" />
+                      <TrendingUp className="w-6 h-6 text-primary" />
                     </div>
                     <div>
                       <p className="text-white font-black text-sm">Strategic Growth</p>

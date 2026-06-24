@@ -2,15 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
-  ExternalLink,
   MapPin,
-  TrendingUp,
   ArrowRight,
   Shield,
   Building2,
-  Phone,
   Users,
   Globe,
   MessageSquare,
@@ -25,7 +21,6 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { getImageUrl, formatIndianNumber } from "@/lib/utils";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -209,9 +204,9 @@ const ConnectModal = ({
           <Link
             href={`/merchant-contact?ipo_type=${
               banker.mcat_id === "list-of-sme-merchant-bankers" || banker.mcat_id === "SME"
-                ? "SME IPO"
-                : "Mainboard IPO"
-            }&banker=${encodeURIComponent(banker.title)}`}
+                ? "SME-IPO"
+                : "Mainboard-IPO"
+            }`}
             className="block"
           >
             <button
@@ -239,7 +234,6 @@ export default function MerchantBankerDetailClient({
 }) {
   const [connectBanker, setConnectBanker] = useState<Banker | null>(null);
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(null);
-  const router = useRouter();
 
   const isMainboardCategory = banker.mcat_id === "list-of-mainboard-merchant-bankers" || banker.mcat_id === "Mainboard";
 
@@ -695,38 +689,6 @@ export default function MerchantBankerDetailClient({
                     Contact Details
                   </h3>
                   <div className="space-y-4">
-                    {(banker.cemail || banker.email) && (
-                      <a href={`mailto:${banker.cemail || banker.email}`} className="flex items-center gap-3 group">
-                        <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                          style={{ background: "rgba(0,21,41,0.06)" }}
-                        >
-                          <Mail className="h-4 w-4" style={{ color: N }} />
-                        </div>
-                        <div>
-                          <p className="text-sm font-black uppercase tracking-widest text-slate-400 mb-0.5">Email</p>
-                          <p className="text-base font-semibold break-all group-hover:text-[#f59e08] transition-colors" style={{ color: N }}>
-                            {banker.cemail || banker.email}
-                          </p>
-                        </div>
-                      </a>
-                    )}
-                    {(banker.cmobile || banker.phone) && (
-                      <a href={`tel:${banker.cmobile || banker.phone}`} className="flex items-center gap-3 group">
-                        <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                          style={{ background: "rgba(245,158,8,0.08)" }}
-                        >
-                          <Phone className="h-4 w-4" style={{ color: G2 }} />
-                        </div>
-                        <div>
-                          <p className="text-sm font-black uppercase tracking-widest text-slate-400 mb-0.5">Phone</p>
-                          <p className="text-base font-semibold group-hover:text-[#f59e08] transition-colors" style={{ color: N }}>
-                            {banker.cmobile || banker.phone}
-                          </p>
-                        </div>
-                      </a>
-                    )}
                     {(banker.caddress || banker.location) && (
                       <div className="flex items-start gap-3">
                         <div

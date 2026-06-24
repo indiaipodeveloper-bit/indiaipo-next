@@ -1,7 +1,6 @@
 "use client";
 import { usePathname } from "next/navigation";
-
-const BASE_URL = "https://www.indiaipo.in";
+import { BASE_URL } from "@/lib/constants";
 
 export function useCanonicalUrl(overridePath?: string): string {
   const pathname = usePathname();

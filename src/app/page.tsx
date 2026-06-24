@@ -5,7 +5,7 @@ import { academyItems, faqItems } from "@/data/academyFaqData";
 
 export const metadata: Metadata = {
   title: "India IPO Consultant - SME & Mainboard IPO Advisory",
-  description: "Track real-time GMP, analyze deep market insights, and participate in India's growth story with confidence.",
+  description: "India's most trusted IPO consultancy for SME & Mainboard IPO advisory. SEBI-compliant, end-to-end IPO services across Delhi, Mumbai & pan-India. 140+ successful IPOs.",
   keywords: "IPO, SME IPO, GMP tracker, IPO India, Expert Advisory",
   alternates: {
     canonical: "https://www.indiaipo.in",

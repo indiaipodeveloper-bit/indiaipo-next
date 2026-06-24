@@ -12,6 +12,7 @@ import {
 import { getImageUrl } from "@/lib/utils";
 import Ribbon from "@/components/Ribbon";
 import simpleChatbotImg from "@/assets/simple_chatbot_image2.jpeg";
+import { CHAT_URL } from "@/lib/constants";
 
 interface PopupData {
   title: string;
@@ -348,7 +349,7 @@ const SitePopup = () => {
                     className="w-full h-12 rounded-xl font-black text-base shadow-lg bg-[#0f766e] hover:bg-[#0d645d] text-white border-none flex items-center justify-center gap-2"
                     onClick={() => {
                       setIsOpen(false);
-                      window.open("https://indiaipo.ai/chats", "_blank", "noopener,noreferrer");
+                      window.open(CHAT_URL, "_blank", "noopener,noreferrer");
                     }}
                   >
                     Start Chat <ArrowRight className="h-4 w-4" />

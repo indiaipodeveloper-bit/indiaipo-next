@@ -7,6 +7,7 @@ import { getImgSrc } from "@/utils/image";
 import blog1 from "@/assets/blog-1.jpg";
 import blog2 from "@/assets/blog-2.jpg";
 import blog3 from "@/assets/blog-3.jpg";
+import { API_URL } from "@/lib/constants";
 
 const catColors: Record<string, string> = {
     Strategy: "bg-amber-100 text-amber-800",
@@ -81,7 +82,7 @@ const MarketInsights = () => {
     };
 
     useEffect(() => {
-        fetch("/api/admin-blogs?limit=10&summary=1&category=ipo_blogs")
+        fetch(`${API_URL}/api/admin-blogs?limit=10&summary=1&category=ipo_blogs`)
             .then((r) => (r.ok ? r.json() : null))
             .then((d) => {
                 if (d && Array.isArray(d.data) && d.data.length > 0) {
@@ -154,7 +155,7 @@ const MarketInsights = () => {
                             <ChevronRight className="h-5 w-5" />
                         </button>
                         <Link
-                            href="/ipo-blogs"
+                            href="/blogs"
                             className="hidden md:inline-flex items-center gap-1.5 px-5 py-2 bg-slate-900 text-white rounded-full text-sm font-bold hover:bg-slate-700 transition-colors ml-2 shadow-md"
                         >
                             View All <ArrowRight className="h-4 w-4" />

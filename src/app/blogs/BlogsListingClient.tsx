@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getImgSrc } from "@/utils/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Ribbon from "@/components/Ribbon";
 import { API_URL } from "@/lib/constants";
 
 interface IPOBlog {
@@ -44,10 +45,10 @@ const formatDate = (dateStr: string) => {
 const getBlogDisplayDate = (blog: IPOBlog) => {
   const formattedCreated = formatDate(blog.created_at);
   if (formattedCreated) return formattedCreated;
-  
+
   const formattedUpdated = formatDate(blog.updated_at || "");
   if (formattedUpdated) return formattedUpdated;
-  
+
   return "N/A";
 };
 
@@ -117,15 +118,7 @@ export default function BlogsListingClient({
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100/50 border border-blue-200 text-blue-700 text-[10px] font-black uppercase tracking-[0.2em] mb-8"
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              The Editorial Desk
-            </motion.div>
+
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -196,9 +189,14 @@ export default function BlogsListingClient({
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-8 md:p-14">
                   <div className="max-w-3xl">
-                    <span className="inline-block px-3 py-1 rounded-md bg-amber-500 text-slate-900 text-[9px] font-black uppercase tracking-widest mb-6">
+                    <Ribbon
+                      fontSize="9px"
+                      cutout="0.4em"
+                      color="linear-gradient(135deg, #d97706 0%, #f59e08 60%, #fbbf24 100%)"
+                      className="inline-flex items-center text-slate-950 font-black uppercase tracking-widest px-3.5 py-1.5 mb-6"
+                    >
                       FEATURED ANALYSIS
-                    </span>
+                    </Ribbon>
                     <h2 className="text-3xl md:text-5xl font-black text-white leading-[1.1] mb-6 group-hover:text-amber-500 transition-colors">
                       {blogs[0].title}
                     </h2>

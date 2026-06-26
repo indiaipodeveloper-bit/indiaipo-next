@@ -521,12 +521,7 @@ export default function NewsDetailsClient({
               style={{ background: "#f59e08", filter: "blur(80px)", transform: "translate(20%,-30%)" }} />
           </div>
           <div className="container mx-auto px-4 text-center relative z-10">
-            <div className="inline-flex items-center gap-2 bg-[#f59e08]/15 border border-[#f59e08]/30 rounded-full px-4 py-1.5 mb-6">
-              <div className="w-2 h-2 rounded-full bg-[#f59e08] animate-pulse" />
-              <span className="text-[#f59e08] text-xs font-black uppercase tracking-widest">
-                <Bell className="h-3 w-3 inline mr-1" /> Stay Informed
-              </span>
-            </div>
+
             <h2 className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight">
               Never Miss an <span className="text-[#f59e08]">IPO Alert</span><br />
               or Market Update

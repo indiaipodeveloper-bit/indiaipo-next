@@ -222,7 +222,7 @@ export default function NewsUpdatesClient({
               <img
                 src={newsImg2.src}
                 alt="News Banner"
-                className="w-full h-full object-cover opacity-30"
+                className="w-full h-full object-cover "
               />
             )}
             <div className="absolute inset-0 bg-[#001529]/60" />

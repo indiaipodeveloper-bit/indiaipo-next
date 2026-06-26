@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Search, ArrowLeft, Loader2, FileText } from "lucide-react";
+import { Search, ArrowLeft, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Sector {

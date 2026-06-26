@@ -9,9 +9,8 @@ import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
+import { API_URL } from "@/lib/constants";
 
 interface FeasibilityEntry {
   id: number;
@@ -53,7 +52,7 @@ export default function IPOFeasibilityClient() {
   const fetchEntries = async (p = page, s = search) => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/ipo_feasibility?page=${p}&limit=10&search=${encodeURIComponent(s)}`, {
+      const res = await fetch(`${API_URL}/api/ipo_feasibility?page=${p}&limit=10&search=${encodeURIComponent(s)}`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -80,7 +79,7 @@ export default function IPOFeasibilityClient() {
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to delete this entry?")) return;
     try {
-      const res = await fetch(`/api/ipo_feasibility/${id}`, { 
+      const res = await fetch(`${API_URL}/api/ipo_feasibility/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });
@@ -95,7 +94,7 @@ export default function IPOFeasibilityClient() {
 
   const handleExport = async () => {
     try {
-      const res = await fetch(`/api/ipo_feasibility?limit=1000&search=${encodeURIComponent(search)}`, {
+      const res = await fetch(`${API_URL}/api/ipo_feasibility?limit=1000&search=${encodeURIComponent(search)}`, {
         headers: getHeaders()
       });
       const result = await res.json();

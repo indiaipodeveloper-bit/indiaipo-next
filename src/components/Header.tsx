@@ -7,8 +7,6 @@ import {
   Menu,
   X,
   ChevronDown,
-  LogOut,
-  LayoutDashboard,
   Zap,
   ExternalLink,
   BarChart2,
@@ -17,7 +15,6 @@ import {
   Users,
   Briefcase,
   Activity,
-  Star,
   ArrowRight,
   Mail,
   Phone,
@@ -26,11 +23,11 @@ import {
   Bell,
   TrendingUp,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import logo from "@/assets/logo.png";
 import FontSizeControl from "@/components/FontSizeControl";
+import { API_URL} from "@/lib/constants";
 
 const TopBar = () => (
   <div
@@ -441,19 +438,19 @@ const Header = () => {
     if (!loadHeaderData) return;
 
     // Fetch notifications
-    fetch("/api/notifications")
+    fetch(`${API_URL}/api/notifications`)
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => setNotificationsData(data))
       .catch((err) => console.error("Error fetching notifications:", err));
 
     // Fetch categories
-    fetch("/api/knowledge/categories")
+    fetch(`${API_URL}/api/knowledge/categories`)
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => setCategoriesData(data))
       .catch((err) => console.error("Error fetching categories:", err));
 
     // Fetch banker subcategories
-    fetch("/api/banker-subcategories?status=active")
+    fetch(`${API_URL}/api/banker-subcategories?status=active`)
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => setSubcatsData(data))
       .catch((err) => console.error("Error fetching subcategories:", err));

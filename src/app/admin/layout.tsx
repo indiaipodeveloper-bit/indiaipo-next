@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
+import { API_URL } from "@/lib/constants";
 
 const sidebarLinks = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -90,21 +91,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const fetchUnread = async () => {
       try {
         const headers = getHeaders();
-        const res = await fetch("/api/leads/unread", { headers });
+        const res = await fetch(`${API_URL}/api/leads/unread`, { headers });
         if (res.ok) {
           const result = await res.json();
           const leads = result.data || [];
           setUnreadLeads(leads.length);
         }
 
-        const resConsultant = await fetch("/api/consultant-enquiries", { headers });
+        const resConsultant = await fetch(`${API_URL}/api/consultant-enquiries`, { headers });
         if (resConsultant.ok) {
           const enquiries = await resConsultant.json();
           const unread = enquiries.filter((e: any) => !e.is_read).length;
           setUnreadConsultantEnquiries(unread);
         }
 
-        const resMerchant = await fetch("/api/merchant-contact-enquiries", { headers });
+        const resMerchant = await fetch(`${API_URL}/api/merchant-contact-enquiries`, { headers });
         if (resMerchant.ok) {
           const enquiries = await resMerchant.json();
           const unread = enquiries.filter((e: any) => !e.is_read).length;

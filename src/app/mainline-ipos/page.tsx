@@ -1,23 +1,20 @@
 import { Suspense } from "react";
 import ReportsClient from "@/components/ReportsClient";
 import type { Metadata } from "next";
-
-const BASE_URL = "https://www.indiaipo.in";
+import { BASE_URL, API_URL } from "@/lib/constants";
 
 async function getInitialReports() {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
 
   let bannerVideo: string | null = null;
   let sectors: any[] = [];
 
   try {
-    const res = await fetch(`${apiBase}/api/ipo-lists?page=1&limit=15&category=mainline`, {
+    const res = await fetch(`${API_URL}/api/ipo-lists?page=1&limit=15&category=mainline`, {
       next: { revalidate: 60 }
     });
 
     try {
-      const bannerRes = await fetch(`${apiBase}/api/banners?page=%2Fmainline-ipos`, {
+      const bannerRes = await fetch(`${API_URL}/api/banners?page=%2Fmainline-ipos`, {
         next: { revalidate: 60 }
       });
       if (bannerRes.ok) {
@@ -28,7 +25,7 @@ async function getInitialReports() {
     } catch {}
 
     try {
-      const secRes = await fetch(`${apiBase}/api/sectors`, {
+      const secRes = await fetch(`${API_URL}/api/sectors`, {
         next: { revalidate: 60 }
       });
       if (secRes.ok) {

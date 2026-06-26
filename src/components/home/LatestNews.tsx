@@ -11,6 +11,7 @@ import {
   Tag,
 } from "lucide-react";
 import Ribbon from "@/components/Ribbon";
+import { API_URL } from "@/lib/constants";
 
 const fallbackImage =
   "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=1000&auto=format&fit=crop";
@@ -43,7 +44,7 @@ const LatestNews = () => {
   const { data: responseData, isLoading, error } = useQuery({
     queryKey: ["latestNewsHome"],
     queryFn: async () => {
-      const res = await fetch("/api/news?limit=9");
+      const res = await fetch(`${API_URL}/api/news?limit=9`);
       if (!res.ok) throw new Error("Failed to fetch news");
       return res.json();
     },

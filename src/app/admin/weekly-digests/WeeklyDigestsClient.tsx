@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Plus, Trash2, Edit2, Save, X, Upload, FileText, Eye, ImageIcon, Loader2 } from "lucide-react";
 import { getImageUrl } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
 
 interface WeeklyDigestData {
   id: number;
@@ -46,7 +47,7 @@ export default function WeeklyDigestsClient() {
   const fetchData = async (currentPage: number) => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/weekly-digests?page=${currentPage}&limit=10`, {
+      const res = await fetch(`${API_URL}/api/weekly-digests?page=${currentPage}&limit=10`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -65,7 +66,7 @@ export default function WeeklyDigestsClient() {
     if (!newData.title) return toast.error("Title required");
 
     try {
-      const res = await fetch("/api/weekly-digests", {
+      const res = await fetch(`${API_URL}/api/weekly-digests`, {
         method: "POST",
         headers: getHeaders(),
         body: JSON.stringify({
@@ -85,7 +86,7 @@ export default function WeeklyDigestsClient() {
   const del = async (id: number) => {
     if (!confirm("Are you sure you want to delete this weekly digest?")) return;
     try {
-      const res = await fetch(`/api/weekly-digests/${id}`, { 
+      const res = await fetch(`${API_URL}/api/weekly-digests/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });
@@ -105,7 +106,7 @@ export default function WeeklyDigestsClient() {
   const saveEdit = async () => {
     if (!editingId) return;
     try {
-      const res = await fetch(`/api/weekly-digests/${editingId}`, {
+      const res = await fetch(`${API_URL}/api/weekly-digests/${editingId}`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify(editData)
@@ -144,7 +145,7 @@ export default function WeeklyDigestsClient() {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/upload/weekly-reporter", {
+      const res = await fetch(`${API_URL}/api/upload/weekly-reporter`, {
         method: "POST",
         headers: getHeaders(false),
         body: formData,
@@ -152,7 +153,7 @@ export default function WeeklyDigestsClient() {
       if (!res.ok) throw new Error("Upload failed");
       const { url } = await res.json();
 
-      const updateRes = await fetch(`/api/weekly-digests/${id}`, {
+      const updateRes = await fetch(`${API_URL}/api/weekly-digests/${id}`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify({ [type]: url })

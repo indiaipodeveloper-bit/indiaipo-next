@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
 
 interface FAQ {
   id: string;
@@ -42,7 +43,7 @@ export default function RegistrarFaqsClient() {
   const fetchFaqs = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/registrar-faqs", {
+      const res = await fetch(`${API_URL}/api/registrar-faqs`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -67,7 +68,7 @@ export default function RegistrarFaqsClient() {
     }
     setSaving(true);
     try {
-      const url = editingId ? `/api/registrar-faqs/${editingId}` : "/api/registrar-faqs";
+      const url = editingId ? `${API_URL}/api/registrar-faqs/${editingId}` : `${API_URL}/api/registrar-faqs`;
       const method = editingId ? "PUT" : "POST";
       const res = await fetch(url, {
         method,
@@ -103,7 +104,7 @@ export default function RegistrarFaqsClient() {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this FAQ?")) return;
     try {
-      const res = await fetch(`/api/registrar-faqs/${id}`, { 
+      const res = await fetch(`${API_URL}/api/registrar-faqs/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });

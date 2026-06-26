@@ -3,42 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import ServicePageLayout from "@/components/ServicePageLayout";
-import { Button } from "@/components/ui/button";
-import {
-  ArrowRight,
-  CheckCircle,
-  ChevronRight,
-  Phone,
-  Mail,
-  Home,
-  Shield,
-  Clock,
-  Users,
-  Star,
-  Award,
-  Zap,
-  Target,
-  Wallet,
-  ChevronDown,
-  ChevronUp,
-  BookOpen,
-  FileText,
-  TrendingUp,
-  MessageSquare,
-  Building2,
-  Globe,
-  BarChart3,
-  LayoutDashboard,
-  AreaChart,
-  ShieldCheck,
-  Lock,
-  UserCheck,
-  Scale,
-  HeartPulse,
-  Calendar,
-  Coins,
-  Landmark,
-} from "lucide-react";
 
 const SmReitClient = () => {
   const slug = "sm-reit-structuring-listing-services";

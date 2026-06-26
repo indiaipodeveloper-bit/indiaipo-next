@@ -12,7 +12,6 @@ import {
   Calendar,
   TrendingUp,
   IndianRupee,
-  ArrowLeft,
   Download,
   FileText,
   Info,
@@ -26,7 +25,6 @@ import {
   ChevronRight,
   Tag,
   Flame,
-  Eye,
   Database,
   Globe,
   User,
@@ -40,6 +38,7 @@ import {
 import { formatIndianNumber, getImageUrl } from "@/lib/utils";
 import { getImgSrc } from "@/utils/image";
 import Ribbon from "@/components/Ribbon";
+import { API_URL, BASE_URL } from "@/lib/constants";
 
 const formatDate = (date: Date) => {
   const day = String(date.getDate()).padStart(2, '0');
@@ -49,7 +48,6 @@ const formatDate = (date: Date) => {
   return `${day} ${month}, ${year}`;
 };
 
-const BASE_URL = "https://www.indiaipo.in";
 
 interface RelatedBlog {
   id: string;
@@ -932,7 +930,7 @@ export default function IPOBlogDetailsClient({
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch("/api/news?limit=9");
+        const res = await fetch(`${API_URL}/api/news?limit=9`);
         if (res.ok) {
           const data = await res.json();
           const items = data.data || [];
@@ -966,7 +964,7 @@ export default function IPOBlogDetailsClient({
   useEffect(() => {
     const fetchAllBankers = async () => {
       try {
-        const res = await fetch("/api/bankers?all=true");
+        const res = await fetch(`${API_URL}/api/bankers?all=true`);
         if (res.ok) {
           const data = await res.json();
           setBankers(data.data || []);
@@ -985,7 +983,7 @@ export default function IPOBlogDetailsClient({
       try {
         setComparisonData(prev => ({ ...prev, loading: true }));
         // 1. Fetch current IPO matching the blog id
-        const ipoRes = await fetch(`/api/ipo-lists?admin_blog_id=${blog.id}`);
+        const ipoRes = await fetch(`${API_URL}/api/ipo-lists?admin_blog_id=${blog.id}`);
         if (!ipoRes.ok) {
           setComparisonData(prev => ({ ...prev, loading: false }));
           return;
@@ -1002,7 +1000,7 @@ export default function IPOBlogDetailsClient({
 
         // 2. Fetch similar IPOs in the same sector (limit to 10 to ensure we get enough non-upcoming ones)
         const sectorRes = await fetch(
-          `/api/ipo-lists?sector_id=${currentIpo.sector_id}&upcoming=0&limit=10`
+          `${API_URL}/api/ipo-lists?sector_id=${currentIpo.sector_id}&upcoming=0&limit=10`
         );
         if (!sectorRes.ok) {
           setComparisonData(prev => ({ ...prev, currentIpo, loading: false }));
@@ -1026,7 +1024,7 @@ export default function IPOBlogDetailsClient({
           similarIpos.map(async (ipo: any) => {
             if (ipo.blog_slug) {
               try {
-                const blogRes = await fetch(`/api/admin-blogs/${ipo.blog_slug}`);
+                const blogRes = await fetch(`${API_URL}/api/admin-blogs/${ipo.blog_slug}`);
                 if (blogRes.ok) {
                   const bData = await blogRes.json();
                   const kpis = parseArrayData(bData.key_kpi);
@@ -1078,8 +1076,8 @@ export default function IPOBlogDetailsClient({
           .replace(/\s+/g, "_");
 
         const url = currentCat === "daily_reporter"
-          ? `/api/admin-blogs?category=daily_reporter&limit=50&summary=1&all_categories=1`
-          : `/api/admin-blogs?limit=100&summary=1&all_categories=1`;
+          ? `${API_URL}/api/admin-blogs?category=daily_reporter&limit=50&summary=1&all_categories=1`
+          : `${API_URL}/api/admin-blogs?limit=100&summary=1&all_categories=1`;
 
         const res = await fetch(url);
 

@@ -4,15 +4,12 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ArrowRight, ChevronRight, TrendingUp } from "lucide-react";
 import { getImageUrl } from "@/lib/utils";
-
-const BASE_URL = "https://www.indiaipo.in";
+import { API_URL, BASE_URL } from "@/lib/constants";
 
 async function getBannerVideo() {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
 
   try {
-    const bannerRes = await fetch(`${apiBase}/api/banners?page=%2Fipo-process`, {
+    const bannerRes = await fetch(`${API_URL}/api/banners?page=%2Fipo-process`, {
       next: { revalidate: 60 }
     });
     if (bannerRes.ok) {

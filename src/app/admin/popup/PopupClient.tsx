@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Image as ImageIcon, Upload, Save } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { getImageUrl } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
 
 interface PopupData {
   id?: number;
@@ -44,7 +45,7 @@ export default function PopupClient() {
 
   const fetchPopup = async () => {
     try {
-      const res = await fetch("/api/popup", {
+      const res = await fetch(`${API_URL}/api/popup`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -83,7 +84,7 @@ export default function PopupClient() {
     formData.append("folder", "popup");
 
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         headers: getHeaders(false),
         body: formData
@@ -102,7 +103,7 @@ export default function PopupClient() {
   const toggleActive = async (checked: boolean) => {
     setForm(prev => ({ ...prev, is_active: checked }));
     try {
-      const res = await fetch("/api/popup", {
+      const res = await fetch(`${API_URL}/api/popup`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify({
@@ -136,7 +137,7 @@ export default function PopupClient() {
 
     setSaving(true);
     try {
-      const res = await fetch("/api/popup", {
+      const res = await fetch(`${API_URL}/api/popup`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify({

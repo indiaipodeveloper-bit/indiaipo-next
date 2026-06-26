@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Plus, Trash2, Edit2, Save, X, Upload, FileText, Eye, EyeOff, ExternalLink } from "lucide-react";
 import RichEditor from "@/components/ui/RichEditor";
 import { cn } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
 
 interface NotifPdf {
   id: string; 
@@ -49,7 +50,7 @@ export default function NotificationsClient() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch("/api/notifications", {
+      const res = await fetch(`${API_URL}/api/notifications`, {
         headers: getHeaders()
       });
       if (res.ok) setPdfs(await res.json());
@@ -62,7 +63,7 @@ export default function NotificationsClient() {
     if (!newData.title.trim()) return toast.error("Title is required");
     const slug = generateSlug(newData.title.trim());
     try {
-      const res = await fetch("/api/notifications", {
+      const res = await fetch(`${API_URL}/api/notifications`, {
         method: "POST",
         headers: getHeaders(),
         body: JSON.stringify({
@@ -89,7 +90,7 @@ export default function NotificationsClient() {
   const del = async (id: string) => {
     if (!confirm("Delete this notification?")) return;
     try {
-      await fetch(`/api/notifications/${id}`, { 
+      await fetch(`${API_URL}/api/notifications/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });
@@ -102,7 +103,7 @@ export default function NotificationsClient() {
 
   const toggle = async (p: NotifPdf) => {
     try {
-      await fetch(`/api/notifications/${p.id}`, {
+      await fetch(`${API_URL}/api/notifications/${p.id}`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify({ is_active: !p.is_active }),
@@ -125,7 +126,7 @@ export default function NotificationsClient() {
       return toast.error("Title is required");
     }
     try {
-      const res = await fetch(`/api/notifications/${editingId}`, {
+      const res = await fetch(`${API_URL}/api/notifications/${editingId}`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify({
@@ -156,7 +157,7 @@ export default function NotificationsClient() {
     formData.append("folder", "notifications");
     formData.append("file", file);
     try {
-      const res = await fetch("/api/upload", { 
+      const res = await fetch(`${API_URL}/api/upload`, { 
         method: "POST", 
         headers: getHeaders(false),
         body: formData 
@@ -166,7 +167,7 @@ export default function NotificationsClient() {
         throw new Error(err.error || "Upload failed");
       }
       const { url } = await res.json();
-      await fetch(`/api/notifications/${id}`, {
+      await fetch(`${API_URL}/api/notifications/${id}`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify({ pdf_url: url }),

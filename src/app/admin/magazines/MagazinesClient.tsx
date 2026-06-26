@@ -8,6 +8,7 @@ import { Plus, Trash2, Image, FileText, Lock, Unlock, Globe } from "lucide-react
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { getImageUrl } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
 
 interface Magazine {
   id: string;
@@ -56,7 +57,7 @@ export default function MagazinesClient() {
   const fetchMagazines = async (page = 1) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/magazines?page=${page}&limit=${pagination.pageSize}`, {
+      const res = await fetch(`${API_URL}/api/magazines?page=${page}&limit=${pagination.pageSize}`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -101,7 +102,7 @@ export default function MagazinesClient() {
       );
       formData.append("file", file);
 
-      const res = await fetch("/api/upload/magazine", {
+      const res = await fetch(`${API_URL}/api/upload/magazine`, {
         method: "POST",
         headers: getHeaders(false),
         body: formData,
@@ -141,7 +142,7 @@ export default function MagazinesClient() {
     }
 
     try {
-      const url = editingId ? `/api/magazines/${editingId}` : "/api/magazines";
+      const url = editingId ? `${API_URL}/api/magazines/${editingId}` : `${API_URL}/api/magazines`;
       const method = editingId ? "PUT" : "POST";
 
       const res = await fetch(url, {
@@ -181,7 +182,7 @@ export default function MagazinesClient() {
   const deleteMagazine = async (id: string) => {
     if (!confirm("Are you sure you want to delete this magazine?")) return;
     try {
-      const res = await fetch(`/api/magazines/${id}`, {
+      const res = await fetch(`${API_URL}/api/magazines/${id}`, {
         method: "DELETE",
         headers: getHeaders()
       });

@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Plus, Trash2, Edit2, Save, X, Upload, FileText, Eye, ExternalLink, Image as ImageIcon, Loader2, Link as LinkIcon } from "lucide-react";
+import { Plus, Trash2, Edit2, Save, X, Upload, FileText, Eye, Image as ImageIcon, Loader2, Link as LinkIcon } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getImageUrl } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
 
 interface DailyDigest {
   id: number;
@@ -58,7 +59,7 @@ export default function DailyDigestsClient() {
 
   const fetchBlogs = async () => {
     try {
-      const res = await fetch('/api/admin-blogs?limit=1000&summary=1&all_categories=1', {
+      const res = await fetch(`${API_URL}/api/admin-blogs?limit=1000&summary=1&all_categories=1`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -73,7 +74,7 @@ export default function DailyDigestsClient() {
   const fetchData = async (currentPage: number) => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/daily-digests?page=${currentPage}&limit=10`, {
+      const res = await fetch(`${API_URL}/api/daily-digests?page=${currentPage}&limit=10`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -92,7 +93,7 @@ export default function DailyDigestsClient() {
     if (!newData.title) return toast.error("Title required");
 
     try {
-      const res = await fetch("/api/daily-digests", {
+      const res = await fetch(`${API_URL}/api/daily-digests`, {
         method: "POST",
         headers: getHeaders(),
         body: JSON.stringify({
@@ -113,7 +114,7 @@ export default function DailyDigestsClient() {
   const del = async (id: number) => {
     if (!confirm("Are you sure you want to delete this digest?")) return;
     try {
-      const res = await fetch(`/api/daily-digests/${id}`, {
+      const res = await fetch(`${API_URL}/api/daily-digests/${id}`, {
         method: "DELETE",
         headers: getHeaders()
       });
@@ -133,7 +134,7 @@ export default function DailyDigestsClient() {
   const saveEdit = async () => {
     if (!editingId) return;
     try {
-      const res = await fetch(`/api/daily-digests/${editingId}`, {
+      const res = await fetch(`${API_URL}/api/daily-digests/${editingId}`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify(editData)
@@ -172,7 +173,7 @@ export default function DailyDigestsClient() {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/upload/daily-reporter", {
+      const res = await fetch(`${API_URL}/api/upload/daily-reporter`, {
         method: "POST",
         headers: getHeaders(false),
         body: formData,
@@ -180,7 +181,7 @@ export default function DailyDigestsClient() {
       if (!res.ok) throw new Error("Upload failed");
       const { url } = await res.json();
 
-      const updateRes = await fetch(`/api/daily-digests/${id}`, {
+      const updateRes = await fetch(`${API_URL}/api/daily-digests/${id}`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify({ [type]: url })

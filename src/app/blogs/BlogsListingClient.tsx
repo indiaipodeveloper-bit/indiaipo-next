@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getImgSrc } from "@/utils/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { API_URL } from "@/lib/constants";
 
 interface IPOBlog {
   id: string;
@@ -87,7 +88,7 @@ export default function BlogsListingClient({
     const loadBlogs = async () => {
       setLoading(true);
       try {
-        let url = `/api/admin-blogs?page=${page}&limit=12&summary=1&category=ipo_blogs`;
+        let url = `${API_URL}/api/admin-blogs?page=${page}&limit=12&summary=1&category=ipo_blogs`;
         if (debouncedSearch.trim()) {
           url += `&search=${encodeURIComponent(debouncedSearch.trim())}`;
         }

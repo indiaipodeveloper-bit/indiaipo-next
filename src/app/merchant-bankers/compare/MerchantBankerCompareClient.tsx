@@ -566,8 +566,8 @@ export default function MerchantBankerCompareClient({
                 </p>
                 <Link
                   href={`/merchant-contact?ipo_type=${
-                    isMainboard ? "Mainboard IPO" : "SME IPO"
-                  }&banker=${encodeURIComponent(bk.title)}`}
+                    isMainboard ? "Mainboard-IPO" : "SME-IPO"
+                  }`}
                   className="flex items-center justify-center gap-3 w-full h-14 rounded-2xl font-black text-base text-white shadow-lg transition-all hover:scale-[1.02]"
                   style={{
                     background: `linear-gradient(135deg, ${color}, ${color}dd)`,

@@ -1,10 +1,8 @@
 import IPOBlogDetailsClient from "../../ipo-blogs/[slug]/IPOBlogDetailsClient";
 import type { Metadata } from "next";
-import { getImgSrc } from "@/utils/image";
 import { redirect } from "next/navigation";
 import { getImageUrl } from "@/lib/utils";
-
-const BASE_URL = "https://www.indiaipo.in";
+import { API_URL, BASE_URL } from "@/lib/constants";
 
 interface AdminBlogFull {
   id: string;
@@ -76,10 +74,8 @@ const stripHtml = (html: string) => {
 };
 
 async function fetchBlogOnServer(slug: string): Promise<AdminBlogFull | null> {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
   try {
-    const res = await fetch(`${apiBase}/api/admin-blogs/${slug}`, {
+    const res = await fetch(`${API_URL}/api/admin-blogs/${slug}`, {
       next: { revalidate: 60 } // cache for 1 minute
     });
     if (res.ok) {

@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SSESidebar from "../SSESidebar";
 import Link from "next/link";
-import { ChevronRight, Home, TrendingUp, Info, FileText, CheckCircle2 } from "lucide-react";
+import { ChevronRight, Home, TrendingUp, FileText, CheckCircle2 } from "lucide-react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

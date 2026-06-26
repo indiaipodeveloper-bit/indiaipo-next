@@ -2,15 +2,12 @@ import type { Metadata } from "next";
 import IpoWorldMagazineClient from "./IpoWorldMagazineClient";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-
-const BASE_URL = "https://www.indiaipo.in";
+import { BASE_URL, API_URL } from "@/lib/constants";
 
 async function getInitialMagazines() {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
 
   try {
-    const res = await fetch(`${apiBase}/api/magazines?page=1&limit=8&language=english`, {
+    const res = await fetch(`${API_URL}/api/magazines?page=1&limit=8&language=english`, {
       next: { revalidate: 60 }
     });
     if (res.ok) {

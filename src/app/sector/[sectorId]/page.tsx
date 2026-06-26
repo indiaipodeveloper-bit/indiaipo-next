@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import SectorDetailClient from "@/components/SectorDetailClient";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { API_URL, BASE_URL } from "@/lib/constants";
 
@@ -75,8 +76,9 @@ async function getSectorDetails(sectorId: string) {
   }
 }
 
-export async function generateMetadata({ params }: { params: PageParams }): Promise<Metadata> {
-  const data = await getSectorDetails(params.sectorId);
+export async function generateMetadata({ params }: { params: Promise<PageParams> }): Promise<Metadata> {
+  const { sectorId } = await params;
+  const data = await getSectorDetails(sectorId);
   if (!data) {
     return {
       title: "Sector Not Found | India IPO",
@@ -86,7 +88,7 @@ export async function generateMetadata({ params }: { params: PageParams }): Prom
 
   const title = `${data.sector.name} Sector IPOs List in India | India IPO`;
   const description = `Explore all Initial Public Offerings (IPOs) in the ${data.sector.name} sector. View comprehensive list, size, P/E ratio, and expert insights.`;
-  const canonicalUrl = `${BASE_URL}/sector/${params.sectorId}`;
+  const canonicalUrl = `${BASE_URL}/sector/${sectorId}`;
 
   return {
     title,
@@ -103,8 +105,9 @@ export async function generateMetadata({ params }: { params: PageParams }): Prom
   };
 }
 
-export default async function SectorDetailPage({ params }: { params: PageParams }) {
-  const data = await getSectorDetails(params.sectorId);
+export default async function SectorDetailPage({ params }: { params: Promise<PageParams> }) {
+  const { sectorId } = await params;
+  const data = await getSectorDetails(sectorId);
 
   if (!data) {
     notFound();
@@ -112,6 +115,7 @@ export default async function SectorDetailPage({ params }: { params: PageParams 
 
   return (
     <>
+      <Header />
       <SectorDetailClient sector={data.sector} initialIpos={data.items} stats={data.stats} />
       <Footer />
     </>

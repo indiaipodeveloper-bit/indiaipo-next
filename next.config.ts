@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
         destination: "https://www.indiaipo.in/:path*",
         permanent: true,
       },
+      {
+        source: "/ipo/:path*",
+        destination: "https://www.indiaipo.in/all-ipos/:path*",
+        permanent: true,
+      },
     ];
   },
   async rewrites() {

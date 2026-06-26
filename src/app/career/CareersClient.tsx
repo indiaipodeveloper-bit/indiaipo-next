@@ -14,7 +14,6 @@ import {
   Phone,
   GraduationCap,
   FileText,
-  ArrowRight,
   Home,
   ChevronRight,
   Zap,
@@ -83,7 +82,7 @@ export default function CareersClient() {
     fd.append("file", file);
     setUploading(true);
     try {
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const res = await fetch(`${API_URL}/api/upload`, { method: "POST", body: fd });
       if (res.ok) {
         const data = await res.json();
         setFormData((prev) => ({ ...prev, resume: data.url }));
@@ -153,7 +152,7 @@ export default function CareersClient() {
     setSubmitting(true);
     try {
       const recaptchaToken = await getToken("career_form");
-      const res = await fetch("/api/career/apply", {
+      const res = await fetch(`${API_URL}/api/career/apply`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, recaptchaToken }),

@@ -9,6 +9,7 @@ import LazySection from "@/components/LazySection";
 import AboutPreview from "@/components/AboutPreview";
 import ServicesSection from "@/components/ServicesSection";
 import Hero from "@/components/home/Hero";
+import { API_URL } from "@/lib/constants";
 
 const LiveIPOs = lazy(() => import("@/components/home/LiveIPOs"));
 const GMPSection = lazy(() => import("@/components/home/GMPSection"));
@@ -35,7 +36,7 @@ function HomeContent() {
   const { data: ipoData, isLoading } = useQuery({
     queryKey: ["homeIpos"],
     queryFn: async () => {
-      const res = await fetch("/api/ipo-lists?limit=10");
+      const res = await fetch(`${API_URL}/api/ipo-lists?limit=10`);
       if (!res.ok) throw new Error("Failed to fetch IPOs");
       return res.json();
     },

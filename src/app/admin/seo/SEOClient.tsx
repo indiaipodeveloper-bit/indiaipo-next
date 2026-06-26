@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { getImageUrl } from "@/lib/utils";
 import { BASE_URL } from "@/hooks/useCanonicalUrl";
+import { API_URL } from "@/lib/constants";
 
 interface SeoPage {
   id: number;
@@ -100,7 +101,7 @@ export default function SEOClient() {
   const fetchPages = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/seo-pages", {
+      const res = await fetch(`${API_URL}/api/seo-pages`, {
         headers: getHeaders()
       });
       const data = await res.json();
@@ -114,7 +115,7 @@ export default function SEOClient() {
 
   const fetchGlobal = async () => {
     try {
-      const res = await fetch("/api/seo", {
+      const res = await fetch(`${API_URL}/api/seo`, {
         headers: getHeaders()
       });
       const data = await res.json();
@@ -139,7 +140,7 @@ export default function SEOClient() {
     fd.append("folder", "seo");
     fd.append("file", file);
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         headers: getHeaders(false),
         body: fd
@@ -167,7 +168,7 @@ export default function SEOClient() {
     fd.append("folder", "seo");
     fd.append("file", file);
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         headers: getHeaders(false),
         body: fd
@@ -195,7 +196,7 @@ export default function SEOClient() {
     setSaving(true);
     try {
       const method = editId ? "PUT" : "POST";
-      const url = editId ? `/api/seo-pages/${editId}` : "/api/seo-pages";
+      const url = editId ? `${API_URL}/api/seo-pages/${editId}` : `${API_URL}/api/seo-pages`;
       const res = await fetch(url, {
         method,
         headers: getHeaders(),
@@ -221,7 +222,7 @@ export default function SEOClient() {
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this SEO entry?")) return;
     try {
-      const res = await fetch(`/api/seo-pages/${id}`, {
+      const res = await fetch(`${API_URL}/api/seo-pages/${id}`, {
         method: "DELETE",
         headers: getHeaders()
       });
@@ -240,7 +241,7 @@ export default function SEOClient() {
   const handleGlobalSave = async () => {
     setGlobalSaving(true);
     try {
-      const res = await fetch("/api/seo", {
+      const res = await fetch(`${API_URL}/api/seo`, {
         method: "POST",
         headers: getHeaders(),
         body: JSON.stringify(globalSeo),

@@ -8,7 +8,6 @@ import {
   Briefcase,
   LineChart,
   PieChart,
-  ShieldCheck,
   Scale,
   Globe,
   LayoutDashboard,

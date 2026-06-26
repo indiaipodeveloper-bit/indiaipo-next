@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Plus, Edit, Trash2, Loader2, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { API_URL } from "@/lib/constants";
 
 interface Category {
   id: number;
@@ -32,7 +33,7 @@ export default function BankerCategoriesClient() {
   const fetchCategories = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("/api/banker-subcategories", {
+      const res = await fetch(`${API_URL}/api/banker-subcategories`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -58,13 +59,13 @@ export default function BankerCategoriesClient() {
 
     try {
       if (isEditing) {
-        await fetch(`/api/banker-subcategories/${isEditing}`, {
+        await fetch(`${API_URL}/api/banker-subcategories/${isEditing}`, {
           method: "PUT",
           headers: getHeaders(),
           body: JSON.stringify(editForm),
         });
       } else {
-        await fetch("/api/banker-subcategories", {
+        await fetch(`${API_URL}/api/banker-subcategories`, {
           method: "POST",
           headers: getHeaders(),
           body: JSON.stringify(editForm),
@@ -83,7 +84,7 @@ export default function BankerCategoriesClient() {
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to delete this category?")) return;
     try {
-      await fetch(`/api/banker-subcategories/${id}`, { 
+      await fetch(`${API_URL}/api/banker-subcategories/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });

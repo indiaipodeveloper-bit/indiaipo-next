@@ -1,10 +1,9 @@
 import { Metadata } from "next";
 import { servicesData } from "@/data/servicesData";
 import PrivatePlacementClient from "./PrivatePlacementClient";
-
+import { BASE_URL } from "@/lib/constants";
 const slug = "private-placement-services";
 const service = servicesData.find((s) => s.slug === slug)!;
-const BASE_URL = "https://www.indiaipo.in";
 
 const commonFaqs = [
   {

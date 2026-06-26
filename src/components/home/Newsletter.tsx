@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRecaptcha } from "@/hooks/useRecaptcha";
 import { toast } from "sonner";
 import { Mail } from "lucide-react";
+import { API_URL } from "@/lib/constants";
 
 const validateEmail = (email: string) => {
     const trimmed = email.trim();
@@ -27,7 +28,7 @@ const Newsletter = () => {
 
         try {
             const recaptchaToken = await getToken("newsletter_subscribe_index");
-            const r = await fetch("/api/subscriptions", {
+            const r = await fetch(`${API_URL}/api/subscriptions`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: email.trim(), recaptchaToken }),

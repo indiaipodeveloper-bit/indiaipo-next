@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { API_URL } from "@/lib/constants";
 
 interface InvestorEnquiry {
   id: number;
@@ -74,7 +75,7 @@ export default function InvestorsClient() {
   const fetchEnquiries = async (p = page, s = search) => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/investor?page=${p}&limit=10&search=${encodeURIComponent(s)}`, {
+      const res = await fetch(`${API_URL}/api/investor?page=${p}&limit=10&search=${encodeURIComponent(s)}`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -101,7 +102,7 @@ export default function InvestorsClient() {
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to delete this enquiry?")) return;
     try {
-      const res = await fetch(`/api/investor/${id}`, { 
+      const res = await fetch(`${API_URL}/api/investor/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });
@@ -134,7 +135,7 @@ export default function InvestorsClient() {
 
   const handleExport = async () => {
     try {
-      const res = await fetch(`/api/investor?limit=1000&search=${encodeURIComponent(search)}`, {
+      const res = await fetch(`${API_URL}/api/investor?limit=1000&search=${encodeURIComponent(search)}`, {
         headers: getHeaders()
       });
       const result = await res.json();

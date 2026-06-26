@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getImageUrl } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
 
 interface Digest {
   id: number;
@@ -102,7 +103,7 @@ export default function DailyDigestCampaignClient() {
 
   const fetchDigests = async () => {
     try {
-      const res = await fetch("/api/daily-digests?limit=100", {
+      const res = await fetch(`${API_URL}/api/daily-digests?limit=100`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -126,7 +127,7 @@ export default function DailyDigestCampaignClient() {
   const fetchStats = async () => {
     if (!selectedDigestId) return;
     try {
-      const res = await fetch(`/api/daily-digests/stats?digest_id=${selectedDigestId}`, {
+      const res = await fetch(`${API_URL}/api/daily-digests/stats?digest_id=${selectedDigestId}`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -144,10 +145,10 @@ export default function DailyDigestCampaignClient() {
     
     let endpoint = "";
     switch (filter) {
-      case 'audience': endpoint = "/api/daily-digests/audience"; break;
-      case 'processed': endpoint = `/api/daily-digests/processed-jobs?digest_id=${selectedDigestId}`; break;
-      case 'failed': endpoint = `/api/daily-digests/failed-jobs?digest_id=${selectedDigestId}`; break;
-      case 'pending': endpoint = `/api/daily-digests/pending-jobs?digest_id=${selectedDigestId}`; break;
+      case 'audience': endpoint = `${API_URL}/api/daily-digests/audience`; break;
+      case 'processed': endpoint = `${API_URL}/api/daily-digests/processed-jobs?digest_id=${selectedDigestId}`; break;
+      case 'failed': endpoint = `${API_URL}/api/daily-digests/failed-jobs?digest_id=${selectedDigestId}`; break;
+      case 'pending': endpoint = `${API_URL}/api/daily-digests/pending-jobs?digest_id=${selectedDigestId}`; break;
     }
 
     try {
@@ -175,7 +176,7 @@ export default function DailyDigestCampaignClient() {
     if (!selectedDigestId) return;
     setStartingCampaign(true);
     try {
-      const res = await fetch(`/api/daily-digests/send/${selectedDigestId}`, {
+      const res = await fetch(`${API_URL}/api/daily-digests/send/${selectedDigestId}`, {
         method: "POST",
         headers: getHeaders()
       });
@@ -198,7 +199,7 @@ export default function DailyDigestCampaignClient() {
     if (!selectedDigestId) return;
     setRetryingFailed(true);
     try {
-      const res = await fetch("/api/daily-digests/retry-failed", {
+      const res = await fetch(`${API_URL}/api/daily-digests/retry-failed`, {
         method: "POST",
         headers: getHeaders(),
         body: JSON.stringify({ digest_id: selectedDigestId })
@@ -221,7 +222,7 @@ export default function DailyDigestCampaignClient() {
   const retryJob = async (id: number) => {
     setRetryingJobId(id);
     try {
-      const res = await fetch(`/api/daily-digests/retry-job/${id}`, {
+      const res = await fetch(`${API_URL}/api/daily-digests/retry-job/${id}`, {
         method: "POST",
         headers: getHeaders()
       });

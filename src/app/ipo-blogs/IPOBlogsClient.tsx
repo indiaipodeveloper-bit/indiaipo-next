@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import { ArrowRight, ChevronLeft, ChevronRight, Home, TrendingUp, Search, X, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getImgSrc } from "@/utils/image";
+import { API_URL } from "@/lib/constants";
 
 interface IPOBlog {
   id: string; title: string; slug: string;
@@ -62,7 +63,7 @@ export default function IPOBlogsClient({
     const fetchBlogs = async () => {
       setLoading(true);
       try {
-        let url = `/api/admin-blogs?page=${page}&limit=12&summary=1&category=ipo_updates`;
+        let url = `${API_URL}/api/admin-blogs?page=${page}&limit=12&summary=1&category=ipo_updates`;
         if (filter === "current") url += "&upcoming=0";
         if (filter === "upcoming") url += "&upcoming=1";
         if (debouncedSearch.trim()) {

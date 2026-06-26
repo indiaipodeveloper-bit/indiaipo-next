@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ChevronLeft, Download, Share2, BookOpen, X, Maximize, Minimize } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -23,7 +22,6 @@ interface MagazineViewerClientProps {
 }
 
 export default function MagazineViewerClient({ magazine }: MagazineViewerClientProps) {
-  const router = useRouter();
   const [isFullScreen, setIsFullScreen] = useState(false);
   const iframeRef = useRef<HTMLDivElement>(null);
 

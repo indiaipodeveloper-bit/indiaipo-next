@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { LayoutGrid, Search, ArrowRight, ChevronRight, TrendingUp, BarChart3, Home, Zap, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { getImageUrl } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
 
 interface Sector {
   id: string | number;
@@ -44,7 +45,7 @@ export default function SectorsClient({ initialSectors, initialBannerVideo }: Se
     const fetchSectors = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/sectors?search=${encodeURIComponent(debouncedSearch)}`);
+        const res = await fetch(`${API_URL}/api/sectors?search=${encodeURIComponent(debouncedSearch)}`);
         if (res.ok) {
           const data = await res.json();
           const filteredData = (data || []).filter(

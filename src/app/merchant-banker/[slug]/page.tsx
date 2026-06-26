@@ -2,9 +2,7 @@ import MerchantBankerDetailClient from "./MerchantBankerDetailClient";
 import type { Metadata } from "next";
 import { getImageUrl } from "@/lib/utils";
 import { redirect } from "next/navigation";
-import { API_URL } from "@/lib/constants";
-
-const BASE_URL = "https://www.indiaipo.in";
+import { API_URL, BASE_URL } from "@/lib/constants";
 
 const cleanGarbledText = (text: string) => {
   if (!text) return "";

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Download, Mail, Phone, Trash2, Eye, Loader2, Building2, Calendar, MessageSquare, User } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { API_URL } from "@/lib/constants";
 
 interface Lead {
   id: string;
@@ -39,7 +40,7 @@ export default function LeadsClient() {
 
   const fetchLeads = async (p = page) => {
     try {
-      const res = await fetch(`/api/leads?page=${p}&limit=10`, {
+      const res = await fetch(`${API_URL}/api/leads?page=${p}&limit=10`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -67,7 +68,7 @@ export default function LeadsClient() {
 
   const toggleRead = async (lead: Lead) => {
     try {
-      const res = await fetch(`/api/leads/${lead.id}`, {
+      const res = await fetch(`${API_URL}/api/leads/${lead.id}`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify({ is_read: !lead.is_read })
@@ -90,7 +91,7 @@ export default function LeadsClient() {
   const deleteLead = async (id: string) => {
     if (!confirm("Are you sure you want to delete this lead?")) return;
     try {
-      const res = await fetch(`/api/leads/${id}`, { 
+      const res = await fetch(`${API_URL}/api/leads/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });
@@ -106,7 +107,7 @@ export default function LeadsClient() {
 
   const handleExport = async () => {
     try {
-      const res = await fetch("/api/leads?limit=1000", {
+      const res = await fetch(`${API_URL}/api/leads?limit=1000`, {
         headers: getHeaders()
       });
       if (!res.ok) throw new Error("Export failed");

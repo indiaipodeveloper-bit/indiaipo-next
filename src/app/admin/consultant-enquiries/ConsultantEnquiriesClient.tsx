@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Trash2, CheckCircle, Mail, Phone, Building2, User, Clock, MessageSquareText, Copy, Eye, Download, Loader2 } from "lucide-react";
+import { Trash2, CheckCircle, Mail, Phone, Building2, User, MessageSquareText, Copy, Eye, Download, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import {
   Table,
@@ -30,6 +30,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { API_URL } from "@/lib/constants";
 
 interface Enquiry {
   id: string;
@@ -67,7 +68,7 @@ export default function ConsultantEnquiriesClient() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch("/api/consultant-enquiries", {
+      const res = await fetch(`${API_URL}/api/consultant-enquiries`, {
         headers: getHeaders()
       });
       if (res.ok) setEnquiries(await res.json());
@@ -80,7 +81,7 @@ export default function ConsultantEnquiriesClient() {
 
   const markAsRead = async (id: string) => {
     try {
-      const res = await fetch(`/api/consultant-enquiries/${id}/read`, { 
+      const res = await fetch(`${API_URL}/api/consultant-enquiries/${id}/read`, { 
         method: "PATCH",
         headers: getHeaders()
       });
@@ -96,7 +97,7 @@ export default function ConsultantEnquiriesClient() {
   const del = async (id: string) => {
     if (!confirm("Delete this enquiry?")) return;
     try {
-      const res = await fetch(`/api/consultant-enquiries/${id}`, { 
+      const res = await fetch(`${API_URL}/api/consultant-enquiries/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });

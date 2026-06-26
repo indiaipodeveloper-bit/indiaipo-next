@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Ribbon from "@/components/Ribbon";
 import {
-  Shield, Users, Target, Award, TrendingUp, Building2, CheckCircle2,
+  Shield, Target, TrendingUp, Building2, CheckCircle2,
   ArrowRight, Star, Globe, BookOpen, Scale, Briefcase, Heart,
   Eye, Lightbulb, Handshake, BarChart3, Clock, MapPin, Phone, Mail
 } from "lucide-react";
@@ -16,7 +16,6 @@ import aboutTeam from "@/assets/aboutVision2.webp";
 import aboutOffice from "@/assets/about-office.jpg";
 import aboutLeadership from "@/assets/leader.jpg";
 import aboutVision from "@/assets/vision.jpg";
-import logo from "@/assets/logo.png";
 
 const fadeUp = {
   initial: { opacity: 0, y: 30 },

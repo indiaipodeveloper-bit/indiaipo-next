@@ -1,3 +1,4 @@
+import { API_URL } from "@/lib/constants";
 import NewsUpdatesClient from "./NewsUpdatesClient";
 import type { Metadata } from "next";
 
@@ -17,16 +18,14 @@ export const metadata: Metadata = {
 };
 
 async function getInitialData() {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : "https://www.indiaipo.in";
   try {
-    const newsRes = await fetch(`${apiBase}/api/news?page=1&limit=9`, {
+    const newsRes = await fetch(`${API_URL}/api/news?page=1&limit=9`, {
       next: { revalidate: 60 } // cache for 1 minute
     });
     
     let bannersData = [];
     try {
-      const bannersRes = await fetch(`${apiBase}/api/banners?page=%2Fnews`, {
+      const bannersRes = await fetch(`${API_URL}/api/banners?page=%2Fnews`, {
         next: { revalidate: 60 }
       });
       if (bannersRes.ok) bannersData = await bannersRes.json();

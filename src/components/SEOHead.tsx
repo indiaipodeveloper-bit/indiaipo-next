@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useCanonicalUrl } from "@/hooks/useCanonicalUrl";
 import { usePathname } from "next/navigation";
+import { API_URL } from "@/lib/constants";
 
 interface SEOProps {
   title?: string;
@@ -31,7 +32,7 @@ const SEOHead = ({
   useEffect(() => {
     const fetchGlobalSEO = async () => {
       try {
-        const res = await fetch("/api/seo");
+        const res = await fetch(`${API_URL}/api/seo`);
         const data = await res.json();
         if (data && !data.error) {
           setGlobalSeo(data);

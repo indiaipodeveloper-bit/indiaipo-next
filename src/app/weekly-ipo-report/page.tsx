@@ -1,14 +1,11 @@
 import WeeklyDigestClient from "./WeeklyDigestClient";
 import type { Metadata } from "next";
-
-const BASE_URL = "https://www.indiaipo.in";
+import { BASE_URL, API_URL } from "@/lib/constants";
 
 async function getInitialWeeklyDigests() {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
 
   try {
-    const res = await fetch(`${apiBase}/api/weekly-digests?page=1&limit=12`, {
+    const res = await fetch(`${API_URL}/api/weekly-digests?page=1&limit=12`, {
       next: { revalidate: 60 }
     });
     if (res.ok) {

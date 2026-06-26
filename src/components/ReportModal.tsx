@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Mail, Download, Loader2, Zap } from "lucide-react";
 import { motion } from "framer-motion";
+import { API_URL } from "@/lib/constants";
 
 interface ReportModalProps {
   isOpen: boolean;
@@ -36,7 +37,7 @@ const ReportModal: React.FC<ReportModalProps> = ({ isOpen, onClose }) => {
     setLoading(true);
     try {
       const recaptchaToken = await getToken('annual_report_form');
-      const response = await fetch("/api/annual-report-requests", {
+      const response = await fetch(`${API_URL}/api/annual-report-requests`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -7,8 +7,8 @@ import BackButton from "@/components/BackButton";
 import { Loader2, Calendar, Banknote, ShieldAlert, BarChart3, TrendingUp, Percent, Info } from "lucide-react";
 import { cn, getLatestGmpValue } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { API_URL, BASE_URL } from "@/lib/constants";
 
-const BASE_URL = "https://www.indiaipo.in";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -20,12 +20,10 @@ interface IpoDetailsResult {
 }
 
 async function getIpoDetails(id: string): Promise<IpoDetailsResult> {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
 
   // Try ipo-lists first
   try {
-    const res = await fetch(`${apiBase}/api/ipo-lists/${id}`, {
+    const res = await fetch(`${API_URL}/api/ipo-lists/${id}`, {
       next: { revalidate: 30 }
     });
     if (res.ok) {
@@ -40,7 +38,7 @@ async function getIpoDetails(id: string): Promise<IpoDetailsResult> {
 
   // Fallback to sectors/ipos
   try {
-    const res = await fetch(`${apiBase}/api/sectors/ipos/${id}`, {
+    const res = await fetch(`${API_URL}/api/sectors/ipos/${id}`, {
       next: { revalidate: 30 }
     });
     if (res.ok) {

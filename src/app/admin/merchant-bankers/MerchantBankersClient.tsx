@@ -10,6 +10,7 @@ import { getImageUrl, formatIndianNumber } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RichEditor from "@/components/ui/RichEditor";
 import { MultiSelect, Option } from "@/components/ui/multi-select";
+import { API_URL } from "@/lib/constants";
 
 interface Banker {
   id: string;
@@ -138,7 +139,7 @@ export default function MerchantBankersClient() {
 
   const fetchSmeSubcategories = async () => {
     try {
-      const res = await fetch("/api/banker-subcategories?type=sme&status=active", {
+      const res = await fetch(`${API_URL}/api/banker-subcategories?type=sme&status=active`, {
         headers: getHeaders()
       });
       const data = await res.json();
@@ -148,7 +149,7 @@ export default function MerchantBankersClient() {
 
   const fetchBankerOptions = async () => {
     try {
-      const res = await fetch("/api/bankers?all=true", {
+      const res = await fetch(`${API_URL}/api/bankers?all=true`, {
         headers: getHeaders()
       });
       const data = await res.json();
@@ -169,7 +170,7 @@ export default function MerchantBankersClient() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/bankers?page=${page}&limit=${limit}&search=${encodeURIComponent(debouncedSearch)}`, {
+      const res = await fetch(`${API_URL}/api/bankers?page=${page}&limit=${limit}&search=${encodeURIComponent(debouncedSearch)}`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -240,7 +241,7 @@ export default function MerchantBankersClient() {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         headers: getHeaders(false),
         body: formData,
@@ -297,7 +298,7 @@ export default function MerchantBankersClient() {
 
     try {
       if (editId) {
-        const res = await fetch(`/api/bankers/${editId}`, {
+        const res = await fetch(`${API_URL}/api/bankers/${editId}`, {
           method: "PUT",
           headers: getHeaders(),
           body: JSON.stringify(payload),
@@ -305,7 +306,7 @@ export default function MerchantBankersClient() {
         if (!res.ok) throw new Error("Update failed");
         toast.success("Updated Successfully!");
       } else {
-        const res = await fetch("/api/bankers", {
+        const res = await fetch(`${API_URL}/api/bankers`, {
           method: "POST",
           headers: getHeaders(),
           body: JSON.stringify(payload),
@@ -342,7 +343,7 @@ export default function MerchantBankersClient() {
   const deleteBanker = async (id: string) => {
     if (!confirm("Are you sure you want to completely delete this merchant banker?")) return;
     try {
-      await fetch(`/api/bankers/${id}`, { 
+      await fetch(`${API_URL}/api/bankers/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });

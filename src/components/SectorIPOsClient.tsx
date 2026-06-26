@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Loader2, ChevronLeft, ChevronRight, FileText, Filter, List, Search, Banknote, Percent } from "lucide-react";
+import { API_URL } from "@/lib/constants";
 
 interface IPOItem {
   id: number;
@@ -149,7 +150,7 @@ export default function SectorIPOsClient({
         params.append("sector_name", selectedSectors.join(","));
       }
 
-      const res = await fetch(`/api/ipo-lists?${params.toString()}`);
+      const res = await fetch(`${API_URL}/api/ipo-lists?${params.toString()}`);
       if (res.ok) {
         const body = await res.json();
         setItems(body.data || []);

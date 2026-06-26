@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { Heart, Globe, Users, ShieldCheck, Loader2 } from "lucide-react";
 import { getImageUrl } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/lib/constants";
 
 interface CSREntry {
   id: number;
@@ -24,7 +25,7 @@ export default function CSRClient() {
   useEffect(() => {
     const fetchCSR = async () => {
       try {
-        const res = await fetch("/api/csr");
+        const res = await fetch(`${API_URL}/api/csr`);
         if (res.ok) {
           const data = await res.json();
           setEntries(data.filter((e: CSREntry) => e.status === "published"));

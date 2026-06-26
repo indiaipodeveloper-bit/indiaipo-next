@@ -1,22 +1,19 @@
 import { Suspense } from "react";
 import SectorIPOsClient from "@/components/SectorIPOsClient";
 import type { Metadata } from "next";
-
-const BASE_URL = "https://www.indiaipo.in";
+import { BASE_URL, API_URL } from "@/lib/constants";
 
 async function getInitialReports() {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
 
   let sectors: any[] = [];
 
   try {
-    const res = await fetch(`${apiBase}/api/ipo-lists?page=1&limit=15&category=sme&sort=sector_name&by_sector=true`, {
+    const res = await fetch(`${API_URL}/api/ipo-lists?page=1&limit=15&category=sme&sort=sector_name&by_sector=true`, {
       next: { revalidate: 60 }
     });
 
     try {
-      const secRes = await fetch(`${apiBase}/api/sectors`, {
+      const secRes = await fetch(`${API_URL}/api/sectors`, {
         next: { revalidate: 60 }
       });
       if (secRes.ok) {

@@ -7,9 +7,10 @@ import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import {
   ChevronRight, Users, MapPin, Award, ArrowRight, Star,
-  CheckCircle2, Home, Shield, TrendingUp, Building2, Zap
+  CheckCircle2, Home, Shield, Zap
 } from "lucide-react";
 import { getImgSrc } from "@/utils/image";
+import { API_URL } from "@/lib/constants";
 
 interface Consultant {
   id: string;
@@ -30,7 +31,7 @@ export default function ConsultantsClient() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/consultants")
+    fetch(`${API_URL}/api/consultants`)
       .then(r => r.json())
       .then(data => {
         if (Array.isArray(data)) {

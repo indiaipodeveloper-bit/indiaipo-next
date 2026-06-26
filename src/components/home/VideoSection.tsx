@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Play, ChevronLeft, ChevronRight } from "lucide-react";
+import { API_URL } from "@/lib/constants";
 
 const VideoCard = ({
     v,
@@ -68,7 +69,7 @@ const VideoSection = () => {
     useEffect(() => {
         const load = async () => {
             try {
-                const ytRes = await fetch("/api/videos/youtube/playlistItems?maxResults=6");
+                const ytRes = await fetch(`${API_URL}/api/videos/youtube/playlistItems?maxResults=6`);
                 if (ytRes.ok) {
                     const ytData = await ytRes.json();
                     if (ytData.items && ytData.items.length > 0) {
@@ -82,7 +83,7 @@ const VideoSection = () => {
                         return;
                     }
                 }
-                const r = await fetch("/api/videos");
+                const r = await fetch(`${API_URL}/api/videos`);
                 const d = await r.json();
                 if (Array.isArray(d) && d.length)
                     setVideos(

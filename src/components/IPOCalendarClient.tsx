@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { getImgSrc } from "@/utils/image";
+import { API_URL } from "@/lib/constants";
 
 interface IPOItem {
   id: number;
@@ -164,7 +165,7 @@ export default function IPOCalendarClient({
       if (currentSearch) params.append("search", currentSearch);
       if (currentStatus && currentStatus !== "all") params.append("status", currentStatus);
 
-      const res = await fetch(`/api/ipo-lists?${params.toString()}`);
+      const res = await fetch(`${API_URL}/api/ipo-lists?${params.toString()}`);
       if (res.ok) {
         const body = await res.json();
         setItems(body.data || []);

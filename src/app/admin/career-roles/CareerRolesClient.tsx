@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { API_URL } from "@/lib/constants";
 
 interface CareerRole {
   id: number;
@@ -41,7 +42,7 @@ export default function CareerRolesClient() {
   const fetchRoles = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/career/admin/roles", {
+      const res = await fetch(`${API_URL}/api/career/admin/roles`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -70,7 +71,7 @@ export default function CareerRolesClient() {
 
     setAdding(true);
     try {
-      const res = await fetch("/api/career/admin/roles", {
+      const res = await fetch(`${API_URL}/api/career/admin/roles`, {
         method: "POST",
         headers: getHeaders(),
         body: JSON.stringify({ title: newRoleTitle.trim() }),
@@ -95,7 +96,7 @@ export default function CareerRolesClient() {
     setUpdatingId(role.id);
     const newStatus = role.is_active === 1 ? 0 : 1;
     try {
-      const res = await fetch(`/api/career/admin/roles/${role.id}`, {
+      const res = await fetch(`${API_URL}/api/career/admin/roles/${role.id}`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify({ is_active: newStatus }),
@@ -121,7 +122,7 @@ export default function CareerRolesClient() {
     if (!confirm("Are you sure you want to delete this role? Any career forms utilizing it may revert to fallback values.")) return;
 
     try {
-      const res = await fetch(`/api/career/admin/roles/${id}`, {
+      const res = await fetch(`${API_URL}/api/career/admin/roles/${id}`, {
         method: "DELETE",
         headers: getHeaders(),
       });

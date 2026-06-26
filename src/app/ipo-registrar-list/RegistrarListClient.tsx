@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Building2, MapPin, Calendar, ArrowRight, Search, Activity, Globe, ChevronLeft, ChevronRight, Shield, Home, CheckCircle, Users } from "lucide-react";
 import { getImageUrl } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
 
 interface Registrar {
   id: number;
@@ -65,7 +66,7 @@ export default function RegistrarListClient({
     const fetchRegistrars = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/registrars?page=${page}&limit=9&search=${encodeURIComponent(debouncedSearch)}`);
+        const res = await fetch(`${API_URL}/api/registrars?page=${page}&limit=9&search=${encodeURIComponent(debouncedSearch)}`);
         if (res.ok) {
           const body = await res.json();
           setRegistrars(body.data || []);

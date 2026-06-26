@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { getImageUrl } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
 
 const customEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -143,7 +144,7 @@ export default function ContactClient() {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const res = await fetch(`/api/banners?page=${encodeURIComponent(pathname)}`);
+        const res = await fetch(`${API_URL}/api/banners?page=${encodeURIComponent(pathname)}`);
         if (res.ok) {
           const data = await res.json();
           const activeBanner = data[0];
@@ -189,7 +190,7 @@ export default function ContactClient() {
 
     try {
       const recaptchaToken = await getToken('contact_form');
-      const res = await fetch("/api/leads", {
+      const res = await fetch(`${API_URL}/api/leads`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

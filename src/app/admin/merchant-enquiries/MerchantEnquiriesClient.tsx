@@ -28,6 +28,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { API_URL } from "@/lib/constants";
 
 interface MerchantEnquiry {
   id: string;
@@ -60,7 +61,7 @@ export default function MerchantEnquiriesClient() {
 
   const fetchEnquiries = async () => {
     try {
-      const res = await fetch("/api/merchant-contact-enquiries", {
+      const res = await fetch(`${API_URL}/api/merchant-contact-enquiries`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -84,7 +85,7 @@ export default function MerchantEnquiriesClient() {
 
   const toggleRead = async (enquiry: MerchantEnquiry) => {
     try {
-      const res = await fetch(`/api/merchant-contact-enquiries/${enquiry.id}/read`, {
+      const res = await fetch(`${API_URL}/api/merchant-contact-enquiries/${enquiry.id}/read`, {
         method: "PATCH",
         headers: getHeaders()
       });
@@ -99,7 +100,7 @@ export default function MerchantEnquiriesClient() {
   const deleteEnquiry = async (id: string) => {
     if (!confirm("Are you sure you want to delete this enquiry?")) return;
     try {
-      const res = await fetch(`/api/merchant-contact-enquiries/${id}`, { 
+      const res = await fetch(`${API_URL}/api/merchant-contact-enquiries/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });

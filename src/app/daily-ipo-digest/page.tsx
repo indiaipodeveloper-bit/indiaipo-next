@@ -1,20 +1,17 @@
+import { API_URL, BASE_URL } from "@/lib/constants";
 import DailyReporterClient from "./DailyReporterClient";
 import type { Metadata } from "next";
 
-const BASE_URL = "https://www.indiaipo.in";
-
 async function getInitialDigests() {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
 
   try {
-    const res = await fetch(`${apiBase}/api/daily-digests?page=1&limit=12`, {
+    const res = await fetch(`${API_URL}/api/daily-digests?page=1&limit=12`, {
       next: { revalidate: 60 }
     });
     let bannerVideo: string | null = null;
 
     try {
-      const bannerRes = await fetch(`${apiBase}/api/banners?page=%2Fdaily-ipo-digest`, {
+      const bannerRes = await fetch(`${API_URL}/api/banners?page=%2Fdaily-ipo-digest`, {
         next: { revalidate: 60 }
       });
       if (bannerRes.ok) {

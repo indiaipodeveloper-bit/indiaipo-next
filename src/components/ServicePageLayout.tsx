@@ -94,6 +94,7 @@ interface ServicePageLayoutProps {
 }
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { API_URL } from "@/lib/constants";
 
 const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({ slug, children }) => {
   const service = servicesData.find((s) => s.slug === slug);
@@ -115,7 +116,7 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({ slug, children })
   useEffect(() => {
     const fetchRecentBlogs = async () => {
       try {
-        const res = await fetch("/api/admin-blogs?limit=3&summary=1&category=ipo_blogs");
+        const res = await fetch(`${API_URL}/api/admin-blogs?limit=3&summary=1&category=ipo_blogs`);
         if (res.ok) {
           const data = await res.json();
           setRecentBlogs(data.data || []);
@@ -130,7 +131,7 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({ slug, children })
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const res = await fetch(`/api/banners?page=${encodeURIComponent(pathname || "")}`);
+        const res = await fetch(`${API_URL}/api/banners?page=${encodeURIComponent(pathname || "")}`);
         if (res.ok) {
           const data = await res.json();
           const activeBanner = data.find((b: any) => b.video_url || b.image_url);

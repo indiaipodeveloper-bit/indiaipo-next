@@ -1,19 +1,16 @@
+import { API_URL, BASE_URL } from "@/lib/constants";
 import DailyReporterViewerClient from "./DailyReporterViewerClient";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-
-const BASE_URL = "https://www.indiaipo.in";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
 async function fetchDigestOnServer(id: string) {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
 
   try {
-    const res = await fetch(`${apiBase}/api/daily-digests/${id}`, {
+    const res = await fetch(`${API_URL}/api/daily-digests/${id}`, {
       next: { revalidate: 60 }
     });
     if (res.ok) {

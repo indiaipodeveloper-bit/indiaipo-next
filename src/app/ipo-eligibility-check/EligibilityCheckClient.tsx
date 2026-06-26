@@ -9,7 +9,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
 import { CheckCircle, ArrowRight, Building2, TrendingUp, Shield, BarChart3, PieChart, FileText, ArrowUpRight, Calendar, Sparkles, AlertCircle, PhoneCall } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { getImgSrc } from "@/utils/image";
 import eligibilityBanner from "@/assets/eligibilty-check banners.webp";
 import {
@@ -18,6 +18,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { API_URL } from "@/lib/constants";
 
 interface NewsItem {
   id: number;
@@ -55,7 +56,7 @@ export default function EligibilityCheckClient() {
   useEffect(() => {
     const fetchInsights = async () => {
       try {
-        const res = await fetch("/api/news?limit=6");
+        const res = await fetch(`${API_URL}/api/news?limit=6`);
         if (res.ok) {
           const data = await res.json();
           setRecentNews(data.data || data);
@@ -66,7 +67,7 @@ export default function EligibilityCheckClient() {
     };
     const fetchIpoBlogs = async () => {
       try {
-        const res = await fetch("/api/admin-blogs?page=1&limit=3&summary=1&category=ipo_updates&upcoming=0");
+        const res = await fetch(`${API_URL}/api/admin-blogs?page=1&limit=3&summary=1&category=ipo_updates&upcoming=0`);
         if (res.ok) {
           const data = await res.json();
           setCurrentIpoBlogs(data.data || []);
@@ -133,7 +134,7 @@ export default function EligibilityCheckClient() {
         recaptchaToken
       };
 
-      const res = await fetch("/api/ipo_feasibility", {
+      const res = await fetch(`${API_URL}/api/ipo_feasibility`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(submissionData),

@@ -6,13 +6,14 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { getImageUrl, cn, getLatestGmpValue } from "@/lib/utils";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Home, ChevronRight, TrendingUp, Search, Calendar, BarChart3, PieChart,
-  Info, Loader2, ChevronLeft, ArrowUpRight, LayoutGrid, Filter,
+  Info, Loader2, ChevronLeft, ArrowUpRight,
 } from "lucide-react";
 import { getImgSrc } from "@/utils/image";
 import { Button } from "@/components/ui/button";
+import { API_URL } from "@/lib/constants";
 
 interface IPOItem {
   id: number;
@@ -194,7 +195,7 @@ export default function ReportsClient({
         params.append("category", "sme");
       }
 
-      const res = await fetch(`/api/ipo-lists?${params.toString()}`);
+      const res = await fetch(`${API_URL}/api/ipo-lists?${params.toString()}`);
       if (res.ok) {
         const body = await res.json();
         setItems(body.data || []);

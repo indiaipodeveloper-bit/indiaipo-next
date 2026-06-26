@@ -8,6 +8,7 @@ import { PlayCircle, Loader2, Calendar, LayoutGrid, List, ChevronLeft, ChevronRi
 import { usePathname } from "next/navigation";
 import { getImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { API_URL } from "@/lib/constants";
 
 interface SocialMedia {
   id: string | number;
@@ -32,7 +33,7 @@ export default function VideoUpdatesClient() {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const res = await fetch(`/api/banners?page=${encodeURIComponent(pathname)}`);
+        const res = await fetch(`${API_URL}/api/banners?page=${encodeURIComponent(pathname)}`);
         if (res.ok) {
           const data = await res.json();
           const activeBanner = data[0];
@@ -62,7 +63,7 @@ export default function VideoUpdatesClient() {
           const token = currentTokens[p] || null;
           const tokenParam = token ? `&pageToken=${token}` : "";
           const res = await fetch(
-            `/api/videos/youtube/playlistItems?maxResults=${limit}${tokenParam}`
+            `${API_URL}/api/videos/youtube/playlistItems?maxResults=${limit}${tokenParam}`
           );
           if (res.ok) {
             const data = await res.json();
@@ -83,7 +84,7 @@ export default function VideoUpdatesClient() {
       const tokenParam = token ? `&pageToken=${token}` : "";
 
       const res = await fetch(
-        `/api/videos/youtube/playlistItems?maxResults=${limit}${tokenParam}`
+        `${API_URL}/api/videos/youtube/playlistItems?maxResults=${limit}${tokenParam}`
       );
 
       if (res.ok) {

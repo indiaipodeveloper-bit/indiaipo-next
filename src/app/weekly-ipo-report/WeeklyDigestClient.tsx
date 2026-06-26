@@ -13,6 +13,7 @@ import { getImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useRecaptcha } from "@/hooks/useRecaptcha";
 import { toast } from "sonner";
+import { API_URL } from "@/lib/constants";
 
 interface WeeklyDigestData {
   id: number;
@@ -68,7 +69,7 @@ export default function WeeklyDigestClient({
   const fetchData = async (currentPage: number, currentSearch: string) => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/weekly-digests?page=${currentPage}&limit=12&search=${encodeURIComponent(currentSearch)}`);
+      const res = await fetch(`${API_URL}/api/weekly-digests?page=${currentPage}&limit=12&search=${encodeURIComponent(currentSearch)}`);
       if (res.ok) {
         const result = await res.json();
         setDigests(result.data || []);
@@ -101,7 +102,7 @@ export default function WeeklyDigestClient({
     setSubmitting(true);
     try {
       const recaptchaToken = await getToken('newsletter_subscribe');
-      const r = await fetch("/api/subscriptions", {
+      const r = await fetch(`${API_URL}/api/subscriptions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, recaptchaToken }),

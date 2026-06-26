@@ -8,6 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { getImageUrl } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
 
 const allServices = [
   {
@@ -52,7 +53,7 @@ const ServicesClient = () => {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const res = await fetch(`/api/banners?page=${encodeURIComponent(pathname)}`);
+        const res = await fetch(`${API_URL}/api/banners?page=${encodeURIComponent(pathname)}`);
         if (res.ok) {
           const data = await res.json();
           const activeBanner = data.find((b: any) => b.video_url || b.image_url);

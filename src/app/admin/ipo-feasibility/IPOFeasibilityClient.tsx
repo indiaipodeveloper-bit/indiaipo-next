@@ -9,9 +9,8 @@ import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
+import { API_URL } from "@/lib/constants";
 
 interface FeasibilityEntry {
   id: number;
@@ -53,7 +52,7 @@ export default function IPOFeasibilityClient() {
   const fetchEntries = async (p = page, s = search) => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/ipo_feasibility?page=${p}&limit=10&search=${encodeURIComponent(s)}`, {
+      const res = await fetch(`${API_URL}/api/ipo_feasibility?page=${p}&limit=10&search=${encodeURIComponent(s)}`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -80,7 +79,7 @@ export default function IPOFeasibilityClient() {
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to delete this entry?")) return;
     try {
-      const res = await fetch(`/api/ipo_feasibility/${id}`, {
+      const res = await fetch(`${API_URL}/api/ipo_feasibility/${id}`, {
         method: "DELETE",
         headers: getHeaders()
       });
@@ -95,7 +94,7 @@ export default function IPOFeasibilityClient() {
 
   const handleExport = async () => {
     try {
-      const res = await fetch(`/api/ipo_feasibility?limit=1000&search=${encodeURIComponent(search)}`, {
+      const res = await fetch(`${API_URL}/api/ipo_feasibility?limit=1000&search=${encodeURIComponent(search)}`, {
         headers: getHeaders()
       });
       const result = await res.json();
@@ -337,7 +336,7 @@ export default function IPOFeasibilityClient() {
                 {/* Background decorative glows */}
                 <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5 blur-xl pointer-events-none" />
                 <div className="absolute -bottom-12 -left-12 w-48 h-48 rounded-full bg-blue-500/10 blur-2xl pointer-events-none" />
-                
+
                 <div className="flex items-center gap-4 relative z-10">
                   <div className="h-12 w-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-inner">
                     <Landmark className="h-6 w-6 text-white" />
@@ -347,11 +346,10 @@ export default function IPOFeasibilityClient() {
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-white/15 text-white/90 border border-white/10 uppercase tracking-wider">
                         Assessment Report
                       </span>
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider ${
-                        selectedEntry.eligibility === "Eligible"
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider ${selectedEntry.eligibility === "Eligible"
                           ? "bg-emerald-500/25 text-emerald-300 border border-emerald-500/35"
                           : "bg-rose-500/25 text-rose-300 border border-rose-500/35"
-                      }`}>
+                        }`}>
                         {selectedEntry.eligibility}
                       </span>
                     </div>
@@ -379,7 +377,7 @@ export default function IPOFeasibilityClient() {
                           <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Representative</div>
                         </div>
                       </div>
-                      
+
                       <div className="space-y-2 pt-2 border-t border-border/30">
                         <div className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
                           <div className="h-7 w-7 rounded-lg bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-slate-500">
@@ -387,7 +385,7 @@ export default function IPOFeasibilityClient() {
                           </div>
                           <span className="truncate">{selectedEntry.email}</span>
                         </div>
-                        
+
                         <div className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
                           <div className="h-7 w-7 rounded-lg bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-accent">
                             <Phone className="h-3.5 w-3.5" />
@@ -410,7 +408,7 @@ export default function IPOFeasibilityClient() {
                           {selectedEntry.business_type || "N/A"}
                         </span>
                       </div>
-                      
+
                       <div className="grid grid-cols-2 gap-4 pt-2 border-t border-border/30">
                         <div>
                           <span className="block text-[10px] text-muted-foreground font-bold uppercase tracking-wider mb-1">Industry Sector</span>
@@ -430,40 +428,37 @@ export default function IPOFeasibilityClient() {
                   <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest border-b border-border/80 pb-2 flex items-center gap-1.5">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Financial Eligibility Assessment
                   </h4>
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                     {/* Turnover Card */}
                     <div className="bg-card p-4 rounded-2xl border border-border/80 shadow-sm flex flex-col justify-between h-24 hover:border-accent/30 transition-colors">
                       <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block mb-1">Annual Turnover</span>
                       <span className="text-base font-extrabold text-foreground tracking-tight">{selectedEntry.current_turn_over || "N/A"}</span>
                     </div>
-                    
+
                     {/* Profit Card */}
                     <div className="bg-card p-4 rounded-2xl border border-border/80 shadow-sm flex flex-col justify-between h-24 hover:border-accent/30 transition-colors">
                       <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block mb-1">Operating Profit</span>
                       <span className="text-base font-extrabold text-foreground tracking-tight">{selectedEntry.profit || "N/A"}</span>
                     </div>
-                    
+
                     {/* Networth Card */}
                     <div className="bg-card p-4 rounded-2xl border border-border/80 shadow-sm flex flex-col justify-between h-24 hover:border-accent/30 transition-colors">
                       <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block mb-1">Net Worth</span>
                       <span className="text-base font-extrabold text-foreground tracking-tight">{selectedEntry.networth || "N/A"}</span>
                     </div>
-                    
+
                     {/* Status Card */}
-                    <div className={`p-4 rounded-2xl border shadow-sm flex flex-col justify-between h-24 ${
-                      selectedEntry.eligibility === "Eligible"
+                    <div className={`p-4 rounded-2xl border shadow-sm flex flex-col justify-between h-24 ${selectedEntry.eligibility === "Eligible"
                         ? "bg-emerald-50/50 border-emerald-200/60 dark:bg-emerald-950/20 dark:border-emerald-800/30"
                         : "bg-rose-50/50 border-rose-200/60 dark:bg-rose-950/20 dark:border-rose-800/30"
-                    }`}>
-                      <span className={`text-[10px] font-bold uppercase tracking-wider block mb-1 ${
-                        selectedEntry.eligibility === "Eligible" ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
                       }`}>
+                      <span className={`text-[10px] font-bold uppercase tracking-wider block mb-1 ${selectedEntry.eligibility === "Eligible" ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
+                        }`}>
                         Status
                       </span>
-                      <span className={`text-base font-extrabold tracking-tight uppercase ${
-                        selectedEntry.eligibility === "Eligible" ? "text-emerald-700 dark:text-emerald-300" : "text-rose-700 dark:text-rose-300"
-                      }`}>
+                      <span className={`text-base font-extrabold tracking-tight uppercase ${selectedEntry.eligibility === "Eligible" ? "text-emerald-700 dark:text-emerald-300" : "text-rose-700 dark:text-rose-300"
+                        }`}>
                         {selectedEntry.eligibility}
                       </span>
                     </div>
@@ -473,8 +468,8 @@ export default function IPOFeasibilityClient() {
 
               {/* Footer */}
               <div className="p-6 bg-muted/30 border-t border-border/50 flex justify-end gap-3 rounded-b-3xl">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="rounded-xl px-5 h-11 font-semibold text-sm border-border hover:bg-muted/80 text-foreground transition-all duration-200 cursor-pointer"
                   onClick={() => setDetailsOpen(false)}
                 >

@@ -3,19 +3,16 @@ import { notFound } from "next/navigation";
 import RegistrarDetailsClient from "./RegistrarDetailsClient";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-const BASE_URL = "https://www.indiaipo.in";
+import { API_URL, BASE_URL } from "@/lib/constants";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
 async function getRegistrarDetails(slug: string) {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
 
   try {
-    const res = await fetch(`${apiBase}/api/registrars/slug/${slug}`, {
+    const res = await fetch(`${API_URL}/api/registrars/slug/${slug}`, {
       next: { revalidate: 60 }
     });
     if (!res.ok) return null;
@@ -40,7 +37,7 @@ async function getRegistrarDetails(slug: string) {
 
     if (faqs.length === 0) {
       try {
-        const globalRes = await fetch(`${apiBase}/api/registrar-faqs/active`, {
+        const globalRes = await fetch(`${API_URL}/api/registrar-faqs/active`, {
           next: { revalidate: 60 }
         });
         if (globalRes.ok) {

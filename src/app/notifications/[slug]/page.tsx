@@ -3,22 +3,19 @@ import { notFound } from "next/navigation";
 import NotificationClient from "@/components/NotificationClient";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-const BASE_URL = "https://www.indiaipo.in";
+import { API_URL, BASE_URL } from "@/lib/constants";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
 async function getNotificationData(slug: string) {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
 
   let notifications: any[] = [];
   let bannerVideo: string | null = null;
 
   try {
-    const res = await fetch(`${apiBase}/api/notifications`, {
+    const res = await fetch(`${API_URL}/api/notifications`, {
       next: { revalidate: 60 }
     });
     if (res.ok) {
@@ -43,7 +40,7 @@ async function getNotificationData(slug: string) {
   const activePdf = notifications.find((p) => p.slug === slug) || null;
 
   try {
-    const bannerRes = await fetch(`${apiBase}/api/banners?page=%2Fnotifications%2F${slug}`, {
+    const bannerRes = await fetch(`${API_URL}/api/banners?page=%2Fnotifications%2F${slug}`, {
       next: { revalidate: 60 }
     });
     if (bannerRes.ok) {

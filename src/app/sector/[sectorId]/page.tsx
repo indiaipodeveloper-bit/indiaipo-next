@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import SectorDetailClient from "@/components/SectorDetailClient";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-const BASE_URL = "https://www.indiaipo.in";
+import { API_URL, BASE_URL } from "@/lib/constants";
 
 interface PageParams {
   sectorId: string;
@@ -19,12 +18,10 @@ const slugify = (text: string) => {
 };
 
 async function getSectorDetails(sectorId: string) {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
 
   try {
     // 1. Fetch all sectors to find the matching one
-    const secRes = await fetch(`${apiBase}/api/sectors`, {
+    const secRes = await fetch(`${API_URL}/api/sectors`, {
       next: { revalidate: 60 }
     });
     if (!secRes.ok) return null;
@@ -38,7 +35,7 @@ async function getSectorDetails(sectorId: string) {
 
     // 2. Fetch IPOs for this sector
     const iposRes = await fetch(
-      `${apiBase}/api/ipo-lists?by_sector=true&sector_name=${encodeURIComponent(matchedSector.name)}&limit=100`,
+      `${API_URL}/api/ipo-lists?by_sector=true&sector_name=${encodeURIComponent(matchedSector.name)}&limit=100`,
       { next: { revalidate: 30 } }
     );
 

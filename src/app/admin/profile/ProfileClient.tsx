@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { User, Mail, Lock, Shield, Loader2 } from "lucide-react";
+import { API_URL } from "@/lib/constants";
 
 export default function ProfileClient() {
   const { user } = useAuth();
@@ -71,7 +72,7 @@ export default function ProfileClient() {
         payload.newPassword = formData.newPassword;
       }
 
-      const res = await fetch("/api/auth/profile", {
+      const res = await fetch(`${API_URL}/api/auth/profile`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify(payload),

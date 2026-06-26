@@ -1,19 +1,16 @@
 import WeeklyReporterViewerClient from "./WeeklyReporterViewerClient";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-
-const BASE_URL = "https://www.indiaipo.in";
+import { BASE_URL, API_URL } from "@/lib/constants";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
 async function fetchWeeklyDigestOnServer(id: string) {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
 
   try {
-    const res = await fetch(`${apiBase}/api/weekly-digests/${id}`, {
+    const res = await fetch(`${API_URL}/api/weekly-digests/${id}`, {
       next: { revalidate: 60 }
     });
     if (res.ok) {

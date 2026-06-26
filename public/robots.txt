@@ -5,5 +5,6 @@ Disallow: /ipo-blogs/hero-fincorp-limited-ipo
 Disallow: /ipo-calculator
 Disallow: /admin/
 Disallow: /login
+Disallow: /backup/
 
 Sitemap: https://www.indiaipo.in/sitemap.xml

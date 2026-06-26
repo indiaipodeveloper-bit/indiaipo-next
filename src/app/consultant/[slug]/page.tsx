@@ -1,13 +1,13 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
 import ConsultantDetailsClient from "./ConsultantDetailsClient";
+import { API_URL } from "@/lib/constants";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
   const { slug } = resolvedParams;
   try {
-    const baseUrl = process.env.NODE_ENV === "production" ? "https://www.indiaipo.in" : "http://localhost:5000";
-    const res = await fetch(`${baseUrl}/api/consultants/${slug}`);
+    const res = await fetch(`${API_URL}/api/consultants/${slug}`);
     if (res.ok) {
       const consultant = await res.json();
       return {

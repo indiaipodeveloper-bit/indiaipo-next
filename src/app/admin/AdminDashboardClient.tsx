@@ -5,12 +5,13 @@ import Link from "next/link";
 import {
   TrendingUp, Users, FileText, BookOpen, MessageSquare,
   BarChart3, Star, Briefcase, Bell, UserCheck, Building2,
-  RefreshCw, ArrowUp, Mail, ChevronRight, Activity
+  RefreshCw, Mail, ChevronRight, Activity
 } from "lucide-react";
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts";
+import { API_URL } from "@/lib/constants";
 
 interface DashboardStats {
   totalIPOs: number;
@@ -156,7 +157,7 @@ export default function AdminDashboardClient() {
   const fetchStats = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/dashboard/stats", {
+      const res = await fetch(`${API_URL}/api/dashboard/stats`, {
         headers: getHeaders()
       });
       if (res.ok) {

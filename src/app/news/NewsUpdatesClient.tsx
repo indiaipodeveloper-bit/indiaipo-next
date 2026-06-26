@@ -25,6 +25,7 @@ import {
   Search, Home, Clock, Eye, Bookmark, Share2, Mail, Phone,
   BarChart3, Zap, Globe, X,
 } from "lucide-react";
+import { API_URL } from "@/lib/constants";
 
 const fallbackImage =
   "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=1000&auto=format&fit=crop";
@@ -112,7 +113,7 @@ export default function NewsUpdatesClient({
           queryParams.append("search", debouncedSearchQuery.trim());
         }
 
-        const res = await fetch(`/api/news?${queryParams.toString()}`);
+        const res = await fetch(`${API_URL}/api/news?${queryParams.toString()}`);
         if (res.ok) {
           const result = await res.json();
           setNewsItems(result.data || []);
@@ -134,7 +135,7 @@ export default function NewsUpdatesClient({
     const fetchVideos = async () => {
       try {
         setVideosLoading(true);
-        const res = await fetch(`/api/videos/youtube/playlistItems?maxResults=4`);
+        const res = await fetch(`${API_URL}/api/videos/youtube/playlistItems?maxResults=4`);
         if (res.ok) {
           const data = await res.json();
           const mapped: SocialVideo[] = (data.items || []).map((item: any) => ({

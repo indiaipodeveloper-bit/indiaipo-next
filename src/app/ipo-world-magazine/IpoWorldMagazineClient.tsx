@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import Link from "next/link";
-import { BookOpen, Calendar, Lock, Unlock, ArrowRight, ChevronLeft, ChevronRight, X, Mail } from "lucide-react";
+import { BookOpen, Calendar, Lock, Unlock, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getImageUrl } from "@/lib/utils";
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { useRecaptcha } from "@/hooks/useRecaptcha";
 import { toast } from "sonner";
+import { API_URL } from "@/lib/constants";
 
 interface Magazine {
   id: string | number;
@@ -120,7 +121,7 @@ export default function IpoWorldMagazineClient({
     setSubmitting(true);
     try {
       const recaptchaToken = await getToken('magazine_subscribe');
-      const r = await fetch("/api/subscriptions", {
+      const r = await fetch(`${API_URL}/api/subscriptions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, recaptchaToken }),
@@ -145,7 +146,7 @@ export default function IpoWorldMagazineClient({
   const fetchMagazines = async (lang: "english" | "hindi", currentPage: number) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/magazines?page=${currentPage}&limit=8&language=${lang}`);
+      const res = await fetch(`${API_URL}/api/magazines?page=${currentPage}&limit=8&language=${lang}`);
       if (res.ok) {
         const body = await res.json();
         setMagazines(body.data || []);

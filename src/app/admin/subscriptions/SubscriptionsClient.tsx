@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Mail, Trash2, Loader2, Download } from "lucide-react";
+import { API_URL } from "@/lib/constants";
 
 interface Subscriber {
   id: number;
@@ -32,7 +33,7 @@ export default function SubscriptionsClient() {
   const fetchSubscribers = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/subscriptions", {
+      const res = await fetch(`${API_URL}/api/subscriptions`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -55,7 +56,7 @@ export default function SubscriptionsClient() {
     if (!confirm("Are you sure you want to delete this subscriber?")) return;
 
     try {
-      const res = await fetch(`/api/subscriptions/${id}`, {
+      const res = await fetch(`${API_URL}/api/subscriptions/${id}`, {
         method: "DELETE",
         headers: getHeaders()
       });

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Download, Mail, Loader2, Calendar, FileText, Hash } from "lucide-react";
+import { API_URL } from "@/lib/constants";
 
 interface ReportRequest {
   id: string;
@@ -30,7 +31,7 @@ export default function AnnualReportRequestsClient() {
 
   const fetchRequests = async () => {
     try {
-      const res = await fetch("/api/annual-report-requests", {
+      const res = await fetch(`${API_URL}/api/annual-report-requests`, {
         headers: getHeaders()
       });
       if (res.ok) {

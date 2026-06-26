@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2, PlayCircle, Clock, Youtube, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
+import { API_URL } from "@/lib/constants";
 
 interface SocialMedia {
   id: string | number;
@@ -41,7 +42,7 @@ export default function MarketSnapsClient() {
       const tokenParam = token ? `&pageToken=${token}` : "";
 
       const res = await fetch(
-        `/api/videos/youtube/playlistItems?maxResults=${limit}${tokenParam}`,
+        `${API_URL}/api/videos/youtube/playlistItems?maxResults=${limit}${tokenParam}`,
         { headers: getHeaders() }
       );
 

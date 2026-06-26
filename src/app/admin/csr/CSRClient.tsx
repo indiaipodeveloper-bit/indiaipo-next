@@ -23,6 +23,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { API_URL } from "@/lib/constants";
 
 interface CSREntry {
   id: number;
@@ -62,7 +63,7 @@ export default function CSRClient() {
   const fetchEntries = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/csr", {
+      const res = await fetch(`${API_URL}/api/csr`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -96,7 +97,7 @@ export default function CSRClient() {
     uploadData.append("file", file);
 
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         headers: getHeaders(false),
         body: uploadData,
@@ -137,7 +138,7 @@ export default function CSRClient() {
     }
 
     try {
-      const url = editingEntry ? `/api/csr/${editingEntry.id}` : "/api/csr";
+      const url = editingEntry ? `${API_URL}/api/csr/${editingEntry.id}` : `${API_URL}/api/csr`;
       const method = editingEntry ? "PUT" : "POST";
 
       const res = await fetch(url, {
@@ -169,7 +170,7 @@ export default function CSRClient() {
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this CSR entry?")) return;
     try {
-      const res = await fetch(`/api/csr/${id}`, { 
+      const res = await fetch(`${API_URL}/api/csr/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });

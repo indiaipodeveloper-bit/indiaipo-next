@@ -14,6 +14,7 @@ import RichEditor from "@/components/ui/RichEditor";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { API_URL } from "@/lib/constants";
 
 interface Registrar {
   id: number;
@@ -100,7 +101,7 @@ export default function RegistrarsClient() {
   const fetchRegistrars = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/registrars?page=${page}&limit=${limit}&search=${encodeURIComponent(debouncedSearch)}`, {
+      const res = await fetch(`${API_URL}/api/registrars?page=${page}&limit=${limit}&search=${encodeURIComponent(debouncedSearch)}`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -117,7 +118,7 @@ export default function RegistrarsClient() {
 
   const fetchIPOs = async () => {
     try {
-      const res = await fetch("/api/ipo-lists?limit=1000&admin=true", {
+      const res = await fetch(`${API_URL}/api/ipo-lists?limit=1000&admin=true`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -141,7 +142,7 @@ export default function RegistrarsClient() {
 
     setSaving(true);
     try {
-      const url = editingId ? `/api/registrars/${editingId}` : "/api/registrars";
+      const url = editingId ? `${API_URL}/api/registrars/${editingId}` : `${API_URL}/api/registrars`;
       const method = editingId ? "PUT" : "POST";
       const res = await fetch(url, {
         method,
@@ -204,7 +205,7 @@ export default function RegistrarsClient() {
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this Registrar permanently?")) return;
     try {
-      const res = await fetch(`/api/registrars/${id}`, { 
+      const res = await fetch(`${API_URL}/api/registrars/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });
@@ -236,7 +237,7 @@ export default function RegistrarsClient() {
 
     const tId = toast.loading("Uploading logo...");
     try {
-      const res = await fetch("/api/upload", { 
+      const res = await fetch(`${API_URL}/api/upload`, { 
         method: "POST", 
         headers: getHeaders(false),
         body: formData 

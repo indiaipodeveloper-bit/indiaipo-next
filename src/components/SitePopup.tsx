@@ -12,7 +12,7 @@ import {
 import { getImageUrl } from "@/lib/utils";
 import Ribbon from "@/components/Ribbon";
 import simpleChatbotImg from "@/assets/simple_chatbot_image2.jpeg";
-import { CHAT_URL } from "@/lib/constants";
+import { API_URL, CHAT_URL } from "@/lib/constants";
 
 interface PopupData {
   title: string;
@@ -72,7 +72,7 @@ const SitePopup = () => {
     const fetchData = async () => {
       try {
         // Fetch Popup Data
-        const popupRes = await fetch(`/api/popup`);
+        const popupRes = await fetch(`${API_URL}/api/popup`);
         if (popupRes.ok) {
           const popupData = await popupRes.json();
           if (popupData.is_active) {
@@ -81,7 +81,7 @@ const SitePopup = () => {
         }
 
         // Fetch Latest Daily Digest
-        const digestRes = await fetch(`/api/daily-digests?page=1&limit=1`);
+        const digestRes = await fetch(`${API_URL}/api/daily-digests?page=1&limit=1`);
         if (digestRes.ok) {
           const digestResult = await digestRes.json();
           if (digestResult.data && digestResult.data.length > 0) {

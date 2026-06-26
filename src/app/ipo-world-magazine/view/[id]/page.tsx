@@ -3,19 +3,15 @@ import { notFound, redirect } from "next/navigation";
 import MagazineViewerClient from "./MagazineViewerClient";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-const BASE_URL = "https://www.indiaipo.in";
+import { BASE_URL, API_URL } from "@/lib/constants";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
 async function getMagazineDetails(id: string) {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : BASE_URL;
-
   try {
-    const res = await fetch(`${apiBase}/api/magazines/${id}`, {
+    const res = await fetch(`${API_URL}/api/magazines/${id}`, {
       next: { revalidate: 60 }
     });
     if (res.ok) {

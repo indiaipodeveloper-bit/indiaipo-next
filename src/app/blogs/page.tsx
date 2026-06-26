@@ -1,3 +1,4 @@
+import { API_URL } from "@/lib/constants";
 import BlogsListingClient from "./BlogsListingClient";
 import type { Metadata } from "next";
 
@@ -17,16 +18,14 @@ export const metadata: Metadata = {
 };
 
 async function getInitialData() {
-  const isDev = process.env.NODE_ENV === 'development';
-  const apiBase = isDev ? "http://localhost:5000" : "https://www.indiaipo.in";
   try {
-    const blogsRes = await fetch(`${apiBase}/api/admin-blogs?page=1&limit=12&summary=1&category=ipo_blogs`, {
+    const blogsRes = await fetch(`${API_URL}/api/admin-blogs?page=1&limit=12&summary=1&category=ipo_blogs`, {
       next: { revalidate: 60 } // cache for 1 minute
     });
     
     let bannersData = [];
     try {
-      const bannersRes = await fetch(`${apiBase}/api/banners?page=%2Fblogs`, {
+      const bannersRes = await fetch(`${API_URL}/api/banners?page=%2Fblogs`, {
         next: { revalidate: 60 }
       });
       if (bannersRes.ok) bannersData = await bannersRes.json();

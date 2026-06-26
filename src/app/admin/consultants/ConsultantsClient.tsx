@@ -10,6 +10,7 @@ import { getImageUrl } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import RichEditor from "@/components/ui/RichEditor";
+import { API_URL } from "@/lib/constants";
 
 interface Consultant {
   id: string;
@@ -79,7 +80,7 @@ export default function ConsultantsClient() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch("/api/consultants", {
+      const res = await fetch(`${API_URL}/api/consultants`, {
         headers: getHeaders()
       });
       if (res.ok) setConsultants(await res.json());
@@ -104,7 +105,7 @@ export default function ConsultantsClient() {
     }
 
     try {
-      const res = await fetch("/api/consultants", {
+      const res = await fetch(`${API_URL}/api/consultants`, {
         method: "POST",
         headers: getHeaders(),
         body: JSON.stringify({
@@ -132,7 +133,7 @@ export default function ConsultantsClient() {
   const del = async (id: string) => {
     if (!confirm("Delete this consultant? This will also delete their enquiries.")) return;
     try {
-      const res = await fetch(`/api/consultants/${id}`, { 
+      const res = await fetch(`${API_URL}/api/consultants/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });
@@ -148,7 +149,7 @@ export default function ConsultantsClient() {
   };
 
   const toggle = async (c: Consultant) => {
-    await fetch(`/api/consultants/${c.id}`, {
+    await fetch(`${API_URL}/api/consultants/${c.id}`, {
       method: "PUT",
       headers: getHeaders(),
       body: JSON.stringify({ is_active: !c.is_active ? 1 : 0 })
@@ -199,7 +200,7 @@ export default function ConsultantsClient() {
     }
 
     try {
-      const res = await fetch(`/api/consultants/${editingId}`, {
+      const res = await fetch(`${API_URL}/api/consultants/${editingId}`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify(editData)
@@ -226,7 +227,7 @@ export default function ConsultantsClient() {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         headers: getHeaders(false),
         body: formData,
@@ -234,7 +235,7 @@ export default function ConsultantsClient() {
       if (!res.ok) throw new Error("Upload failed");
       const { url } = await res.json();
 
-      const updateRes = await fetch(`/api/consultants/${id}`, {
+      const updateRes = await fetch(`${API_URL}/api/consultants/${id}`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify({ image_url: url })
@@ -264,7 +265,7 @@ export default function ConsultantsClient() {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         headers: getHeaders(false),
         body: formData,
@@ -293,7 +294,7 @@ export default function ConsultantsClient() {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         headers: getHeaders(false),
         body: formData,

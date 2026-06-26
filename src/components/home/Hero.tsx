@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import Ribbon from "@/components/Ribbon";
 import heroHome from "@/assets/heroImg.webp";
+import { API_URL } from "@/lib/constants";
 
 interface Banner {
     id: string;
@@ -56,7 +57,7 @@ const Hero = () => {
     useEffect(() => {
         const fetchBanners = async () => {
             try {
-                const res = await fetch("/api/banners?page=/");
+                const res = await fetch(`${API_URL}/api/banners?page=/`);
                 const data = await res.json();
                 const active = data.filter((b: Banner) => b.is_active);
                 setBanners(active);

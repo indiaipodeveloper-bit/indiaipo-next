@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import heroBg from "@/assets/hero-bg.jpg";
+import { API_URL } from "@/lib/constants";
 
 interface FormData {
   ipo_type: string;
@@ -201,7 +202,7 @@ export default function MerchantContactClient() {
     setIsSubmitting(true);
     try {
       const recaptchaToken = await getToken('merchant_contact_form');
-      const res = await fetch("/api/merchant-contact-enquiries", {
+      const res = await fetch(`${API_URL}/api/merchant-contact-enquiries`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...formData, recaptchaToken })

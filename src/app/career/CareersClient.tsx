@@ -25,6 +25,7 @@ import {
 import { toast } from "sonner";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { API_URL } from "@/lib/constants";
 
 const N = "#001529",
   G = "#f59e08",
@@ -52,7 +53,7 @@ export default function CareersClient() {
   useEffect(() => {
     const fetchActiveRoles = async () => {
       try {
-        const res = await fetch("/api/career/roles");
+        const res = await fetch(`${API_URL}/api/career/roles`);
         if (res.ok) {
           const data = await res.json();
           setRoles(data.map((r: any) => r.title));

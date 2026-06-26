@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/lib/constants";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 interface User {
@@ -55,7 +56,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         try {
-          const res = await fetch("/api/auth/me", {
+          const res = await fetch(`${API_URL}/api/auth/me`, {
             headers: {
               Authorization: `Bearer ${savedToken}`,
             },
@@ -87,7 +88,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const res = await fetch("/api/auth/login", {
+    const res = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

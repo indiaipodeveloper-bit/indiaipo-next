@@ -1,10 +1,7 @@
 "use client";
 import React from "react";
 import ServicePageLayout from "@/components/ServicePageLayout";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, Phone } from "lucide-react";
-
 
 const InvitPrivateIssueClient = () => {
   const slug = "invit-private-issue-advisory";

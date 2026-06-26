@@ -20,6 +20,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { API_URL } from "@/lib/constants";
 
 interface Application {
   id: number;
@@ -54,7 +55,7 @@ export default function CareerApplicationsClient() {
   const fetchApplications = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/career/admin/enquiries", {
+      const res = await fetch(`${API_URL}/api/career/admin/enquiries`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -75,7 +76,7 @@ export default function CareerApplicationsClient() {
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to delete this application?")) return;
     try {
-      const res = await fetch(`/api/career/admin/enquiries/${id}`, { 
+      const res = await fetch(`${API_URL}/api/career/admin/enquiries/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });

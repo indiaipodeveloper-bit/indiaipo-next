@@ -1,19 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import {
-  Calendar, ArrowLeft, Loader2, Tag, TrendingUp, ChevronRight,
+  Calendar, ArrowLeft, Tag, TrendingUp, ChevronRight,
   Facebook, Linkedin, Share2, Flame, Home, Clock,
-  Eye, Phone, Mail, ArrowRight, Bell, Newspaper,
-  BarChart3, Globe, Zap, MessageCircle,
+  Phone, Mail, ArrowRight, Bell, Newspaper,
+  MessageCircle,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
 import { getImgSrc } from "@/utils/image";
+import { API_URL } from "@/lib/constants";
 
 const fallbackImage =
   "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=1200&auto=format&fit=crop";
@@ -188,7 +187,7 @@ export default function NewsDetailsClient({
     if (typeof window !== "undefined") {
       window.scrollTo(0, 0);
     }
-    fetch("/api/news")
+    fetch(`${API_URL}/api/news`)
       .then((res) => res.json())
       .then((data) => {
         const newsArray = Array.isArray(data) ? data : data.data;

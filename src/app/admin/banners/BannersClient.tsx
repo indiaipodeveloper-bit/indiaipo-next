@@ -9,6 +9,7 @@ import { Plus, Trash2, GripVertical, Image, Eye, EyeOff, Upload, Film, Play, Loa
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { getImageUrl } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
 
 interface Banner {
   id: string;
@@ -88,7 +89,7 @@ export default function BannersClient() {
   const fetchBanners = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/banners", {
+      const res = await fetch(`${API_URL}/api/banners`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -122,7 +123,7 @@ export default function BannersClient() {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         headers: getHeaders(false),
         body: formData,
@@ -166,7 +167,7 @@ export default function BannersClient() {
     }
 
     try {
-      const url = editingId ? `/api/banners/${editingId}` : "/api/banners";
+      const url = editingId ? `${API_URL}/api/banners/${editingId}` : `${API_URL}/api/banners`;
       const method = editingId ? "PUT" : "POST";
 
       const res = await fetch(url, {
@@ -224,7 +225,7 @@ export default function BannersClient() {
 
   const toggleActive = async (id: string, current: boolean) => {
     try {
-      const res = await fetch(`/api/banners/${id}`, {
+      const res = await fetch(`${API_URL}/api/banners/${id}`, {
         method: "PUT",
         headers: getHeaders(),
         body: JSON.stringify({ is_active: !current })
@@ -242,7 +243,7 @@ export default function BannersClient() {
   const deleteBanner = async (id: string) => {
     if (!confirm("Delete this banner?")) return;
     try {
-      const res = await fetch(`/api/banners/${id}`, {
+      const res = await fetch(`${API_URL}/api/banners/${id}`, {
         method: "DELETE",
         headers: getHeaders()
       });

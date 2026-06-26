@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  Building2, MapPin, Calendar, Activity, ArrowLeft,
-  Globe, Info, CheckCircle2, HelpCircle
+  Building2, MapPin, ArrowLeft,
+  Info, CheckCircle2, HelpCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";

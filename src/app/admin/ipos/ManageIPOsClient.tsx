@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -17,6 +16,7 @@ import { SearchableSelect } from "@/components/ui/searchable-select";
 import { format, parse } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import { API_URL } from "@/lib/constants";
 
 interface IPO {
   id: number;
@@ -156,7 +156,7 @@ function ManageIPOsContent() {
 
     try {
       if (ipo.admin_blog_id) {
-        const res = await fetch(`/api/admin-blogs/id/${ipo.admin_blog_id}`, {
+        const res = await fetch(`${API_URL}/api/admin-blogs/id/${ipo.admin_blog_id}`, {
           headers: {
             "Authorization": `Bearer ${localStorage.getItem("token")}`
           }
@@ -233,7 +233,7 @@ function ManageIPOsContent() {
       };
 
       if (selectedIpoForGmp.admin_blog_id) {
-        await fetch(`/api/admin-blogs/${selectedIpoForGmp.admin_blog_id}`, {
+        await fetch(`${API_URL}/api/admin-blogs/${selectedIpoForGmp.admin_blog_id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -271,7 +271,7 @@ function ManageIPOsContent() {
 
   const fetchBankers = async () => {
     try {
-      const res = await fetch("/api/bankers?all=true", {
+      const res = await fetch("${API_URL}/api/bankers?all=true", {
         headers: {
           "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
@@ -285,7 +285,7 @@ function ManageIPOsContent() {
 
   const fetchAdminBlogs = async () => {
     try {
-      const res = await fetch("/api/admin-blogs?limit=1000&summary=1", {
+      const res = await fetch(`${API_URL}/api/admin-blogs?limit=1000&summary=1`, {
         headers: {
           "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
@@ -320,7 +320,7 @@ function ManageIPOsContent() {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${localStorage.getItem("token")}`

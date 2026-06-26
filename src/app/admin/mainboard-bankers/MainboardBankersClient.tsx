@@ -12,6 +12,7 @@ import { getImageUrl, formatIndianNumber } from "@/lib/utils";
 import { toast } from "sonner";
 import RichEditor from "@/components/ui/RichEditor";
 import { MultiSelect, Option } from "@/components/ui/multi-select";
+import { API_URL } from "@/lib/constants";
 
 interface MainboardBanker {
   id: number;
@@ -165,7 +166,7 @@ export default function MainboardBankersClient() {
 
   const fetchMainboardSubcategories = async () => {
     try {
-      const res = await fetch("/api/banker-subcategories?type=mainboard&status=active", {
+      const res = await fetch(`${API_URL}/api/banker-subcategories?type=mainboard&status=active`, {
         headers: getHeaders()
       });
       const data = await res.json();
@@ -175,7 +176,7 @@ export default function MainboardBankersClient() {
 
   const fetchBankerOptions = async () => {
     try {
-      const res = await fetch("/api/bankers?all=true", {
+      const res = await fetch(`${API_URL}/api/bankers?all=true`, {
         headers: getHeaders()
       });
       const data = await res.json();
@@ -211,7 +212,7 @@ export default function MainboardBankersClient() {
   const fetchBankers = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/mainboard-bankers?page=${page}&limit=${limit}&search=${encodeURIComponent(debouncedSearch)}`, {
+      const res = await fetch(`${API_URL}/api/mainboard-bankers?page=${page}&limit=${limit}&search=${encodeURIComponent(debouncedSearch)}`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -286,7 +287,7 @@ export default function MainboardBankersClient() {
 
     setSaving(true);
     try {
-      const url = editingId ? `/api/mainboard-bankers/${editingId}` : "/api/mainboard-bankers";
+      const url = editingId ? `${API_URL}/api/mainboard-bankers/${editingId}` : `${API_URL}/api/mainboard-bankers`;
       const method = editingId ? "PUT" : "POST";
       const res = await fetch(url, {
         method,
@@ -344,7 +345,7 @@ export default function MainboardBankersClient() {
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this Banker permanently?")) return;
     try {
-      await fetch(`/api/mainboard-bankers/${id}`, { 
+      await fetch(`${API_URL}/api/mainboard-bankers/${id}`, { 
         method: "DELETE",
         headers: getHeaders()
       });
@@ -372,7 +373,7 @@ export default function MainboardBankersClient() {
 
     const tId = toast.loading("Uploading logo...");
     try {
-      const res = await fetch("/api/upload", { 
+      const res = await fetch(`${API_URL}/api/upload`, { 
         method: "POST", 
         headers: getHeaders(false),
         body: formData 

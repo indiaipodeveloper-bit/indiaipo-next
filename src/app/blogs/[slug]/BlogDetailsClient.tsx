@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { getImgSrc } from "@/utils/image";
+import { API_URL } from "@/lib/constants";
 
 interface RelatedBlog {
   id: string;
@@ -304,7 +305,7 @@ export default function BlogDetailsClient({
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch("/api/news?limit=9");
+        const res = await fetch(`${API_URL}/api/news?limit=9`);
         if (res.ok) {
           const data = await res.json();
           const items = data.data || [];
@@ -327,7 +328,7 @@ export default function BlogDetailsClient({
   useEffect(() => {
     const fetchAllBankers = async () => {
       try {
-        const res = await fetch("/api/bankers?all=true");
+        const res = await fetch(`${API_URL}/api/bankers?all=true`);
         if (res.ok) {
           const data = await res.json();
           setBankers(data.data || []);
@@ -369,7 +370,7 @@ export default function BlogDetailsClient({
     if (!blog) return;
     const fetchRelated = async () => {
       try {
-        const res = await fetch(`/api/admin-blogs?limit=5&category=ipo_blogs&summary=1`);
+        const res = await fetch(`${API_URL}/api/admin-blogs?limit=5&category=ipo_blogs&summary=1`);
         if (res.ok) {
           const data = await res.json();
           setRelatedArticles((data.data || []).filter((b: any) => b.slug !== slug).slice(0, 6));

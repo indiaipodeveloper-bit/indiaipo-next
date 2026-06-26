@@ -17,6 +17,7 @@ import { format } from "date-fns";
 import { cn, formatIndianNumber, getImageUrl } from "@/lib/utils";
 import { Calendar as CalendarIcon, Upload } from "lucide-react";
 import RichEditor from "@/components/ui/RichEditor";
+import { API_URL } from "@/lib/constants";
 
 const DeleteConfirmButton = ({ onDelete, className = "" }: { onDelete: () => void; className?: string }) => {
   const [confirm, setConfirm] = useState(false);
@@ -342,7 +343,7 @@ export default function IPOBlogsClient() {
       if (cat !== "all") {
         queryParams.append("category", cat);
       }
-      const res = await fetch(`/api/admin-blogs?${queryParams.toString()}`, {
+      const res = await fetch(`${API_URL}/api/admin-blogs?${queryParams.toString()}`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -366,7 +367,7 @@ export default function IPOBlogsClient() {
 
   const fetchDailyDigests = async () => {
     try {
-      const res = await fetch('/api/daily-digests?limit=100', {
+      const res = await fetch(`${API_URL}/api/daily-digests?limit=100`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -615,8 +616,8 @@ export default function IPOBlogsClient() {
       }
 
       const url = editingId
-        ? `/api/admin-blogs/${editingId}`
-        : "/api/admin-blogs";
+        ? `${API_URL}/api/admin-blogs/${editingId}`
+        : `${API_URL}/api/admin-blogs`;
 
       const method = editingId ? "PUT" : "POST";
 
@@ -647,7 +648,7 @@ export default function IPOBlogsClient() {
   const handleEdit = async (b: AdminBlog) => {
     try {
       setSaving(true);
-      const res = await fetch(`/api/admin-blogs/id/${b.id}`, {
+      const res = await fetch(`${API_URL}/api/admin-blogs/id/${b.id}`, {
         headers: getHeaders()
       });
       if (res.ok) {
@@ -946,7 +947,7 @@ export default function IPOBlogsClient() {
 
     const tId = toast.loading(`Uploading ${fieldName}...`);
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         headers: getHeaders(false),
         body: formData,
@@ -964,7 +965,7 @@ export default function IPOBlogsClient() {
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this blog?")) return;
     try {
-      const res = await fetch(`/api/admin-blogs/${id}`, {
+      const res = await fetch(`${API_URL}/api/admin-blogs/${id}`, {
         method: "DELETE",
         headers: getHeaders()
       });
@@ -1940,7 +1941,7 @@ export default function IPOBlogsClient() {
                                             fd.append('file', file);
                                             const tId = toast.loading('Uploading PDF...');
                                             try {
-                                              const res = await fetch('/api/upload', {
+                                              const res = await fetch(`${API_URL}/api/upload`, {
                                                 method: 'POST',
                                                 headers: getHeaders(false),
                                                 body: fd

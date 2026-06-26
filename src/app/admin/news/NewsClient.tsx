@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, Pencil, Trash2, Loader2, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 import RichEditor from "@/components/ui/RichEditor";
+import { API_URL } from "@/lib/constants";
 
 interface NewsItem {
   id: number;
@@ -68,7 +69,7 @@ export default function NewsClient() {
   const fetchNews = async (page = 1) => {
     try {
       setLoading(true);
-      const baseUrl = "/api/news";
+      const baseUrl = `${API_URL}/api/news`;
       const queryParams = new URLSearchParams({
         page: page.toString(),
         limit: pagination.pageSize.toString(),
@@ -123,7 +124,7 @@ export default function NewsClient() {
 
     setSaving(true);
     try {
-      const url = editingId ? `/api/news/${editingId}` : "/api/news";
+      const url = editingId ? `${API_URL}/api/news/${editingId}` : `${API_URL}/api/news`;
       const method = editingId ? "PUT" : "POST";
 
       const res = await fetch(url, {
@@ -179,7 +180,7 @@ export default function NewsClient() {
 
     const tId = toast.loading("Uploading image...");
     try {
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${API_URL}/api/upload`, {
         method: "POST",
         headers: getHeaders(false),
         body: formData,
@@ -197,7 +198,7 @@ export default function NewsClient() {
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this news article?")) return;
     try {
-      const res = await fetch(`/api/news/${id}`, {
+      const res = await fetch(`${API_URL}/api/news/${id}`, {
         method: "DELETE",
         headers: getHeaders()
       });

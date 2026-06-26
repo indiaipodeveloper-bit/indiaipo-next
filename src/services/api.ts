@@ -1,5 +1,7 @@
+import { API_URL } from "@/lib/constants";
+
 const getApiBaseUrl = () => {
-  return "/api";
+  return `${API_URL}/api`;
 };
 
 const API_BASE_URL = getApiBaseUrl();

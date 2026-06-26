@@ -6,9 +6,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import {
-  ChevronRight, Users, MapPin, Award, ArrowRight, Star,
-  CheckCircle2, Home, Shield, Zap
+  ChevronRight, Users, MapPin, Award, ArrowRight,
+  Home, Zap, Star, CheckCircle2, Shield
 } from "lucide-react";
+import Ribbon from "@/components/Ribbon";
 import { getImgSrc } from "@/utils/image";
 import { API_URL } from "@/lib/constants";
 
@@ -70,25 +71,25 @@ export default function ConsultantsClient() {
               <span className="text-white/90 font-semibold">IPO Consultant</span>
             </div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-left max-w-4xl">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-left max-w-6xl">
               <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-5 leading-tight">
                 Professional <span style={{ color: G }}>IPO Consultants</span> for Your Growth Journey
               </h1>
-              <p className="text-white/65 text-base md:text-xl mb-10 leading-relaxed max-w-2xl font-medium">
+              <p className="text-white/65 text-base md:text-xl mb-10 leading-relaxed max-w-4xl font-medium">
                 Partner with India's most trusted IPO specialists. We connect ambitious businesses with the right consultants to ensure a successful public listing.
               </p>
 
-              <div className="flex flex-wrap justify-start gap-3">
+              <div className="flex flex-wrap justify-start gap-4">
                 {[
                   { icon: Star, label: "4.9/5 Average Rating", color: G },
                   { icon: CheckCircle2, label: "SEBI Compliant Advisory", color: "#86efac" },
                   { icon: Shield, label: "100% Registered Experts", color: G },
                 ].map((b, i) => (
-                  <span key={i} className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-black"
-                    style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.85)", border: "1px solid rgba(255,255,255,0.15)" }}>
+                  <Ribbon key={i} fontSize="13px" cutout="0.5em" color="linear-gradient(135deg, #002a52 0%, #0052a3 60%, #0080ff 100%)"
+                    className="inline-flex items-center gap-2 text-white font-black border border-white/10 px-4 py-2">
                     <b.icon className="h-4 w-4" style={{ color: b.color }} />
                     {b.label}
-                  </span>
+                  </Ribbon>
                 ))}
               </div>
             </motion.div>
@@ -140,11 +141,15 @@ export default function ConsultantsClient() {
                           </div>
                         )}
                         {c.office_location && (
-                          <div className="absolute top-3 right-3">
-                            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black backdrop-blur-md"
-                              style={{ background: "rgba(0,21,41,0.75)", color: G }}>
-                              <MapPin className="h-3 w-3" /> {c.office_location}
-                            </span>
+                          <div className="absolute top-3 right-0 z-10">
+                            <Ribbon
+                              fontSize="11px"
+                              cutout="0.4em"
+                              color="linear-gradient(135deg, #002a52 0%, #0052a3 60%, #0080ff 100%)"
+                              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-white font-black border-y border-l border-white/15"
+                            >
+                              <MapPin className="h-3 w-3" style={{ color: G }} /> {c.office_location}
+                            </Ribbon>
                           </div>
                         )}
                       </div>

@@ -80,7 +80,7 @@ export default function IPOFeasibilityClient() {
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to delete this entry?")) return;
     try {
-      const res = await fetch(`/api/ipo_feasibility/${id}`, { 
+      const res = await fetch(`/api/ipo_feasibility/${id}`, {
         method: "DELETE",
         headers: getHeaders()
       });
@@ -329,72 +329,168 @@ export default function IPOFeasibilityClient() {
       )}
 
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-        <DialogContent className="sm:max-w-[700px] rounded-3xl p-0 overflow-hidden border-none shadow-2xl bg-white text-foreground">
+        <DialogContent className="sm:max-w-[750px] rounded-3xl p-0 overflow-hidden border border-border/50 shadow-2xl bg-card text-foreground [&>button]:text-white [&>button]:z-50 [&>button]:opacity-80 [&>button]:hover:opacity-100 [&>button]:transition-all">
           {selectedEntry && (
             <div className="flex flex-col">
-              <div className="bg-accent p-8 text-accent-foreground relative">
-                <Landmark className="absolute right-6 top-6 h-12 w-12 opacity-10" />
-                <div className="space-y-1">
-                  <h2 className="text-3xl font-bold text-white">{selectedEntry.company_name}</h2>
-                  <p className="text-white/80 font-medium">IPO Eligibility Assessment Details</p>
+              {/* Header with Dark Navy Gradient */}
+              <div className="gradient-navy p-8 text-white relative overflow-hidden">
+                {/* Background decorative glows */}
+                <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5 blur-xl pointer-events-none" />
+                <div className="absolute -bottom-12 -left-12 w-48 h-48 rounded-full bg-blue-500/10 blur-2xl pointer-events-none" />
+                
+                <div className="flex items-center gap-4 relative z-10">
+                  <div className="h-12 w-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-inner">
+                    <Landmark className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-[9px] font-bold bg-white/15 text-white/90 border border-white/10 uppercase tracking-wider">
+                        Assessment Report
+                      </span>
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider ${
+                        selectedEntry.eligibility === "Eligible"
+                          ? "bg-emerald-500/25 text-emerald-300 border border-emerald-500/35"
+                          : "bg-rose-500/25 text-rose-300 border border-rose-500/35"
+                      }`}>
+                        {selectedEntry.eligibility}
+                      </span>
+                    </div>
+                    <h2 className="text-2xl font-bold tracking-tight text-white leading-tight mt-1">{selectedEntry.company_name}</h2>
+                  </div>
                 </div>
               </div>
+
+              {/* Body */}
               <div className="p-8 space-y-8 bg-card max-h-[60vh] overflow-y-auto custom-scrollbar">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest border-b pb-2">Contact Person</h4>
-                    <div className="space-y-3">
+                {/* Two Column Section */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Left: Contact Info */}
+                  <div className="bg-muted/30 p-5 rounded-2xl border border-border/50 space-y-4 shadow-sm hover:shadow-md transition-shadow">
+                    <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest border-b border-border/80 pb-2 flex items-center gap-1.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Contact Person
+                    </h4>
+                    <div className="space-y-3.5">
                       <div className="flex items-center gap-3">
-                        <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center font-bold text-accent">{selectedEntry.name.charAt(0)}</div>
-                        <div className="font-bold">{selectedEntry.name}</div>
+                        <div className="h-9 w-9 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center font-bold text-accent">
+                          {selectedEntry.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <div className="font-bold text-foreground">{selectedEntry.name}</div>
+                          <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Representative</div>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-3 text-sm text-muted-foreground pl-1">
-                        <Mail className="h-4 w-4" /> {selectedEntry.email}
-                      </div>
-                      <div className="flex items-center gap-3 text-sm text-muted-foreground pl-1">
-                        <Phone className="h-4 w-4 text-accent" /> {selectedEntry.mobile}
+                      
+                      <div className="space-y-2 pt-2 border-t border-border/30">
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                          <div className="h-7 w-7 rounded-lg bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-slate-500">
+                            <Mail className="h-3.5 w-3.5" />
+                          </div>
+                          <span className="truncate">{selectedEntry.email}</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                          <div className="h-7 w-7 rounded-lg bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-accent">
+                            <Phone className="h-3.5 w-3.5" />
+                          </div>
+                          <span className="font-medium">{selectedEntry.mobile}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="space-y-4">
-                    <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest border-b pb-2">Business info</h4>
-                    <div className="grid grid-cols-1 gap-3">
-                      <div className="text-sm"><span className="text-muted-foreground mr-2">Structure:</span> <span className="font-bold uppercase text-[10px] bg-slate-100 px-2 py-0.5 rounded-md text-foreground">{selectedEntry.business_type}</span></div>
-                      <div className="text-sm"><span className="text-muted-foreground mr-2">Vintage:</span> <span className="font-bold">{selectedEntry.vintage}</span></div>
+
+                  {/* Right: Business Profile */}
+                  <div className="bg-muted/30 p-5 rounded-2xl border border-border/50 space-y-4 shadow-sm hover:shadow-md transition-shadow">
+                    <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest border-b border-border/80 pb-2 flex items-center gap-1.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Business Profile
+                    </h4>
+                    <div className="grid grid-cols-1 gap-4">
+                      <div>
+                        <span className="block text-[10px] text-muted-foreground font-bold uppercase tracking-wider mb-1.5">Company Structure</span>
+                        <span className="inline-flex font-bold uppercase text-[10px] bg-accent/10 text-accent border border-accent/10 px-2.5 py-1 rounded-lg">
+                          {selectedEntry.business_type || "N/A"}
+                        </span>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-4 pt-2 border-t border-border/30">
+                        <div>
+                          <span className="block text-[10px] text-muted-foreground font-bold uppercase tracking-wider mb-1">Industry Sector</span>
+                          <span className="font-semibold text-foreground text-sm block truncate">{selectedEntry.industry || "N/A"}</span>
+                        </div>
+                        <div>
+                          <span className="block text-[10px] text-muted-foreground font-bold uppercase tracking-wider mb-1">Company Vintage</span>
+                          <span className="font-semibold text-foreground text-sm block">{selectedEntry.vintage || "N/A"}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
+                {/* Eligibility Statistics Grid */}
                 <div className="space-y-4">
-                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest border-b pb-2">Eligibility Stats</h4>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 col-span-2">
-                      <span className="text-[9px] font-bold text-muted-foreground uppercase block mb-1">Operating Profit (EBITDA)</span>
-                      <span className="text-sm font-bold text-foreground">{selectedEntry.profit}</span>
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest border-b border-border/80 pb-2 flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Financial Eligibility Assessment
+                  </h4>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                    {/* Turnover Card */}
+                    <div className="bg-card p-4 rounded-2xl border border-border/80 shadow-sm flex flex-col justify-between h-24 hover:border-accent/30 transition-colors">
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block mb-1">Annual Turnover</span>
+                      <span className="text-base font-extrabold text-foreground tracking-tight">{selectedEntry.current_turn_over || "N/A"}</span>
                     </div>
-                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                      <span className="text-[9px] font-bold text-muted-foreground uppercase block mb-1">Networth</span>
-                      <span className="text-sm font-bold text-foreground">{selectedEntry.networth}</span>
+                    
+                    {/* Profit Card */}
+                    <div className="bg-card p-4 rounded-2xl border border-border/80 shadow-sm flex flex-col justify-between h-24 hover:border-accent/30 transition-colors">
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block mb-1">Operating Profit</span>
+                      <span className="text-base font-extrabold text-foreground tracking-tight">{selectedEntry.profit || "N/A"}</span>
                     </div>
-                    <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-100">
-                      <span className="text-[9px] font-bold text-emerald-600 uppercase block mb-1">Status</span>
-                      <span className="text-sm font-bold text-emerald-700 uppercase tracking-tight">{selectedEntry.eligibility}</span>
+                    
+                    {/* Networth Card */}
+                    <div className="bg-card p-4 rounded-2xl border border-border/80 shadow-sm flex flex-col justify-between h-24 hover:border-accent/30 transition-colors">
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block mb-1">Net Worth</span>
+                      <span className="text-base font-extrabold text-foreground tracking-tight">{selectedEntry.networth || "N/A"}</span>
+                    </div>
+                    
+                    {/* Status Card */}
+                    <div className={`p-4 rounded-2xl border shadow-sm flex flex-col justify-between h-24 ${
+                      selectedEntry.eligibility === "Eligible"
+                        ? "bg-emerald-50/50 border-emerald-200/60 dark:bg-emerald-950/20 dark:border-emerald-800/30"
+                        : "bg-rose-50/50 border-rose-200/60 dark:bg-rose-950/20 dark:border-rose-800/30"
+                    }`}>
+                      <span className={`text-[10px] font-bold uppercase tracking-wider block mb-1 ${
+                        selectedEntry.eligibility === "Eligible" ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
+                      }`}>
+                        Status
+                      </span>
+                      <span className={`text-base font-extrabold tracking-tight uppercase ${
+                        selectedEntry.eligibility === "Eligible" ? "text-emerald-700 dark:text-emerald-300" : "text-rose-700 dark:text-rose-300"
+                      }`}>
+                        {selectedEntry.eligibility}
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="p-6 bg-slate-50 border-t flex justify-end gap-3">
-                <Button variant="outline" className="rounded-xl font-bold text-foreground" onClick={() => setDetailsOpen(false)}>Close Window</Button>
+
+              {/* Footer */}
+              <div className="p-6 bg-muted/30 border-t border-border/50 flex justify-end gap-3 rounded-b-3xl">
+                <Button 
+                  variant="outline" 
+                  className="rounded-xl px-5 h-11 font-semibold text-sm border-border hover:bg-muted/80 text-foreground transition-all duration-200 cursor-pointer"
+                  onClick={() => setDetailsOpen(false)}
+                >
+                  Close Window
+                </Button>
                 <Button
                   variant="destructive"
-                  className="rounded-xl font-bold"
+                  className="rounded-xl px-5 h-11 font-semibold text-sm bg-rose-600 hover:bg-rose-700 text-white shadow-sm hover:shadow-rose-600/20 transition-all duration-200 flex items-center gap-2 cursor-pointer"
                   onClick={() => {
-                    if (confirm("Are you sure?")) {
+                    if (confirm("Are you sure you want to delete this record?")) {
                       handleDelete(selectedEntry.id);
                       setDetailsOpen(false);
                     }
                   }}
                 >
+                  <Trash2 className="w-4 h-4" />
                   Delete Record
                 </Button>
               </div>

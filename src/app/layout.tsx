@@ -18,6 +18,7 @@ const montserrat = Montserrat({
 
 import Script from "next/script";
 import { cn } from "@/lib/utils";
+import AdsenseScript from "@/components/common/AdSenseScript";
 
 export const metadata: Metadata = {
   title: "India IPO — India's Leading IPO Consultancy Platform",
@@ -78,12 +79,13 @@ export default function RootLayout({
             })(window, document, 'script', 'dataLayer', 'GTM-WGV66WQ');`}
         </Script>
         {/* Google AdSense */}
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5445033715417509"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
+        {/* <Script */}
+        {/*   async */}
+        {/*   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5445033715417509" */}
+        {/*   crossOrigin="anonymous" */}
+        {/*   strategy="afterInteractive" */}
+        {/* /> */}
+        <AdsenseScript />
       </head>
       <body>
         {/* Google Tag Manager (noscript) */}

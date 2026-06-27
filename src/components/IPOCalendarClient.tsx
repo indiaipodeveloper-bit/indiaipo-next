@@ -454,15 +454,12 @@ export default function IPOCalendarClient({
                           </Badge>
                         </td>
                         <td className="px-8 py-6 text-right" onClick={(e) => e.stopPropagation()}>
-                          {item.blog_slug ? (
-                            <Link href={`/ipo-blogs/${item.blog_slug}`} className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold px-4 py-2 text-sm shadow-lg shadow-blue-600/10">
-                              Analyze <ArrowUpRight className="h-4 w-4 ml-1.5" />
-                            </Link>
-                          ) : (
-                            <span className="inline-flex items-center justify-center border border-slate-200 text-slate-300 rounded-xl font-bold px-4 py-2 text-sm">
-                              No Details
-                            </span>
-                          )}
+                          <Link
+                            href={`/ipo-tools/profit-calculator?name=${encodeURIComponent(item.issuer_company)}&lotSize=${item.lot_size || ""}&price=${item.issue_highest_price || item.issue_lowest_price || ""}`}
+                            className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold px-4 py-2 text-sm shadow-lg shadow-blue-600/10"
+                          >
+                            Calculator <ArrowUpRight className="h-4 w-4 ml-1.5" />
+                          </Link>
                         </td>
                       </motion.tr>
                     );
@@ -609,15 +606,12 @@ export default function IPOCalendarClient({
                         </div>
 
                         <div className="px-4 pb-4 mt-auto" onClick={(e) => e.stopPropagation()}>
-                          {item.blog_slug ? (
-                            <Link href={`/ipo-blogs/${item.blog_slug}`} className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg shadow-blue-600/10 h-10 w-full text-sm">
-                              Analyze Details <ArrowUpRight className="h-4 w-4 ml-1.5" />
-                            </Link>
-                          ) : (
-                            <span className="inline-flex items-center justify-center border border-slate-200 text-slate-300 rounded-xl font-bold h-10 w-full text-sm">
-                              No Details Available
-                            </span>
-                          )}
+                          <Link
+                            href={`/ipo-tools/profit-calculator?name=${encodeURIComponent(item.issuer_company)}&lotSize=${item.lot_size || ""}&price=${item.issue_highest_price || item.issue_lowest_price || ""}`}
+                            className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg shadow-blue-600/10 h-10 w-full text-sm"
+                          >
+                            Calculator <ArrowUpRight className="h-4 w-4 ml-1.5" />
+                          </Link>
                         </div>
                       </motion.div>
                     );

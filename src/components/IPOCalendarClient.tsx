@@ -4,8 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { cn, getImageUrl, getLatestGmpValue } from "@/lib/utils";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import {
   Calendar as CalendarIcon,
@@ -200,7 +198,6 @@ export default function IPOCalendarClient({
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      <Header />
 
       <main>
         <section className="bg-[#001529] pt-16 pb-32 relative overflow-hidden">
@@ -728,7 +725,6 @@ export default function IPOCalendarClient({
         </section>
       </main>
 
-      <Footer />
     </div>
   );
 }

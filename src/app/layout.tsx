@@ -5,6 +5,8 @@ import AdsenseScript from "@/components/common/AdSenseScript";
 import { Geist } from "next/font/google";
 import { Montserrat } from "next/font/google";
 import { cn } from "@/lib/utils";
+import QueryProvider from "@/components/QueryProvider";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -59,8 +61,11 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-
-        {children}
+        <QueryProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

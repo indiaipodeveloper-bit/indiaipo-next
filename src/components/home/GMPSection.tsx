@@ -128,7 +128,7 @@ const GMPSection: React.FC<GMPSectionProps> = ({ ipos: initialIpos = [], isLoadi
     }, [initialIpos]);
 
     return (
-        <section className="bg-slate-50 py-24 px-6 overflow-hidden border-y border-slate-200">
+        <section className="bg-slate-50 py-24 px-6 overflow-hidden border-y border-slate-200 scroll-mt-28" id="gmp">
             <div className="container mx-auto px-4 flex flex-col lg:flex-row gap-16 items-center">
                 <div className="lg:w-1/3">
                     <h2 className="text-4xl font-extrabold tracking-tight mb-6 text-slate-900">

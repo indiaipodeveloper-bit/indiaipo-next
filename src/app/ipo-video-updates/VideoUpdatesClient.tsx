@@ -293,7 +293,7 @@ export default function VideoUpdatesClient() {
                             {!isPlaying ? (
                               <button
                                 onClick={() => setPlayingVideoId(video.id)}
-                                className="text-sm font-bold text-accent group-hover:text-gold transition-colors flex items-center focus:outline-none"
+                                className="text-sm font-bold text-primary group-hover:text-gold transition-colors flex items-center focus:outline-none"
                               >
                                 Play Video
                                 <PlayCircle className="w-4 h-4 ml-1.5 opacity-80 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all fill-accent/10" />

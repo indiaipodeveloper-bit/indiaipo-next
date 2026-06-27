@@ -25,9 +25,10 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
+import { useQuery } from "@tanstack/react-query";
 import logo from "@/assets/logo.png";
 import FontSizeControl from "@/components/FontSizeControl";
-import { API_URL} from "@/lib/constants";
+import { API_URL } from "@/lib/constants";
 
 const TopBar = () => (
   <div
@@ -374,9 +375,11 @@ const FALLBACK_KNOWLEDGE: SubItem[] = [
   },
   { label: "IPO Process", href: "/ipo-process" },
   { label: "Pre-IPO Process Guidance", href: "/pre-ipo-process-guidance" },
+  { label: "Migration From SME to Mainboard", href: "/sme-to-mainboard-migration" },
   { label: "IPO Updates", href: "/ipo-blogs" },
   { label: "List of IPO Registrar", href: "/ipo-registrar-list" },
   { label: "All Sectors", href: "/all-sectors" },
+
 ];
 
 const FALLBACK_NOTIFICATIONS: SubItem[] = [
@@ -419,42 +422,39 @@ const Header = () => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const [loadHeaderData, setLoadHeaderData] = useState(false);
+  // Caching Header API calls via TanStack Query to call only once per session
+  const { data: notificationsData } = useQuery({
+    queryKey: ["headerNotifications"],
+    queryFn: async () => {
+      const res = await fetch(`${API_URL}/api/notifications`);
+      if (!res.ok) throw new Error("Failed to fetch notifications");
+      return res.json();
+    },
+    staleTime: Infinity,
+    gcTime: Infinity,
+  });
 
-  // Client-side states replacement for React Query
-  const [notificationsData, setNotificationsData] = useState<any>(null);
-  const [categoriesData, setCategoriesData] = useState<any>(null);
-  const [subcatsData, setSubcatsData] = useState<any>(null);
+  const { data: categoriesData } = useQuery({
+    queryKey: ["headerCategories"],
+    queryFn: async () => {
+      const res = await fetch(`${API_URL}/api/knowledge/categories`);
+      if (!res.ok) throw new Error("Failed to fetch categories");
+      return res.json();
+    },
+    staleTime: Infinity,
+    gcTime: Infinity,
+  });
 
-  useEffect(() => {
-    const t = window.setTimeout(() => {
-      setLoadHeaderData(true);
-    }, 1500);
-
-    return () => window.clearTimeout(t);
-  }, []);
-
-  useEffect(() => {
-    if (!loadHeaderData) return;
-
-    // Fetch notifications
-    fetch(`${API_URL}/api/notifications`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => setNotificationsData(data))
-      .catch((err) => console.error("Error fetching notifications:", err));
-
-    // Fetch categories
-    fetch(`${API_URL}/api/knowledge/categories`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => setCategoriesData(data))
-      .catch((err) => console.error("Error fetching categories:", err));
-
-    // Fetch banker subcategories
-    fetch(`${API_URL}/api/banker-subcategories?status=active`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => setSubcatsData(data))
-      .catch((err) => console.error("Error fetching subcategories:", err));
-  }, [loadHeaderData]);
+  const { data: subcatsData } = useQuery({
+    queryKey: ["headerSubcategories"],
+    queryFn: async () => {
+      const res = await fetch(`${API_URL}/api/banker-subcategories?status=active`);
+      if (!res.ok) throw new Error("Failed to fetch subcategories");
+      return res.json();
+    },
+    staleTime: Infinity,
+    gcTime: Infinity,
+  });
 
   const notifItems = useMemo(() => {
     if (notificationsData && notificationsData.length > 0) {
@@ -524,7 +524,7 @@ const Header = () => {
               label: c.name,
               href:
                 nameLower === "list of ipo registrar" ||
-                nameLower === "registrar"
+                  nameLower === "registrar"
                   ? "/list-of-ipo-registrar"
                   : nameLower === "sector wise ipo list in india" ||
                     c.slug === "sector-wise-ipo-list"

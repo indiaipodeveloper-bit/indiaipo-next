@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
 import { servicesData } from "@/data/servicesData";
 import { Button } from "@/components/ui/button";
 import { getImageUrl } from "@/lib/utils";
@@ -165,7 +163,6 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({ slug, children })
   return (
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
-      <Header />
       <main className="flex-grow">
         <section className={`bg-gradient-to-br ${cfg.gradient} pt-14 pb-40 relative overflow-hidden`}>
           {bannerVideo ? (
@@ -463,7 +460,6 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({ slug, children })
           </div>
         </section>
       </main>
-      <Footer />
       </div>
     </QueryClientProvider>
   );

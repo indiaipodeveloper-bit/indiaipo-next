@@ -4,8 +4,6 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { Loader2, ChevronLeft, ChevronRight, FileText, Filter, List, Search, Banknote, Percent } from "lucide-react";
 import { API_URL } from "@/lib/constants";
 
@@ -250,7 +248,6 @@ export default function SectorIPOsClient({
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      <Header />
 
       <main className="py-10">
         <div className="container mx-auto px-4">
@@ -526,7 +523,6 @@ export default function SectorIPOsClient({
         </div>
       </main>
       
-      <Footer />
     </div>
   );
 }

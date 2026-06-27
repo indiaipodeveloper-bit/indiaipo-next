@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { getImageUrl, cn, getLatestGmpValue } from "@/lib/utils";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import {
   Home, ChevronRight, TrendingUp, Search, Calendar, BarChart3, PieChart,
@@ -252,7 +250,6 @@ export default function ReportsClient({
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      <Header />
 
       <main>
         <section className="bg-[#001529] py-8 md:py-12 relative overflow-hidden">
@@ -831,7 +828,6 @@ export default function ReportsClient({
         </section>
       </main>
 
-      <Footer />
     </div>
   );
 }

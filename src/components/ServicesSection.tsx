@@ -23,7 +23,7 @@ const serviceCards = [
     title: "FPO Advisory",
     description: "Follow-on Public Offering planning, documentation and execution assistance for listed companies",
     icon: BarChart3,
-    color: "bg-accent/10 text-accent group-hover:bg-accent group-hover:text-accent-foreground",
+    color: "bg-accent text-accent-foreground group-hover:bg-accent-foreground group-hover:text-accent",
     link: "/fpo"
   },
   {

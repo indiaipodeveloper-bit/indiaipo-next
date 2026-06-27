@@ -64,7 +64,8 @@ const Footer = () => {
               {[
                 { label: "Home", href: "/" },
                 { label: "IPO Services", href: "/ipo-services" },
-                { label: " Blogs", href: "/blogs" },
+                { label: "Blogs", href: "/blogs" },
+                { label: "IPO Profit Calculator", href: "/ipo-tools/profit-calculator" },
                 { label: "Consultants", href: "/consultant" },
                 { label: "Youtube Videos", href: "/ipo-video-updates" },
                 { label: "News", href: "/news" },
@@ -131,6 +132,8 @@ const Footer = () => {
             <Link href="/privacy-policy" className="text-xs text-background/80 hover:text-accent transition-colors">Privacy & Policy</Link>
             <span className="text-background/20">|</span>
             <Link href="/terms-conditions" className="text-xs text-background/80 hover:text-accent transition-colors">Terms & Conditions</Link>
+            <span className="text-background/20">|</span>
+            <Link href="/ipo-tools/profit-calculator" className="text-xs text-background/80 hover:text-accent transition-colors">IPO Profit Calculator</Link>
           </div>
           <p className="text-sm text-background/80">
             Copyright © 2026 All rights reserved by - <span className="text-background/90 font-medium">Bmarkt Tecamat Private Limited</span>

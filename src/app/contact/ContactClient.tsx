@@ -257,13 +257,21 @@ export default function ContactClient() {
           className="relative overflow-hidden"
           style={{
             minHeight: "520px",
-            backgroundImage: (!bannerVideo && bannerImage)
-              ? ` url('${bannerImage}')`
-              : "linear-gradient(135deg, hsl(222 47% 11%), hsl(222 47% 15%))",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
           }}
         >
+          {/* Background banner with blur */}
+          <div
+            className="absolute inset-0 z-0"
+            style={{
+              backgroundImage: (!bannerVideo && bannerImage)
+                ? ` url('${bannerImage}')`
+                : "linear-gradient(135deg, hsl(222 47% 11%), hsl(222 47% 15%))",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: (!bannerVideo && bannerImage) ? "blur(5px)" : "none",
+              transform: (!bannerVideo && bannerImage) ? "scale(1.05)" : "none",
+            }}
+          />
           {bannerVideo && (
             <div className="absolute inset-0 z-0">
               <video autoPlay muted loop playsInline

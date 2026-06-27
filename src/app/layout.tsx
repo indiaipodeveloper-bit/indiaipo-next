@@ -7,8 +7,8 @@ import JigyasaChatButton from "@/components/JigyasaChatButton";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { Suspense } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+import QueryProvider from "@/components/QueryProvider";
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 const montserrat = Montserrat({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
@@ -78,13 +78,7 @@ export default function RootLayout({
                   'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
             })(window, document, 'script', 'dataLayer', 'GTM-WGV66WQ');`}
         </Script>
-        {/* Google AdSense */}
-        {/* <Script */}
-        {/*   async */}
-        {/*   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5445033715417509" */}
-        {/*   crossOrigin="anonymous" */}
-        {/*   strategy="afterInteractive" */}
-        {/* /> */}
+
         <AdsenseScript />
       </head>
       <body>
@@ -97,18 +91,20 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        <AuthProvider>
-          {children}
-          <Toaster position="top-right" richColors />
-          <MobileNav />
-          {/* Floating buttons — stacked together */}
-          <div className="fixed bottom-24 md:bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-            <Suspense fallback={null}>
-              <JigyasaChatButton />
-            </Suspense>
-            <WhatsAppButton />
-          </div>
-        </AuthProvider>
+        <QueryProvider>
+          <AuthProvider>
+            {children}
+            <Toaster position="top-right" richColors />
+            <MobileNav />
+            {/* Floating buttons — stacked together */}
+            <div className="fixed bottom-24 md:bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+              <Suspense fallback={null}>
+                <JigyasaChatButton />
+              </Suspense>
+              <WhatsAppButton />
+            </div>
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

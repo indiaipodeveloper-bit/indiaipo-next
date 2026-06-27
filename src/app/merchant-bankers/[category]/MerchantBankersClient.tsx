@@ -347,7 +347,7 @@ export default function MerchantBankersClient({
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="max-w-5xl text-left"
+              className="max-w-7xl text-left"
             >
               <h1 className="text-3xl md:text-5xl lg:text-7xl font-black text-white mb-5 leading-tight">
                 {isSME ? "SME" : "Mainboard"}{" "}
@@ -525,8 +525,8 @@ export default function MerchantBankersClient({
                             val: banker.avgsubscription
                               ? `${banker.avgsubscription}x`
                               : banker.avg_subscription
-                              ? `${banker.avg_subscription}x`
-                              : "0x",
+                                ? `${banker.avg_subscription}x`
+                                : "0x",
                             lbl: "Avg Sub",
                             c: G2,
                           },
@@ -556,11 +556,10 @@ export default function MerchantBankersClient({
                             compareList.length >= 2 &&
                             !compareList.find((b) => b.id === banker.id)
                           }
-                          className={`w-full h-10 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all border cursor-pointer ${
-                            compareList.find((b) => b.id === banker.id)
-                              ? "border-amber-400 bg-amber-50 text-amber-700"
-                              : "border-slate-200 text-slate-400 hover:border-amber-300 hover:text-amber-600 disabled:opacity-30 disabled:cursor-not-allowed"
-                          }`}
+                          className={`w-full h-10 rounded-xl font-black text-sm flex items-center justify-center gap-2 transition-all border cursor-pointer ${compareList.find((b) => b.id === banker.id)
+                            ? "border-amber-400 bg-amber-50 text-amber-700"
+                            : "border-slate-200 text-slate-400 hover:border-amber-300 hover:text-amber-600 disabled:opacity-30 disabled:cursor-not-allowed"
+                            }`}
                         >
                           {compareList.find((b) => b.id === banker.id) ? (
                             <>

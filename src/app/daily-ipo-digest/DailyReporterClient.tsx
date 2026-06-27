@@ -261,12 +261,16 @@ export default function DailyReporterClient({
                       </div>
 
                       <div className="absolute top-3 left-3">
+
                         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/95 shadow-sm">
                           <Calendar className="h-3 w-3 text-[#f59e08]" />
                           <span className="text-[10px] font-black text-[#001529] uppercase tracking-wide">
                             {new Date(digest.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
                           </span>
                         </div>
+
+
+
                       </div>
                       <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: "linear-gradient(90deg, #001529, #f59e08)" }} />
                     </div>

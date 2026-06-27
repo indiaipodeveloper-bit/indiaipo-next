@@ -44,6 +44,42 @@ function HomeContent() {
 
   const ipos = ipoData?.data || [];
 
+  React.useEffect(() => {
+    if (typeof window === "undefined" || !window.location.hash) return;
+
+    let interval: ReturnType<typeof setInterval> | null = null;
+
+    const handleScroll = () => {
+      const hash = window.location.hash;
+      if (!hash) return;
+      const targetId = hash.replace("#", "");
+      if (!targetId) return;
+
+      if (interval) clearInterval(interval);
+
+      let attempts = 0;
+      interval = setInterval(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+          if (interval) clearInterval(interval);
+        }
+        attempts++;
+        if (attempts > 50) {
+          if (interval) clearInterval(interval);
+        }
+      }, 100);
+    };
+
+    handleScroll();
+
+    window.addEventListener("hashchange", handleScroll);
+    return () => {
+      if (interval) clearInterval(interval);
+      window.removeEventListener("hashchange", handleScroll);
+    };
+  }, [isLoading]);
+
   return (
     <>
       <main>

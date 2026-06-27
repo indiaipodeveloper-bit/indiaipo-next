@@ -1,6 +1,4 @@
 import React from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import SSESidebar from "../SSESidebar";
 import Link from "next/link";
 import { ChevronRight, Home, TrendingUp, FileText, CheckCircle2 } from "lucide-react";
@@ -14,7 +12,6 @@ export const metadata: Metadata = {
 export default function ListingProcessZCZPPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
-      <Header />
 
       <main className="flex-grow pt-32 pb-20">
         <div className="container mx-auto px-4">
@@ -407,7 +404,6 @@ export default function ListingProcessZCZPPage() {
         </div>
       </main>
 
-      <Footer />
     </div>
   );
 }

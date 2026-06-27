@@ -1,6 +1,4 @@
 import React from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import SSESidebar from "../SSESidebar";
 import Link from "next/link";
 import { ChevronRight, Home, Zap, Globe, ArrowRight, Info, ShieldCheck } from "lucide-react";
@@ -14,7 +12,6 @@ export const metadata: Metadata = {
 export default function SSEIntroductionPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
-      <Header />
 
       <main className="flex-grow pt-32 pb-20">
         <div className="container mx-auto px-4">
@@ -257,7 +254,6 @@ export default function SSEIntroductionPage() {
         </div>
       </main>
 
-      <Footer />
     </div>
   );
 }

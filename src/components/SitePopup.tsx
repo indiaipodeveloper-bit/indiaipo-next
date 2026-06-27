@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { X, CheckCircle2, ChevronLeft, ChevronRight, Newspaper, ArrowRight } from "lucide-react";
+import confetti from "canvas-confetti";
 import { Button } from "./ui/button";
 import {
   Carousel,
@@ -127,6 +128,44 @@ const SitePopup = () => {
     }, 8000);
 
     return () => clearTimeout(timer);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) {
+      const duration = 2.5 * 1000;
+      const end = Date.now() + duration;
+
+      // Initial center burst
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        zIndex: 10000,
+      });
+
+      const frame = () => {
+        confetti({
+          particleCount: 2,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.8 },
+          zIndex: 10000,
+        });
+        confetti({
+          particleCount: 2,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.8 },
+          zIndex: 10000,
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+
+      frame();
+    }
   }, [isOpen]);
 
   const handleRedirect = () => {

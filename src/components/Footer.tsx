@@ -64,7 +64,7 @@ const Footer = () => {
               {[
                 { label: "Home", href: "/" },
                 { label: "IPO Services", href: "/ipo-services" },
-                { label: " Blogs", href: "/blogs" },
+                { label: "Blogs", href: "/blogs" },
                 { label: "Consultants", href: "/consultant" },
                 { label: "Youtube Videos", href: "/ipo-video-updates" },
                 { label: "News", href: "/news" },

@@ -5,8 +5,7 @@ import MobileNav from "@/components/MobileNav";
 import JigyasaChatButton from "@/components/JigyasaChatButton";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { Suspense } from "react";
-import { AuthProvider } from "@/contexts/AuthContext";
-import QueryProvider from "@/components/QueryProvider";
+
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 const montserrat = Montserrat({

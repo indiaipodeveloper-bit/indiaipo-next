@@ -6,17 +6,6 @@ import JigyasaChatButton from "@/components/JigyasaChatButton";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { Suspense } from "react";
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
-
-const montserrat = Montserrat({
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
-  subsets: ["latin"],
-  variable: "--font-heading",
-});
-
-import Script from "next/script";
-import { cn } from "@/lib/utils";
-import AdsenseScript from "@/components/common/AdSenseScript";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 

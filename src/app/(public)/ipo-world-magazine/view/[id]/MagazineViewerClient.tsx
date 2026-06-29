@@ -6,7 +6,14 @@ import { ChevronLeft, Download, Share2, BookOpen, X, Maximize, Minimize } from "
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { getImageUrl } from "@/lib/utils";
+import dynamic from "next/dynamic";
 
+const PdfViewer = dynamic(
+  () => import("@/components/common/PdfViewer"),
+  {
+    ssr: false,
+  }
+);
 interface Magazine {
   id: string | number;
   title: string;
@@ -114,12 +121,15 @@ export default function MagazineViewerClient({ magazine }: MagazineViewerClientP
                 : 'rounded-2xl h-[80vh] md:h-[90vh]'
             }`}
           >
-            <iframe 
-              src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`}
-              className="w-full h-full border-none"
-              title={magazine.title}
+            {/* <iframe  */}
+            {/*   src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`} */}
+            {/*   className="w-full h-full border-none" */}
+            {/*   title={magazine.title} */}
+            {/* /> */}
+            <PdfViewer
+              pdfUrl={pdfUrl}
+              className={`${isFullScreen ? "h-[99.9vh]" : "h-full"}`}
             />
-            
             {/* Full Screen Toggle Button */}
             <div className={`absolute bottom-6 right-6 transition-opacity ${isFullScreen ? 'opacity-40 hover:opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
               <Button 

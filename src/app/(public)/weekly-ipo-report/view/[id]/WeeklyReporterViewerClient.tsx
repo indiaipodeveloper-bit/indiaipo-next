@@ -6,6 +6,13 @@ import { ChevronLeft, Download, Eye, Loader2, Share2, Newspaper, X, Maximize, Mi
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { getImageUrl } from "@/lib/utils";
+import dynamic from "next/dynamic";
+const PdfViewer = dynamic(
+  () => import("@/components/common/PdfViewer"),
+  {
+    ssr: false,
+  }
+);
 
 interface WeeklyDigest {
   id: number;
@@ -83,16 +90,16 @@ export default function WeeklyReporterViewerClient({
                   <span className="hidden md:inline">Share</span>
                 </Button>
 
-                {pdfUrl && (
-                  <Button
-                    className="bg-[#001529] hover:bg-[#002a52] text-white rounded-lg gap-2 cursor-pointer"
-                    size="sm"
-                    onClick={() => window.open(pdfUrl, '_blank')}
-                  >
-                    <Download className="h-4 w-4" />
-                    <span className="hidden md:inline">Download Report</span>
-                  </Button>
-                )}
+                {/* {pdfUrl && ( */}
+                {/*   <Button */}
+                {/*     className="bg-[#001529] hover:bg-[#002a52] text-white rounded-lg gap-2 cursor-pointer" */}
+                {/*     size="sm" */}
+                {/*     onClick={() => window.open(pdfUrl, '_blank')} */}
+                {/*   > */}
+                {/*     <Download className="h-4 w-4" /> */}
+                {/*     <span className="hidden md:inline">Download Report</span> */}
+                {/*   </Button> */}
+                {/* )} */}
               </div>
             </div>
           </div>
@@ -108,11 +115,16 @@ export default function WeeklyReporterViewerClient({
                   : 'rounded-2xl h-[80vh] md:h-[90vh]'
               }`}
             >
-              <iframe
-                src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`}
-                className="w-full h-full border-none"
-                title={digest.title}
-              />
+              {/* <iframe */}
+              {/*   src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`} */}
+              {/*   className="w-full h-full border-none" */}
+              {/*   title={digest.title} */}
+              {/* /> */}
+
+            <PdfViewer
+              pdfUrl={pdfUrl}
+              className={`${isFullScreen ? "h-[99.9vh]" : "h-full"}`}
+            />
 
               <div className={`absolute bottom-6 right-6 transition-opacity ${isFullScreen ? 'opacity-40 hover:opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
                 <Button
@@ -150,11 +162,11 @@ export default function WeeklyReporterViewerClient({
             </div>
           )}
 
-          {pdfUrl && !isFullScreen && (
-            <div className="mt-8 text-center text-muted-foreground text-sm pb-10">
-              <p>Having trouble viewing? <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="text-primary font-bold hover:underline">Click here to open PDF directly</a></p>
-            </div>
-          )}
+          {/* {pdfUrl && !isFullScreen && ( */}
+          {/*   <div className="mt-8 text-center text-muted-foreground text-sm pb-10"> */}
+          {/*     <p>Having trouble viewing? <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="text-primary font-bold hover:underline">Click here to open PDF directly</a></p> */}
+          {/*   </div> */}
+          {/* )} */}
         </div>
       </main>
 

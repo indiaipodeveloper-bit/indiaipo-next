@@ -98,14 +98,14 @@ export default function MagazineViewerClient({ magazine }: MagazineViewerClientP
                   <span className="hidden md:inline">Share</span>
                 </Button>
                 
-                <Button 
-                  className="bg-[#001529] hover:bg-[#002a52] text-white rounded-lg gap-2 cursor-pointer border-0"
-                  size="sm"
-                  onClick={() => window.open(pdfUrl, '_blank')}
-                >
-                  <Download className="h-4 w-4" />
-                  <span className="hidden md:inline">Download PDF</span>
-                </Button>
+                {/* <Button  */}
+                {/*   className="bg-[#001529] hover:bg-[#002a52] text-white rounded-lg gap-2 cursor-pointer border-0" */}
+                {/*   size="sm" */}
+                {/*   onClick={() => window.open(pdfUrl, '_blank')} */}
+                {/* > */}
+                {/*   <Download className="h-4 w-4" /> */}
+                {/*   <span className="hidden md:inline">Download PDF</span> */}
+                {/* </Button> */}
               </div>
             </div>
           </div>
@@ -161,11 +161,11 @@ export default function MagazineViewerClient({ magazine }: MagazineViewerClientP
             )}
           </div>
           
-          {!isFullScreen && (
-            <div className="mt-8 text-center text-muted-foreground text-sm pb-10">
-              <p>Having trouble viewing? <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="text-primary font-bold hover:underline">Click here to open PDF directly</a></p>
-            </div>
-          )}
+          {/* {!isFullScreen && ( */}
+          {/*   <div className="mt-8 text-center text-muted-foreground text-sm pb-10"> */}
+          {/*     <p>Having trouble viewing? <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="text-primary font-bold hover:underline">Click here to open PDF directly</a></p> */}
+          {/*   </div> */}
+          {/* )} */}
         </div>
       </main>
     </div>

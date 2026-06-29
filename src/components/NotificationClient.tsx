@@ -8,6 +8,14 @@ import {
   Home, ChevronRight, FileText, Download, ExternalLink,
   ArrowRight, Phone, Mail, Shield, CheckCircle2, AlertCircle, Info
 } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const PdfViewer = dynamic(
+  () => import("@/components/common/PdfViewer"),
+  {
+    ssr: false,
+  }
+);
 
 interface NotificationPdf {
   id: string | number;
@@ -122,16 +130,21 @@ export default function NotificationClient({
                       >
                         <ExternalLink className="h-3.5 w-3.5" /> Open in New Tab
                       </a>
-                      <a
-                        href={pdfSrc}
-                        download
-                        className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black transition-all hover:scale-105 cursor-pointer bg-gradient-to-r from-[#f59e08] to-[#d97706] text-[#001529] border-0"
-                      >
-                        <Download className="h-3.5 w-3.5" /> Download
-                      </a>
+                      {/* <a */}
+                      {/*   href={pdfSrc} */}
+                      {/*   download */}
+                      {/*   className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black transition-all hover:scale-105 cursor-pointer bg-gradient-to-r from-[#f59e08] to-[#d97706] text-[#001529] border-0" */}
+                      {/* > */}
+                      {/*   <Download className="h-3.5 w-3.5" /> Download */}
+                      {/* </a> */}
                     </div>
                   </div>
-                  <iframe src={pdfSrc} className="w-full border-0" style={{ height: "80vh" }} title={pdf?.title} />
+                  {/* <iframe src={pdfSrc} className="w-full border-0" style={{ height: "80vh" }} title={pdf?.title} /> */}
+                  
+                  <PdfViewer
+                    pdfUrl={pdfSrc}
+                    className="h-[80vh]"
+                  />
                 </div>
               ) : extLink ? (
                 <div className="bg-white border border-slate-200 rounded-2xl p-16 text-center shadow-sm">

@@ -7,6 +7,8 @@ import { ArrowRight, ChevronLeft, ChevronRight, Home, TrendingUp, Search, X, Zap
 import { motion, AnimatePresence } from "framer-motion";
 import { getImgSrc } from "@/utils/image";
 import { API_URL } from "@/lib/constants";
+import ipoUpdatesImage from "@/assets/ipo-updates.png";
+import Image from "next/image";
 
 interface IPOBlog {
   id: string; title: string; slug: string;
@@ -92,13 +94,10 @@ export default function IPOBlogsClient({
 
       <section className="py-14 relative overflow-hidden bg-[#001529]">
         <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover opacity-30"
-            src={getImageUrl(initialBannerVideo || "/uploads/video/ccvindia1.mp4")}
+          <Image
+            src={ipoUpdatesImage}
+            alt="ipo-updates"
+            className="w-full h-full object-cover "
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#001529]/80 via-[#001529]/40 to-[#001529]" />
         </div>

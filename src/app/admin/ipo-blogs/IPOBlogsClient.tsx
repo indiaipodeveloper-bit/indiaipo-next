@@ -94,6 +94,7 @@ interface AdminBlog {
   source?: string;
   user_id?: string | number;
   created_at: string;
+  ipo_subscription?: string;
 }
 
 const emptyForm: Partial<AdminBlog> = {
@@ -117,7 +118,8 @@ const emptyForm: Partial<AdminBlog> = {
   confidential: "0",
   state: "", city: "", pincode: "", drhp_status: "No",
   recientipo: "", private_equity: "", business_economics_update: "", geopolitical_update: "",
-  source: ""
+  source: "",
+  ipo_subscription: ""
 };
 
 const parseIPODateRange = (value: string): { startDate: Date | null, endDate: Date | null } => {
@@ -296,6 +298,55 @@ export default function IPOBlogsClient() {
   const [confidentialDrhpRows, setConfidentialDrhpRows] = useState<{ description: string; date: string; pdf: string }[]>([]);
   const [dailyDigests, setDailyDigests] = useState<any[]>([]);
   const [modalTab, setModalTab] = useState("basic");
+
+  interface SubscriptionDayRow {
+    date: string;
+    anchor_offered: string;
+    anchor_bid: string;
+    qib_offered: string;
+    qib_bid: string;
+    bnii_offered: string;
+    bnii_bid: string;
+    snii_offered: string;
+    snii_bid: string;
+    retail_offered: string;
+    retail_bid: string;
+  }
+  const [subscriptionRows, setSubscriptionRows] = useState<SubscriptionDayRow[]>([]);
+
+  const getTimelineDateRange = () => {
+    const openRow = timelineRows.find(r => r.label === 'IPO Open Date');
+    const closeRow = timelineRows.find(r => r.label === 'IPO Close Date');
+    
+    if (!openRow?.date || !closeRow?.date) return [];
+    
+    const openDate = new Date(openRow.date);
+    const closeDate = new Date(closeRow.date);
+    
+    if (isNaN(openDate.getTime()) || isNaN(closeDate.getTime())) return [];
+    if (openDate > closeDate) return [];
+    
+    const dates: { dateStr: string; label: string }[] = [];
+    let current = new Date(openDate);
+    let dayNum = 1;
+    
+    current.setHours(0, 0, 0, 0);
+    const endLimit = new Date(closeDate);
+    endLimit.setHours(23, 59, 59, 999);
+    
+    while (current <= endLimit) {
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const formatted = `${monthNames[current.getMonth()]} ${current.getDate()} (Day ${dayNum})`;
+      dates.push({
+        dateStr: formatted,
+        label: formatted
+      });
+      
+      current.setDate(current.getDate() + 1);
+      dayNum++;
+    }
+    return dates;
+  };
 
   const getHeaders = (json = true) => {
     const h: Record<string, string> = {};
@@ -603,6 +654,7 @@ export default function IPOBlogsClient() {
       updatedForm.geopolitical_update = JSON.stringify(geopoliticalRows.filter(s => s.trim()));
 
       updatedForm.confidential_drhp = JSON.stringify(confidentialDrhpRows);
+      updatedForm.ipo_subscription = JSON.stringify(subscriptionRows);
 
       updatedForm.key_pri_ipo_eps = String(form.key_pri_ipo_eps || "");
       updatedForm.key_pos_ipo_eps = String(form.key_pos_ipo_eps || "");
@@ -808,6 +860,15 @@ export default function IPOBlogsClient() {
         if (newCDrhpRows.length === 0) newCDrhpRows.push({ description: '', date: '', pdf: '' });
         setConfidentialDrhpRows(newCDrhpRows);
 
+        let parsedSub = [];
+        try {
+          const rawSub = fullData.ipo_subscription;
+          if (rawSub) {
+            parsedSub = typeof rawSub === 'string' ? JSON.parse(rawSub) : rawSub;
+          }
+        } catch { parsedSub = []; }
+        setSubscriptionRows(Array.isArray(parsedSub) ? parsedSub : []);
+
         setModalTab("basic");
         setDialogOpen(true);
       } else {
@@ -878,6 +939,7 @@ export default function IPOBlogsClient() {
     setBusinessEconomicRows(['']);
     setGeopoliticalRows(['']);
     setConfidentialDrhpRows([{ description: '', date: '', pdf: '' }]);
+    setSubscriptionRows([]);
     setModalTab("basic");
     setDialogOpen(true);
   };
@@ -1041,11 +1103,14 @@ export default function IPOBlogsClient() {
                       <TabsTrigger value="seo" className="flex items-center gap-1.5 text-foreground"><LinkIcon className="w-3.5 h-3.5" /> SEO/Docs</TabsTrigger>
                     </TabsList>
                   ) : (
-                    <TabsList className="grid grid-cols-3 md:grid-cols-6 mb-6">
+                    <TabsList className={`grid grid-cols-3 ${form.category === 'ipo_updates' && String(form.upcoming) === '0' ? 'md:grid-cols-7' : 'md:grid-cols-6'} mb-6`}>
                       <TabsTrigger value="basic" className="flex items-center gap-1.5 text-foreground"><Info className="w-3.5 h-3.5" /> Basic</TabsTrigger>
                       <TabsTrigger value="gmp" className="flex items-center gap-1.5 text-foreground"><BarChart className="w-3.5 h-3.5" /> GMP/Lots</TabsTrigger>
                       <TabsTrigger value="timelines" className="flex items-center gap-1.5 text-foreground"><List className="w-3.5 h-3.5" /> Timelines</TabsTrigger>
                       <TabsTrigger value="financials" className="flex items-center gap-1.5 text-foreground"><Database className="w-3.5 h-3.5" /> Financials</TabsTrigger>
+                      {form.category === 'ipo_updates' && String(form.upcoming) === '0' && (
+                        <TabsTrigger value="subscription" className="flex items-center gap-1.5 text-foreground"><Activity className="w-3.5 h-3.5" /> Subscription</TabsTrigger>
+                      )}
                       <TabsTrigger value="content" className="flex items-center gap-1.5 text-foreground"><Layout className="w-3.5 h-3.5" /> Content</TabsTrigger>
                       <TabsTrigger value="seo" className="flex items-center gap-1.5 text-foreground"><LinkIcon className="w-3.5 h-3.5" /> SEO/Docs</TabsTrigger>
                     </TabsList>
@@ -1670,6 +1735,344 @@ export default function IPOBlogsClient() {
                           </div>
                         </div>
                       </TabsContent>
+                      {String(form.upcoming) === '0' && (
+                        <TabsContent value="subscription" className="space-y-6">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h4 className="text-sm font-semibold text-foreground">IPO Subscription Details (Day-wise)</h4>
+                              <p className="text-xs text-muted-foreground mt-0.5">Calculated using Upper Price Band: ₹{getAutoValues().maxPrice || 0}</p>
+                            </div>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              disabled={getTimelineDateRange().length === 0 || subscriptionRows.length >= getTimelineDateRange().length}
+                              onClick={() => {
+                                const range = getTimelineDateRange();
+                                if (range.length === 0) {
+                                  toast.error("Please set valid IPO Open and Close dates in the Timelines tab first!");
+                                  return;
+                                }
+                                // Find the first date in the range that hasn't been added yet
+                                const usedDates = new Set(subscriptionRows.map(r => r.date));
+                                const nextAvailable = range.find(d => !usedDates.has(d.dateStr));
+                                if (!nextAvailable) {
+                                  toast.error("All dates in the IPO range have already been added!");
+                                  return;
+                                }
+                                const lastRow = subscriptionRows[subscriptionRows.length - 1];
+                                setSubscriptionRows([
+                                  ...subscriptionRows,
+                                  {
+                                    date: nextAvailable.dateStr,
+                                    anchor_offered: lastRow?.anchor_offered || '',
+                                    anchor_bid: '',
+                                    qib_offered: lastRow?.qib_offered || '',
+                                    qib_bid: '',
+                                    bnii_offered: lastRow?.bnii_offered || '',
+                                    bnii_bid: '',
+                                    snii_offered: lastRow?.snii_offered || '',
+                                    snii_bid: '',
+                                    retail_offered: lastRow?.retail_offered || '',
+                                    retail_bid: ''
+                                  }
+                                ]);
+                              }}
+                              className="text-foreground border-border/50 hover:bg-muted/50"
+                            >
+                              <Plus className="w-3.5 h-3.5 mr-1" /> Add Day Entry
+                            </Button>
+                          </div>
+
+                          {getTimelineDateRange().length === 0 && (
+                            <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-xs font-semibold">
+                              ⚠️ Please enter valid "IPO Open Date" and "IPO Close Date" in the Timelines tab first to set subscription dates.
+                            </div>
+                          )}
+
+                          <div className="space-y-6">
+                            {subscriptionRows.map((row, idx) => {
+                              const maxPrice = getAutoValues().maxPrice || 0;
+                              
+                              const anchorOffered = parseFloat(row.anchor_offered) || 0;
+                              const anchorBid = parseFloat(row.anchor_bid) || 0;
+                              const anchorSub = anchorOffered > 0 ? (anchorBid / anchorOffered).toFixed(2) : '0.00';
+                              const anchorAmt = (anchorBid * maxPrice) / 10000000;
+
+                              const qibOffered = parseFloat(row.qib_offered) || 0;
+                              const qibBid = parseFloat(row.qib_bid) || 0;
+                              const qibSub = qibOffered > 0 ? (qibBid / qibOffered).toFixed(2) : '0.00';
+                              const qibAmt = (qibBid * maxPrice) / 10000000;
+
+                              const bniiOffered = parseFloat(row.bnii_offered) || 0;
+                              const bniiBid = parseFloat(row.bnii_bid) || 0;
+                              const bniiSub = bniiOffered > 0 ? (bniiBid / bniiOffered).toFixed(2) : '0.00';
+                              const bniiAmt = (bniiBid * maxPrice) / 10000000;
+
+                              const sniiOffered = parseFloat(row.snii_offered) || 0;
+                              const sniiBid = parseFloat(row.snii_bid) || 0;
+                              const sniiSub = sniiOffered > 0 ? (sniiBid / sniiOffered).toFixed(2) : '0.00';
+                              const sniiAmt = (sniiBid * maxPrice) / 10000000;
+
+                              // Calculated NII
+                              const niiOffered = bniiOffered + sniiOffered;
+                              const niiBid = bniiBid + sniiBid;
+                              const niiSub = niiOffered > 0 ? (niiBid / niiOffered).toFixed(2) : '0.00';
+                              const niiAmt = (niiBid * maxPrice) / 10000000;
+
+                              const retailOffered = parseFloat(row.retail_offered) || 0;
+                              const retailBid = parseFloat(row.retail_bid) || 0;
+                              const retailSub = retailOffered > 0 ? (retailBid / retailOffered).toFixed(2) : '0.00';
+                              const retailAmt = (retailBid * maxPrice) / 10000000;
+
+                              // Total (excluding Anchor)
+                              const totalOffered = qibOffered + niiOffered + retailOffered;
+                              const totalBid = qibBid + niiBid + retailBid;
+                              const totalSub = totalOffered > 0 ? (totalBid / totalOffered).toFixed(2) : '0.00';
+                              const totalAmt = (totalBid * maxPrice) / 10000000;
+
+                              return (
+                                <div key={idx} className="border border-border rounded-xl p-4 bg-muted/10 space-y-4 text-foreground">
+                                  <div className="flex items-center justify-between border-b pb-2 border-border/50">
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-xs font-bold text-muted-foreground">Date / Day:</span>
+                                      <Select
+                                        value={row.date}
+                                        onValueChange={(v) => {
+                                          const newRows = [...subscriptionRows];
+                                          newRows[idx].date = v;
+                                          setSubscriptionRows(newRows);
+                                        }}
+                                      >
+                                        <SelectTrigger className="h-8 w-56 text-xs font-semibold bg-white border-border/50 text-foreground">
+                                          <SelectValue placeholder="Select Date" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          {getTimelineDateRange().map((d) => {
+                                            const isUsed = subscriptionRows.some((r, i) => r.date === d.dateStr && i !== idx);
+                                            return (
+                                              <SelectItem key={d.dateStr} value={d.dateStr} disabled={isUsed}>
+                                                {d.label} {isUsed ? "(Already added)" : ""}
+                                              </SelectItem>
+                                            );
+                                          })}
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => {
+                                        if (confirm(`Are you sure you want to delete the subscription entry for "${row.date || 'this day'}"?`)) {
+                                          setSubscriptionRows(subscriptionRows.filter((_, i) => i !== idx));
+                                        }
+                                      }}
+                                      className="h-8 px-2 text-destructive hover:bg-destructive/10"
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5 mr-1" /> Delete Day
+                                    </Button>
+                                  </div>
+
+                                  <div className="overflow-x-auto border border-border/50 rounded-lg bg-white">
+                                    <table className="w-full text-[11px] border-collapse">
+                                      <thead>
+                                        <tr className="bg-muted/30 border-b border-border/50 text-foreground">
+                                          <th className="p-2 text-left font-bold">Category</th>
+                                          <th className="p-2 text-left font-bold">Shares Offered</th>
+                                          <th className="p-2 text-left font-bold">Shares Bid For</th>
+                                          <th className="p-2 text-left font-bold">Subscription (x)</th>
+                                          <th className="p-2 text-left font-bold">Total Amt (₹ Cr.)</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {/* Anchor */}
+                                        <tr className="border-b border-border/50">
+                                          <td className="p-2 font-semibold">Anchor</td>
+                                          <td className="p-1">
+                                            <Input
+                                              className="h-7 text-[11px] px-2 bg-white text-foreground"
+                                              value={row.anchor_offered}
+                                              onChange={(e) => {
+                                                const n = [...subscriptionRows];
+                                                n[idx].anchor_offered = e.target.value.replace(/[^0-9]/g, '');
+                                                setSubscriptionRows(n);
+                                              }}
+                                              placeholder="0"
+                                            />
+                                          </td>
+                                          <td className="p-1">
+                                            <Input
+                                              className="h-7 text-[11px] px-2 bg-white text-foreground"
+                                              value={row.anchor_bid}
+                                              onChange={(e) => {
+                                                const n = [...subscriptionRows];
+                                                n[idx].anchor_bid = e.target.value.replace(/[^0-9]/g, '');
+                                                setSubscriptionRows(n);
+                                              }}
+                                              placeholder="0"
+                                            />
+                                          </td>
+                                          <td className="p-2 text-muted-foreground font-semibold">{anchorSub}x</td>
+                                          <td className="p-2 text-muted-foreground font-semibold">₹{anchorAmt.toFixed(3)} Cr</td>
+                                        </tr>
+
+                                        {/* QIB */}
+                                        <tr className="border-b border-border/50">
+                                          <td className="p-2 font-semibold">QIB (Ex Anchor)</td>
+                                          <td className="p-1">
+                                            <Input
+                                              className="h-7 text-[11px] px-2 bg-white text-foreground"
+                                              value={row.qib_offered}
+                                              onChange={(e) => {
+                                                const n = [...subscriptionRows];
+                                                n[idx].qib_offered = e.target.value.replace(/[^0-9]/g, '');
+                                                setSubscriptionRows(n);
+                                              }}
+                                              placeholder="0"
+                                            />
+                                          </td>
+                                          <td className="p-1">
+                                            <Input
+                                              className="h-7 text-[11px] px-2 bg-white text-foreground"
+                                              value={row.qib_bid}
+                                              onChange={(e) => {
+                                                const n = [...subscriptionRows];
+                                                n[idx].qib_bid = e.target.value.replace(/[^0-9]/g, '');
+                                                setSubscriptionRows(n);
+                                              }}
+                                              placeholder="0"
+                                            />
+                                          </td>
+                                          <td className="p-2 text-muted-foreground font-semibold">{qibSub}x</td>
+                                          <td className="p-2 text-muted-foreground font-semibold">₹{qibAmt.toFixed(3)} Cr</td>
+                                        </tr>
+
+                                        {/* NII (Auto Calculated) */}
+                                        <tr className="border-b border-border/50 bg-[#e0f2fe]/40">
+                                          <td className="p-2 font-bold text-sky-800">NII (Auto)</td>
+                                          <td className="p-2 font-semibold text-sky-800">{niiOffered.toLocaleString('en-IN')}</td>
+                                          <td className="p-2 font-semibold text-sky-800">{niiBid.toLocaleString('en-IN')}</td>
+                                          <td className="p-2 font-bold text-sky-800">{niiSub}x</td>
+                                          <td className="p-2 font-bold text-sky-800">₹{niiAmt.toFixed(3)} Cr</td>
+                                        </tr>
+
+                                        {/* bNII */}
+                                        <tr className="border-b border-border/50">
+                                          <td className="p-2 font-semibold pl-4">bNII (&gt; ₹10L)</td>
+                                          <td className="p-1">
+                                            <Input
+                                              className="h-7 text-[11px] px-2 bg-white text-foreground"
+                                              value={row.bnii_offered}
+                                              onChange={(e) => {
+                                                const n = [...subscriptionRows];
+                                                n[idx].bnii_offered = e.target.value.replace(/[^0-9]/g, '');
+                                                setSubscriptionRows(n);
+                                              }}
+                                              placeholder="0"
+                                            />
+                                          </td>
+                                          <td className="p-1">
+                                            <Input
+                                              className="h-7 text-[11px] px-2 bg-white text-foreground"
+                                              value={row.bnii_bid}
+                                              onChange={(e) => {
+                                                const n = [...subscriptionRows];
+                                                n[idx].bnii_bid = e.target.value.replace(/[^0-9]/g, '');
+                                                setSubscriptionRows(n);
+                                              }}
+                                              placeholder="0"
+                                            />
+                                          </td>
+                                          <td className="p-2 text-muted-foreground font-semibold">{bniiSub}x</td>
+                                          <td className="p-2 text-muted-foreground font-semibold">₹{bniiAmt.toFixed(3)} Cr</td>
+                                        </tr>
+
+                                        {/* sNII */}
+                                        <tr className="border-b border-border/50">
+                                          <td className="p-2 font-semibold pl-4">sNII (&lt; ₹10L)</td>
+                                          <td className="p-1">
+                                            <Input
+                                              className="h-7 text-[11px] px-2 bg-white text-foreground"
+                                              value={row.snii_offered}
+                                              onChange={(e) => {
+                                                const n = [...subscriptionRows];
+                                                n[idx].snii_offered = e.target.value.replace(/[^0-9]/g, '');
+                                                setSubscriptionRows(n);
+                                              }}
+                                              placeholder="0"
+                                            />
+                                          </td>
+                                          <td className="p-1">
+                                            <Input
+                                              className="h-7 text-[11px] px-2 bg-white text-foreground"
+                                              value={row.snii_bid}
+                                              onChange={(e) => {
+                                                const n = [...subscriptionRows];
+                                                n[idx].snii_bid = e.target.value.replace(/[^0-9]/g, '');
+                                                setSubscriptionRows(n);
+                                              }}
+                                              placeholder="0"
+                                            />
+                                          </td>
+                                          <td className="p-2 text-muted-foreground font-semibold">{sniiSub}x</td>
+                                          <td className="p-2 text-muted-foreground font-semibold">₹{sniiAmt.toFixed(3)} Cr</td>
+                                        </tr>
+
+                                        {/* Retail */}
+                                        <tr className="border-b border-border/50">
+                                          <td className="p-2 font-semibold">Retail</td>
+                                          <td className="p-1">
+                                            <Input
+                                              className="h-7 text-[11px] px-2 bg-white text-foreground"
+                                              value={row.retail_offered}
+                                              onChange={(e) => {
+                                                const n = [...subscriptionRows];
+                                                n[idx].retail_offered = e.target.value.replace(/[^0-9]/g, '');
+                                                setSubscriptionRows(n);
+                                              }}
+                                              placeholder="0"
+                                            />
+                                          </td>
+                                          <td className="p-1">
+                                            <Input
+                                              className="h-7 text-[11px] px-2 bg-white text-foreground"
+                                              value={row.retail_bid}
+                                              onChange={(e) => {
+                                                const n = [...subscriptionRows];
+                                                n[idx].retail_bid = e.target.value.replace(/[^0-9]/g, '');
+                                                setSubscriptionRows(n);
+                                              }}
+                                              placeholder="0"
+                                            />
+                                          </td>
+                                          <td className="p-2 text-muted-foreground font-semibold">{retailSub}x</td>
+                                          <td className="p-2 text-muted-foreground font-semibold">₹{retailAmt.toFixed(3)} Cr</td>
+                                        </tr>
+
+                                        {/* Total (Auto Calculated) */}
+                                        <tr className="bg-[#f0fdf4]">
+                                          <td className="p-2 font-bold text-emerald-800">Total (Auto)</td>
+                                          <td className="p-2 font-bold text-emerald-800">{totalOffered.toLocaleString('en-IN')}</td>
+                                          <td className="p-2 font-bold text-emerald-800">{totalBid.toLocaleString('en-IN')}</td>
+                                          <td className="p-2 font-extrabold text-emerald-800">{totalSub}x</td>
+                                          <td className="p-2 font-extrabold text-emerald-800">₹{totalAmt.toFixed(3)} Cr</td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              );
+                            })}
+
+                            {subscriptionRows.length === 0 && (
+                              <div className="border border-dashed border-border rounded-xl p-8 text-center text-muted-foreground italic">
+                                No subscription entry added yet. Click "Add Day Entry" to start.
+                              </div>
+                            )}
+                          </div>
+                        </TabsContent>
+                      )}
                     </>
                   )}
 

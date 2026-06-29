@@ -66,6 +66,7 @@ interface AdminBlogFull {
   source: string;
   created_at: string;
   updated_at?: string;
+  ipo_subscription?: string;
 }
 
 const stripHtml = (html: string) => {

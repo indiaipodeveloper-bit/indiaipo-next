@@ -286,7 +286,16 @@ export default function BannersClient() {
                 value={form.page_path}
                 onChange={(e) => setForm({ ...form, page_path: e.target.value })}
               >
-                {PAGES.map(p => <option key={p.value} value={p.value} className="bg-white text-slate-800">{p.label}</option>)}
+                {PAGES.map((p, idx) => (
+                  <option
+                    key={`${p.value}-${idx}`}
+                    value={p.value}
+                    disabled={p.label.startsWith("---")}
+                    className="bg-white text-slate-800"
+                  >
+                    {p.label}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="space-y-2">

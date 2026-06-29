@@ -122,6 +122,7 @@ interface AdminBlogFull {
   created_at: string;
   updated_at?: string;
   new_slug?: string;
+  ipo_subscription?: string;
 }
 
 const isValid = (val: any) => {
@@ -924,6 +925,54 @@ export default function IPOBlogDetailsClient({
   const [bankers, setBankers] = useState<any[]>([]);
   const [trendingNews, setTrendingNews] = useState<any[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<"all" | "subscription">("all");
+  const [selectedSubDate, setSelectedSubDate] = useState<string>("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("tab") === "subscription") {
+        setActiveTab("subscription");
+      } else {
+        setActiveTab("all");
+      }
+    }
+  }, []);
+
+  const handleTabChange = (tab: "all" | "subscription") => {
+    setActiveTab(tab);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      if (tab === "subscription") {
+        url.searchParams.set("tab", "subscription");
+      } else {
+        url.searchParams.delete("tab");
+      }
+      window.history.pushState({}, "", url.toString());
+    }
+  };
+
+  const scrollToSection = (id: string) => {
+    if (activeTab !== "all") {
+      handleTabChange("all");
+      let attempts = 0;
+      const interval = setInterval(() => {
+        const element = document.getElementById(id);
+        attempts++;
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+          clearInterval(interval);
+        } else if (attempts > 30) {
+          clearInterval(interval);
+        }
+      }, 100);
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -1705,7 +1754,8 @@ export default function IPOBlogDetailsClient({
     blog.category !== "daily_reporter" &&
       finalIpoDetails.length > 0 ? (
       <div
-        className="bg-white rounded-2xl shadow-sm mb-6 mt-4"
+        id="details"
+        className="bg-white rounded-2xl shadow-sm mb-6 mt-4 scroll-mt-24"
         style={{ border: "1px solid #e2e8f0" }}
       >
         <SectionHeader
@@ -1984,6 +2034,245 @@ export default function IPOBlogDetailsClient({
     ) : null
   );
 
+  const renderSubscriptionTables = () => {
+    if (!blog.ipo_subscription) return null;
+    let parsedRows: any[] = [];
+    try {
+      parsedRows = typeof blog.ipo_subscription === 'string' ? JSON.parse(blog.ipo_subscription) : blog.ipo_subscription;
+    } catch {
+      return null;
+    }
+    if (!Array.isArray(parsedRows) || parsedRows.length === 0) return null;
+
+    // We have the rows. Let's find the upper price band.
+    const priceBandRow = finalIpoDetails.find(r => r.label.toLowerCase().includes('price band') || r.label.toLowerCase().includes('issue price'));
+    let upperPrice = 0;
+    if (priceBandRow) {
+      const prices = priceBandRow.value.match(/(\d+)/g);
+      if (prices && prices.length > 0) {
+        upperPrice = Math.max(...prices.map(p => parseInt(p)));
+      }
+    }
+
+    // Let's compute the Live Status Table using the selected entry (or latest if not selected).
+    const latestRow = parsedRows[parsedRows.length - 1];
+    const activeSubRow = parsedRows.find(r => r.date === selectedSubDate) || latestRow;
+    
+    const getFloatVal = (val: any) => parseFloat(val) || 0;
+
+    const computeCategoryRow = (label: string, offeredStr: any, bidStr: any) => {
+      const offered = getFloatVal(offeredStr);
+      const bid = getFloatVal(bidStr);
+      const sub = offered > 0 ? (bid / offered).toFixed(2) + 'x' : '0.00x';
+      const amt = upperPrice > 0 ? ((bid * upperPrice) / 10000000).toFixed(3) + ' Cr' : '—';
+      return {
+        label,
+        offered: offered > 0 ? formatIndianNumber(offered.toString()) : '0',
+        bid: bid > 0 ? formatIndianNumber(bid.toString()) : '0',
+        sub,
+        amt
+      };
+    };
+
+    const anchor = computeCategoryRow('Anchor', activeSubRow.anchor_offered, activeSubRow.anchor_bid);
+    const qib = computeCategoryRow('QIB (Ex Anchor)', activeSubRow.qib_offered, activeSubRow.qib_bid);
+    
+    // NII calculations
+    const bniiOffered = getFloatVal(activeSubRow.bnii_offered);
+    const sniiOffered = getFloatVal(activeSubRow.snii_offered);
+    const bniiBid = getFloatVal(activeSubRow.bnii_bid);
+    const sniiBid = getFloatVal(activeSubRow.snii_bid);
+
+    const niiOfferedVal = bniiOffered + sniiOffered;
+    const niiBidVal = bniiBid + sniiBid;
+    const niiSub = niiOfferedVal > 0 ? (niiBidVal / niiOfferedVal).toFixed(2) + 'x' : '0.00x';
+    const niiAmt = upperPrice > 0 ? ((niiBidVal * upperPrice) / 10000000).toFixed(3) + ' Cr' : '—';
+    const nii = {
+      label: 'NII',
+      offered: niiOfferedVal > 0 ? formatIndianNumber(niiOfferedVal.toString()) : '0',
+      bid: niiBidVal > 0 ? formatIndianNumber(niiBidVal.toString()) : '0',
+      sub: niiSub,
+      amt: niiAmt
+    };
+
+    const bnii = computeCategoryRow('bNII (> ₹10L)', activeSubRow.bnii_offered, activeSubRow.bnii_bid);
+    const snii = computeCategoryRow('sNII (< ₹10L)', activeSubRow.snii_offered, activeSubRow.snii_bid);
+    const retail = computeCategoryRow('Retail', activeSubRow.retail_offered, activeSubRow.retail_bid);
+
+    // Total calculations (excluding Anchor)
+    const qibOffered = getFloatVal(activeSubRow.qib_offered);
+    const qibBid = getFloatVal(activeSubRow.qib_bid);
+    const retailOffered = getFloatVal(activeSubRow.retail_offered);
+    const retailBid = getFloatVal(activeSubRow.retail_bid);
+
+    const totalOfferedVal = qibOffered + niiOfferedVal + retailOffered;
+    const totalBidVal = qibBid + niiBidVal + retailBid;
+    const totalSub = totalOfferedVal > 0 ? (totalBidVal / totalOfferedVal).toFixed(2) + 'x' : '0.00x';
+    const totalAmt = upperPrice > 0 ? ((totalBidVal * upperPrice) / 10000000).toFixed(3) + ' Cr' : '—';
+    const total = {
+      label: 'Total **',
+      offered: totalOfferedVal > 0 ? formatIndianNumber(totalOfferedVal.toString()) : '0',
+      bid: totalBidVal > 0 ? formatIndianNumber(totalBidVal.toString()) : '0',
+      sub: totalSub,
+      amt: totalAmt
+    };
+
+    const liveTableRows = [anchor, qib, nii, bnii, snii, retail, total];
+
+    // Day-wise table calculations
+    const dayWiseRows = parsedRows.map((row) => {
+      const qOff = getFloatVal(row.qib_offered);
+      const qB = getFloatVal(row.qib_bid);
+      const qSub = qOff > 0 ? (qB / qOff).toFixed(2) : '0.00';
+
+      const bOff = getFloatVal(row.bnii_offered);
+      const bB = getFloatVal(row.bnii_bid);
+      const bSub = bOff > 0 ? (bB / bOff).toFixed(2) : '0.00';
+
+      const sOff = getFloatVal(row.snii_offered);
+      const sB = getFloatVal(row.snii_bid);
+      const sSub = sOff > 0 ? (sB / sOff).toFixed(2) : '0.00';
+
+      const nOff = bOff + sOff;
+      const nB = bB + sB;
+      const nSub = nOff > 0 ? (nB / nOff).toFixed(2) : '0.00';
+
+      const rOff = getFloatVal(row.retail_offered);
+      const rB = getFloatVal(row.retail_bid);
+      const rSub = rOff > 0 ? (rB / rOff).toFixed(2) : '0.00';
+
+      const tOff = qOff + nOff + rOff;
+      const tB = qB + nB + rB;
+      const tSub = tOff > 0 ? (tB / tOff).toFixed(2) : '0.00';
+
+      return {
+        date: row.date || 'Day',
+        qib: qSub,
+        nii: nSub,
+        bnii: bSub,
+        snii: sSub,
+        retail: rSub,
+        total: tSub
+      };
+    });
+
+    return (
+      <div className="space-y-8 mb-8 animate-in fade-in slide-in-from-bottom-3 duration-300">
+        {/* Live Subscription Status Table */}
+        <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200">
+          <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="text-xl font-bold text-slate-800 uppercase tracking-wider">
+                {blog.title.replace(/\s+IPO$/i, "").trim()} IPO Subscription Status Live
+              </h3>
+              <p className="text-xs text-slate-500 mt-1 font-semibold">
+                Showing data for: <span className="text-emerald-700 font-bold">{activeSubRow.date || 'Latest'}</span>
+              </p>
+            </div>
+            <div className="flex items-center gap-2 justify-center shrink-0">
+              <span className="text-xs font-bold text-slate-600">Select Date:</span>
+              <select
+                value={selectedSubDate || latestRow.date}
+                onChange={(e) => setSelectedSubDate(e.target.value)}
+                className="text-xs font-semibold text-slate-700 border border-slate-300 rounded-lg px-3 py-1.5 bg-slate-50 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+              >
+                {parsedRows.map((r, index) => (
+                  <option key={index} value={r.date}>
+                    {r.date} {index === parsedRows.length - 1 ? '(Latest)' : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-50 border-b border-slate-200">
+                  <th className="py-3 px-5 text-left text-xs font-bold text-slate-600 uppercase tracking-wider border-r border-slate-200">Category</th>
+                  <th className="py-3 px-5 text-left text-xs font-bold text-slate-600 uppercase tracking-wider border-r border-slate-200">Subscription (x)</th>
+                  <th className="py-3 px-5 text-left text-xs font-bold text-slate-600 uppercase tracking-wider border-r border-slate-200">Shares Offered*</th>
+                  <th className="py-3 px-5 text-left text-xs font-bold text-slate-600 uppercase tracking-wider border-r border-slate-200">Shares bid for</th>
+                  <th className="py-3 px-5 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Total Amt* (₹ Cr.)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {liveTableRows.map((row, idx) => {
+                  const isTotal = row.label.includes('Total');
+                  const isNiiTotal = row.label === 'NII';
+                  return (
+                    <tr
+                      key={idx}
+                      className="transition-colors hover:bg-slate-50/50"
+                      style={{
+                        borderBottom: "1px solid #f1f5f9",
+                        background: isTotal ? "#f0fdf4" : isNiiTotal ? "#f0f9ff" : idx % 2 === 0 ? "#fff" : "#fafafa",
+                        fontWeight: isTotal || isNiiTotal ? "bold" : "normal"
+                      }}
+                    >
+                      <td className="py-3 px-5 text-slate-700 font-medium border-r border-slate-100">{row.label}</td>
+                      <td className="py-3 px-5 text-slate-800 border-r border-slate-100 font-bold">{row.sub}</td>
+                      <td className="py-3 px-5 text-slate-700 border-r border-slate-100">{row.offered}</td>
+                      <td className="py-3 px-5 text-slate-700 border-r border-slate-100">{row.bid}</td>
+                      <td className="py-3 px-5 text-slate-800 font-bold">{row.amt}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div className="p-6 text-[11px] text-slate-500 space-y-1 bg-white border-t border-slate-100 leading-relaxed font-medium">
+            <p>*: "Shares Offered" and "Total Amount" are calculated based on the upper price of the issue price range (₹{upperPrice || '—'}).</p>
+            <p>**: The portion of anchor investors (or market makers) is not included in the total number of shares offered.</p>
+          </div>
+        </div>
+
+        {/* Day-wise Subscription Details Table */}
+        <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200">
+          <div className="p-6 border-b border-slate-100">
+            <h3 className="text-xl font-bold text-slate-800 text-center uppercase tracking-wider">
+              Day-wise Subscription Details (times)
+            </h3>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-slate-50 border-b border-slate-200">
+                  <th className="py-3 px-5 text-left text-xs font-bold text-slate-600 uppercase tracking-wider border-r border-slate-200">Date</th>
+                  <th className="py-3 px-5 text-left text-xs font-bold text-slate-600 uppercase tracking-wider border-r border-slate-200">QIB (Ex Anchor)</th>
+                  <th className="py-3 px-5 text-left text-xs font-bold text-slate-600 uppercase tracking-wider border-r border-slate-200">NII</th>
+                  <th className="py-3 px-5 text-left text-xs font-bold text-slate-600 uppercase tracking-wider border-r border-slate-200">bNII (&gt; ₹10L)</th>
+                  <th className="py-3 px-5 text-left text-xs font-bold text-slate-600 uppercase tracking-wider border-r border-slate-200">sNII (&lt; ₹10L)</th>
+                  <th className="py-3 px-5 text-left text-xs font-bold text-slate-600 uppercase tracking-wider border-r border-slate-200">Retail</th>
+                  <th className="py-3 px-5 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dayWiseRows.map((row, idx) => (
+                  <tr
+                    key={idx}
+                    className="transition-colors hover:bg-slate-50/50"
+                    style={{
+                      borderBottom: "1px solid #f1f5f9",
+                      background: idx % 2 === 0 ? "#fff" : "#fafafa",
+                    }}
+                  >
+                    <td className="py-3 px-5 text-slate-700 font-bold border-r border-slate-100">{row.date}</td>
+                    <td className="py-3 px-5 text-slate-700 border-r border-slate-100 font-medium">{row.qib}</td>
+                    <td className="py-3 px-5 text-slate-700 border-r border-slate-100 font-bold text-sky-800 bg-sky-50/20">{row.nii}</td>
+                    <td className="py-3 px-5 text-slate-700 border-r border-slate-100 font-medium">{row.bnii}</td>
+                    <td className="py-3 px-5 text-slate-700 border-r border-slate-100 font-medium">{row.snii}</td>
+                    <td className="py-3 px-5 text-slate-700 border-r border-slate-100 font-medium">{row.retail}</td>
+                    <td className="py-3 px-5 text-emerald-800 font-extrabold bg-emerald-50/20">{row.total}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderGmpTrendTable = () => (
     blog.category !== "daily_reporter" &&
       gmpHistory.length > 0 ? (
@@ -2022,7 +2311,7 @@ export default function IPOBlogDetailsClient({
             </svg>
           </a>
         </div>
-        <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 mb-6">
+        <div id="gmp" className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 mb-6 scroll-mt-24">
           <div className="p-6 border-b border-slate-100">
             <h3 className="text-xl font-bold text-slate-800 text-center uppercase tracking-wider">
               {blog.title.replace(/\s+IPO$/i, "").trim()} GMP TREND
@@ -2518,6 +2807,59 @@ export default function IPOBlogDetailsClient({
                 </p>
               )}
 
+              {blog.category !== "daily_reporter" && (
+                <div className="flex flex-wrap gap-4 mb-8 mt-2 items-center">
+                  <style dangerouslySetInnerHTML={{ __html: `
+                    @keyframes fluctuate {
+                      0%, 100% {
+                        transform: translateY(0) scale(1);
+                        filter: brightness(1);
+                      }
+                      50% {
+                        transform: translateY(-4px) scale(1.03);
+                        filter: brightness(1.1);
+                      }
+                    }
+                  `}} />
+                  <Ribbon
+                    fontSize="15px"
+                    cutout="0.75em"
+                    color={activeTab === "all" ? "linear-gradient(135deg, #002a52 0%, #0052a3 60%, #0080ff 100%)" : "rgba(255,255,255,0.12)"}
+                    className="inline-flex items-center gap-2 text-white font-bold tracking-wide cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-md border border-white/10"
+                    style={{ animation: 'fluctuate 3s ease-in-out infinite', padding: '0.45rem 1.5rem' }}
+                    onClick={() => scrollToSection("details")}
+                  >
+                    <Info className="w-4 h-4 text-blue-200" /> IPO Details
+                  </Ribbon>
+
+                  {gmpHistory.length > 0 && (
+                    <Ribbon
+                      fontSize="15px"
+                      cutout="0.75em"
+                      color={activeTab === "all" ? "linear-gradient(135deg, #002a52 0%, #0052a3 60%, #0080ff 100%)" : "rgba(255,255,255,0.12)"}
+                      className="inline-flex items-center gap-2 text-white font-bold tracking-wide cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-md border border-white/10"
+                      style={{ animation: 'fluctuate 3s ease-in-out infinite', animationDelay: '0.2s', padding: '0.45rem 1.5rem' }}
+                      onClick={() => scrollToSection("gmp")}
+                    >
+                      <TrendingUp className="w-4 h-4 text-amber-300" /> GMP
+                    </Ribbon>
+                  )}
+
+                  {blog.ipo_subscription && (
+                    <Ribbon
+                      fontSize="15px"
+                      cutout="0.75em"
+                      color={activeTab === "subscription" ? "linear-gradient(135deg, #002a52 0%, #0052a3 60%, #0080ff 100%)" : "rgba(255,255,255,0.12)"}
+                      className="inline-flex items-center gap-2 text-white font-bold tracking-wide cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-md border border-white/10"
+                      style={{ animation: 'fluctuate 3s ease-in-out infinite', animationDelay: '0.4s', padding: '0.45rem 1.5rem' }}
+                      onClick={() => handleTabChange(activeTab === "subscription" ? "all" : "subscription")}
+                    >
+                      <Activity className="w-4 h-4 text-emerald-300" /> Subscription
+                    </Ribbon>
+                  )}
+                </div>
+              )}
+
               {blog.category === "daily_reporter" ? (
                 <div className="flex flex-wrap gap-3">
                   {blog.linked_digest_id && (
@@ -2585,7 +2927,11 @@ export default function IPOBlogDetailsClient({
 
       <main className="flex-1 container mx-auto px-4 pt-6 pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-8 space-y-5">
+          <div className={`lg:col-span-8 space-y-5 ${activeTab === "subscription" ? "lg:sticky lg:top-24 self-start" : ""}`}>
+            {activeTab === "subscription" ? (
+              renderSubscriptionTables()
+            ) : (
+              <>
             {blog.category !== "daily_reporter" &&
               finalIpoDetails.length > 0 &&
               !hasBoardManagementHeading &&
@@ -2910,6 +3256,8 @@ export default function IPOBlogDetailsClient({
               </div>
             )}
             <EditorialTeamInfo />
+              </>
+            )}
           </div>
 
 

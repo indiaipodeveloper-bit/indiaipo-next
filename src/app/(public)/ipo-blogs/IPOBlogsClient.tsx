@@ -7,7 +7,7 @@ import { ArrowRight, ChevronLeft, ChevronRight, Home, TrendingUp, Search, X, Zap
 import { motion, AnimatePresence } from "framer-motion";
 import { getImgSrc } from "@/utils/image";
 import { API_URL } from "@/lib/constants";
-import ipoUpdatesImage from "@/assets/ipo-updates.png";
+import ipoUpdatesImage from "@/assets/ipo-updates2.webp";
 import Image from "next/image";
 
 interface IPOBlog {
@@ -22,7 +22,7 @@ const isValid = (val: any) => {
   return s !== "null" && s !== "[null]" && s !== "" && s !== "undefined";
 };
 
-const N = "#001529", G = "#f59e08";
+const N = "#001529", G = "#F99810";
 
 export default function IPOBlogsClient({
   initialBlogs,
@@ -110,7 +110,7 @@ export default function IPOBlogsClient({
           style={{ background: `linear-gradient(90deg, ${N}, ${G}, ${N})` }} />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="flex items-center gap-2 text-white/50 text-sm mb-8 flex-wrap justify-center">
+          <div className="flex items-center gap-2 text-white/50 text-sm mb-8 flex-wrap justify-start md:justify-center">
             <Link href="/" className="hover:text-white flex items-center gap-1 transition-colors">
               <Home className="h-3.5 w-3.5" /> Home
             </Link>
@@ -118,15 +118,15 @@ export default function IPOBlogsClient({
             <span className="text-white/90 font-semibold">IPO Blogs</span>
           </div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-left md:text-center">
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-5 leading-tight">
               IPO Blogs & <span style={{ color: G }}>Updates</span>
             </h1>
-            <p className="text-white/65 max-w-2xl mx-auto text-base md:text-lg font-medium leading-relaxed mb-10">
+            <p className="text-white/90 max-w-2xl mr-auto md:mx-auto text-base md:text-lg font-medium leading-relaxed mb-10">
               Stay ahead of the market with comprehensive analysis, GMP tracking, and detailed reviews of all Current and Upcoming Initial Public Offerings.
             </p>
 
-            <div className="relative max-w-lg mx-auto">
+            <div className="relative max-w-lg mr-auto md:mx-auto">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
               <input
                 type="text"
@@ -295,14 +295,14 @@ export default function IPOBlogsClient({
 
       <section className="py-16 relative overflow-hidden"
         style={{ background: "linear-gradient(135deg, #0c1e4a, #1e3a8a, #1e40af)" }}>
-        <div className="container mx-auto px-4 text-center relative z-10">
+        <div className="container mx-auto px-4 text-left md:text-center relative z-10">
           <h2 className="text-3xl font-black text-white mb-3">
             Planning Your <span style={{ color: "#f59e0b" }}>IPO Journey?</span>
           </h2>
-          <p className="text-white/65 max-w-lg mx-auto font-medium mb-8">
+          <p className="text-white/65 max-w-lg mr-auto md:mx-auto font-medium mb-8">
             Get expert advisory from professional consultants and take the first step toward going public.
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-start md:justify-center gap-4">
             <Link href="/ipo-eligibility-check"
               className="inline-flex items-center gap-2 px-8 h-14 rounded-xl font-black text-base transition-all hover:scale-105"
               style={{ background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "#001529", boxShadow: "0 8px 32px rgba(245,158,8,0.35)" }}>

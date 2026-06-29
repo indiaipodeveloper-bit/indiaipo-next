@@ -139,7 +139,7 @@ export default function WeeklyDigestClient({
           <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-[#F8FAFC] z-10" />
 
           <div className="container mx-auto px-4 relative z-10">
-            <div className="flex items-center gap-2 text-white/50 text-sm mb-8 flex-wrap justify-center">
+            <div className="flex items-center gap-2 text-white/50 text-sm mb-8 flex-wrap justify-start md:justify-center">
               <Link href="/" className="hover:text-white flex items-center gap-1 transition-colors">
                 <Home className="h-3.5 w-3.5 text-[#fbbf24]" /> Home
               </Link>
@@ -147,15 +147,15 @@ export default function WeeklyDigestClient({
               <span className="text-white/80">Weekly Reporter</span>
             </div>
 
-            <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-center flex flex-col items-center">
-              <h1 className="text-4xl md:text-5xl font-black text-white mb-5 leading-tight max-w-3xl mx-auto">
+            <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-left md:text-center flex flex-col items-start md:items-center">
+              <h1 className="text-4xl md:text-5xl font-black text-white mb-5 leading-tight max-w-3xl mr-auto md:mx-auto">
                 India IPO <span className="text-[#fbbf24]">Weekly IPO Report</span>
               </h1>
-              <p className="text-white/65 max-w-2xl text-base md:text-lg font-medium leading-relaxed mb-10 mx-auto">
+              <p className="text-white/65 max-w-2xl text-base md:text-lg font-medium leading-relaxed mb-10 mr-auto md:mx-auto">
                 Every Sunday, receive a complete summary of India's IPO market covering IPO listings, launches, DRHP filings, SEBI approvals, subscription trends, listing performance and key market insights - all in one report.
               </p>
 
-              <div className="relative w-full max-w-lg mx-auto">
+              <div className="relative w-full max-w-lg mr-auto md:mx-auto">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
                 <input
                   type="text"
@@ -345,14 +345,14 @@ export default function WeeklyDigestClient({
             <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-5"
               style={{ background: "#fbbf24", filter: "blur(80px)", transform: "translate(20%,-30%)" }} />
           </div>
-          <div className="container mx-auto px-4 text-center relative z-10">
+          <div className="container mx-auto px-4 text-left md:text-center relative z-10">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
               Expert <span className="text-[#fbbf24]">IPO Guidance</span>
             </h2>
-            <p className="text-white/60 max-w-xl mx-auto text-base font-medium mb-10">
+            <p className="text-white/60 max-w-xl mr-auto md:mx-auto text-base font-medium mb-10">
               Navigating the IPO journey requires precision and expertise. Let our seasoned professionals help you achieve your public listing goals.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-wrap justify-start md:justify-center gap-4">
               <Link href="/contact" className="inline-flex items-center gap-2 px-8 h-14 rounded-xl font-black text-base transition-all hover:scale-105 shadow-2xl bg-[#fbbf24] text-[#001529] hover:bg-[#f59e0b] shadow-[#fbbf24]/20 justify-center">
                 Get Free Consultation <ArrowRight className="h-5 w-5" />
               </Link>

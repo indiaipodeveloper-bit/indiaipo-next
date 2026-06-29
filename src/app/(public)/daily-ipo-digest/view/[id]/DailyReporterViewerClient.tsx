@@ -2,17 +2,24 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronLeft, Download, Eye, Loader2, Share2, Newspaper, X, Maximize, Minimize } from "lucide-react";
+import {
+  ChevronLeft,
+  Download,
+  Eye,
+  Loader2,
+  Share2,
+  Newspaper,
+  X,
+  Maximize,
+  Minimize,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { getImageUrl } from "@/lib/utils";
 import dynamic from "next/dynamic";
-const PdfViewer = dynamic(
-  () => import("@/components/common/PdfViewer"),
-  {
-    ssr: false,
-  }
-);
+const PdfViewer = dynamic(() => import("@/components/pdf/SimplePdfViewer"), {
+  ssr: false,
+});
 
 interface DailyDigest {
   id: number;
@@ -24,7 +31,7 @@ interface DailyDigest {
 }
 
 export default function DailyReporterViewerClient({
-  digest
+  digest,
 }: {
   digest: DailyDigest;
 }) {
@@ -33,23 +40,31 @@ export default function DailyReporterViewerClient({
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsFullScreen(false);
+      if (e.key === "Escape") setIsFullScreen(false);
     };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
   const pdfUrl = digest.pdf ? getImageUrl(digest.pdf) : null;
 
   return (
-    <div className={`min-h-screen bg-[#F8FAFC] flex flex-col ${isFullScreen ? 'overflow-hidden fixed inset-0 z-[100]' : ''}`}>
-
-      <main className={`flex-grow flex flex-col ${isFullScreen ? 'h-screen' : ''}`}>
+    <div
+      className={`min-h-screen bg-[#F8FAFC] flex flex-col ${isFullScreen ? "overflow-hidden fixed inset-0 z-[100]" : ""}`}
+    >
+      <main
+        className={`flex-grow flex flex-col ${isFullScreen ? "h-screen" : ""}`}
+      >
         {!isFullScreen && (
           <div className="bg-white border-b border-border sticky top-[68px] z-30 py-3 shadow-sm">
             <div className="container mx-auto px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-center gap-4">
-                <Button variant="ghost" size="sm" asChild className="rounded-lg hover:bg-slate-100 cursor-pointer">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  asChild
+                  className="rounded-lg hover:bg-slate-100 cursor-pointer"
+                >
                   <Link href="/daily-ipo-digest">
                     <ChevronLeft className="h-4 w-4 mr-1" />
                     Back
@@ -77,7 +92,7 @@ export default function DailyReporterViewerClient({
                       if (navigator.share) {
                         navigator.share({
                           title: digest.title,
-                          url: window.location.href
+                          url: window.location.href,
                         });
                       } else {
                         navigator.clipboard.writeText(window.location.href);
@@ -105,14 +120,16 @@ export default function DailyReporterViewerClient({
           </div>
         )}
 
-        <div className={`flex-grow ${isFullScreen ? 'p-0' : 'container mx-auto px-4 py-8 max-w-6xl'}`}>
+        <div
+          className={`flex-grow ${isFullScreen ? "p-0" : "container mx-auto px-4 py-8 max-w-6xl"}`}
+        >
           {pdfUrl ? (
             <div
               ref={iframeRef}
               className={`bg-white shadow-2xl overflow-hidden border border-border relative group transition-all duration-500 ${
                 isFullScreen
-                  ? 'w-full h-full border-none rounded-none'
-                  : 'rounded-2xl h-[80vh] md:h-[90vh]'
+                  ? "w-full h-full border-none rounded-none"
+                  : "rounded-2xl h-[80vh] md:h-[90vh]"
               }`}
             >
               {/* <iframe */}
@@ -120,13 +137,15 @@ export default function DailyReporterViewerClient({
               {/*   className="w-full h-full border-none" */}
               {/*   title={digest.title} */}
               {/* /> */}
-              
-            <PdfViewer
-              pdfUrl={pdfUrl}
-              className={`${isFullScreen ? "h-[99.9vh]" : "h-full"}`}
-            />
 
-              <div className={`absolute bottom-6 right-6 transition-opacity ${isFullScreen ? 'opacity-40 hover:opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+              <PdfViewer
+                pdfUrl={pdfUrl}
+                className={`${isFullScreen ? "h-[99.9vh]" : "h-full"}`}
+              />
+
+              <div
+                className={`absolute bottom-6 right-6 transition-opacity ${isFullScreen ? "opacity-40 hover:opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+              >
                 <Button
                   onClick={() => setIsFullScreen(!isFullScreen)}
                   className="bg-white/90 backdrop-blur text-[#001529] hover:bg-white border shadow-xl rounded-full px-6 py-6 cursor-pointer"
@@ -157,8 +176,12 @@ export default function DailyReporterViewerClient({
           ) : (
             <div className="flex flex-col items-center justify-center py-24 bg-white rounded-2xl border border-dashed border-slate-300">
               <Newspaper className="h-16 w-16 text-slate-200 mb-4" />
-              <h3 className="text-xl font-bold text-slate-800">No PDF Available</h3>
-              <p className="text-slate-500">This report doesn't have a PDF attachment.</p>
+              <h3 className="text-xl font-bold text-slate-800">
+                No PDF Available
+              </h3>
+              <p className="text-slate-500">
+                This report doesn't have a PDF attachment.
+              </p>
             </div>
           )}
 
@@ -169,7 +192,6 @@ export default function DailyReporterViewerClient({
           {/* )} */}
         </div>
       </main>
-
     </div>
   );
 }

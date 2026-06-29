@@ -121,7 +121,7 @@ export default function RegistrarListClient({
           />
 
           <div className="container mx-auto px-4 relative z-10">
-            <div className="flex items-center gap-2 text-white/50 text-sm mb-8 flex-wrap justify-center">
+            <div className="flex items-center gap-2 text-white/50 text-sm mb-8 flex-wrap justify-start md:justify-center">
               <Link href="/" className="hover:text-white flex items-center gap-1 transition-colors">
                 <Home className="h-3.5 w-3.5 text-[#f59e08]" /> Home
               </Link>
@@ -129,15 +129,15 @@ export default function RegistrarListClient({
               <span className="text-white/90 font-semibold">IPO Registrars</span>
             </div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-left md:text-center">
               <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-5 leading-tight">
                 List Of <span className="text-[#f59e08]"> IPO Registrars</span>
               </h1>
-              <p className="text-white/65 max-w-2xl mx-auto mb-8 text-base md:text-lg font-medium leading-relaxed text-sm">
+              <p className="text-white/65 max-w-2xl mr-auto md:mx-auto mb-8 text-base md:text-lg font-medium leading-relaxed text-sm">
                 Explore SEBI-registered IPO registrars managing share allotment, refunds and investor registry services across Mainboard and SME issues.
               </p>
 
-              <div className="max-w-xl mx-auto relative">
+              <div className="max-w-xl mr-auto md:mx-auto relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
                 <input
                   placeholder="Search by Registrar Name or Location…"
@@ -434,11 +434,11 @@ export default function RegistrarListClient({
         <section
           className="py-16 relative overflow-hidden bg-gradient-to-r from-[#001529] via-[#002147] to-[#003380]"
         >
-          <div className="container mx-auto px-4 text-center relative z-10">
+          <div className="container mx-auto px-4 text-left md:text-center relative z-10">
             <h2 className="text-3xl font-black text-white mb-3">
               Need Help Choosing a <span className="text-[#f59e08]">Registrar?</span>
             </h2>
-            <p className="text-white/60 max-w-lg mx-auto font-medium mb-8 text-sm">
+            <p className="text-white/60 max-w-lg mr-auto md:mx-auto font-medium mb-8 text-sm">
               Our experts help you select the right registrar for your IPO and ensure smooth allotment processes.
             </p>
             <Link

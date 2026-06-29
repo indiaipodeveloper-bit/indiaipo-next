@@ -114,7 +114,7 @@ export default function BlogsListingClient({
         <div className="absolute top-20 left-10 w-64 h-64 bg-amber-100/30 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
+          <div className="flex flex-col items-start md:items-center text-left md:text-center max-w-4xl mx-auto">
 
 
             <motion.h1
@@ -130,7 +130,7 @@ export default function BlogsListingClient({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg text-slate-500 font-medium leading-relaxed max-w-2xl mb-12"
+              className="text-lg text-slate-500 font-medium leading-relaxed max-w-2xl mr-auto md:mx-auto mb-12"
             >
               Deep-dive reports, valuation updates, and strategic guides curated by India's leading capital market research team.
             </motion.p>
@@ -139,7 +139,7 @@ export default function BlogsListingClient({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="w-full max-w-xl group"
+              className="w-full max-w-xl mr-auto md:mx-auto group"
             >
               <div className="relative flex items-center p-1.5 bg-white rounded-[1.5rem] shadow-xl shadow-slate-200/50 border border-slate-200 transition-all focus-within:border-blue-300 focus-within:shadow-blue-200/40">
                 <Search className="ml-5 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
@@ -356,7 +356,7 @@ export default function BlogsListingClient({
 
       <section className="py-24 bg-[#001529] relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-900/10 -skew-x-12 translate-x-1/2" />
-        <div className="container mx-auto px-4 relative z-10 text-center max-w-4xl mx-auto">
+        <div className="container mx-auto px-4 relative z-10 text-left md:text-center max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -366,10 +366,10 @@ export default function BlogsListingClient({
             <h2 className="text-3xl md:text-5xl font-black text-white leading-tight">
               Master the Markets with <br className="hidden md:block" /> <span className="text-amber-400 font-black">Strategic IPO Guidance</span>
             </h2>
-            <p className="text-white/50 text-base md:text-lg font-medium leading-relaxed max-w-2xl mx-auto">
+            <p className="text-white/50 text-base md:text-lg font-medium leading-relaxed max-w-2xl mr-auto md:mx-auto">
               From sector-wise trend analysis to personal consultative support, navigate your public listing journey with the experts.
             </p>
-            <div className="flex flex-wrap justify-center gap-6 pt-4">
+            <div className="flex flex-wrap justify-start md:justify-center gap-6 pt-4">
               <Button asChild className="h-16 px-12 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-black text-sm uppercase tracking-widest shadow-2xl shadow-amber-400/20 transition-transform hover:scale-105">
                 <Link href="/ipo-eligibility-check">Evaluate Eligibility <Zap className="ml-2 w-5 h-5" /></Link>
               </Button>

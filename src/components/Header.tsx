@@ -379,6 +379,7 @@ const FALLBACK_KNOWLEDGE: SubItem[] = [
   { label: "IPO Updates", href: "/ipo-blogs" },
   { label: "List of IPO Registrar", href: "/ipo-registrar-list" },
   { label: "All Sectors", href: "/all-sectors" },
+  { label: "IPO Report Listing Day Gain", href: "/ipo-report-listing-day-gain" },
 
 ];
 
@@ -532,6 +533,7 @@ const Header = () => {
                     : `/ipo-knowledge/${c.slug}`,
             };
           }),
+          { label: "IPO Report Listing Day Gain", href: "/ipo-report-listing-day-gain" },
         ];
       }
     }

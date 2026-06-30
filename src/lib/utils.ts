@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { API_URL } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -24,11 +25,8 @@ export function getImageUrl(path: string | null | undefined): string {
     cleanPath = `/${s}`;
   }
 
-  const isDev = process.env.NODE_ENV === "development";
-  const apiBase = isDev ? "http://localhost:5000" : "https://www.indiaipo.in";
-
   if (cleanPath.startsWith('/uploads')) {
-    return `${apiBase}${cleanPath}`;
+    return `${API_URL}${cleanPath}`;
   }
 
   return cleanPath;

@@ -44,6 +44,7 @@ interface IPOItem {
   listing_day_open_nse?: string | number | null;
   listing_day_close_bse?: string | number | null;
   listing_day_close_nse?: string | number | null;
+  listing_day_gain_percentage?: string | number | null;
 }
 
 const formatDate = (dateStr: any, options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' }) => {
@@ -247,22 +248,20 @@ export default function ListingDayGainClient({
                     <th className="px-4 py-4 text-center font-bold text-[11px] uppercase tracking-wider whitespace-nowrap">Retail</th>
                     <th className="px-4 py-4 text-center font-bold text-[11px] uppercase tracking-wider whitespace-nowrap">Total</th>
                     <th className="px-4 py-4 text-left font-bold text-[11px] uppercase tracking-wider whitespace-nowrap">Listing Date</th>
-                    <th className="px-4 py-4 text-left font-bold text-[11px] uppercase tracking-wider whitespace-nowrap">Open Price</th>
-                    <th className="px-4 py-4 text-left font-bold text-[11px] uppercase tracking-wider whitespace-nowrap">Close Price</th>
                     <th className="px-5 py-4 text-right font-bold text-[11px] uppercase tracking-wider whitespace-nowrap">% Gain/Loss</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {isLoading ? (
                     <tr>
-                      <td colSpan={13} className="py-24 text-center">
+                      <td colSpan={11} className="py-24 text-center">
                         <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
                         <span className="text-slate-500 font-bold uppercase tracking-widest text-xs">Syncing with Exchange...</span>
                       </td>
                     </tr>
                   ) : paginatedItems.length === 0 ? (
                     <tr>
-                      <td colSpan={13} className="py-24 text-center">
+                      <td colSpan={11} className="py-24 text-center">
                         <div className="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
                           <FileText className="h-8 w-8" />
                         </div>
@@ -278,12 +277,27 @@ export default function ListingDayGainClient({
                       const openPrice = parseFloat(item.listing_day_open_nse as any) || parseFloat(item.listing_day_open_bse as any) || 0;
                       const closePrice = parseFloat(item.listing_day_close_nse as any) || parseFloat(item.listing_day_close_bse as any) || 0;
 
-                      const percentageGain = issuePrice > 0 && closePrice > 0
-                        ? ((closePrice - issuePrice) / issuePrice) * 100
-                        : 0;
+                      let isPositive = false;
+                      let isNegative = false;
+                      let displayText = "";
 
-                      const isPositive = percentageGain > 0;
-                      const isNegative = percentageGain < 0;
+                      if (item.listing_day_gain_percentage !== undefined && item.listing_day_gain_percentage !== null && item.listing_day_gain_percentage !== '') {
+                        displayText = String(item.listing_day_gain_percentage).trim();
+                        if (displayText.includes("-") || (displayText.startsWith("(") && displayText.endsWith(")")) || displayText.toLowerCase().includes("loss")) {
+                          isNegative = true;
+                        } else {
+                          isPositive = true;
+                        }
+                      } else {
+                        const calculatedPercentage = issuePrice > 0 && closePrice > 0
+                          ? ((closePrice - issuePrice) / issuePrice) * 100
+                          : 0;
+                        isPositive = calculatedPercentage > 0;
+                        isNegative = calculatedPercentage < 0;
+                        displayText = (calculatedPercentage > 0 ? "+" : "") + calculatedPercentage.toFixed(2) + "%";
+                      }
+
+                      const hasGainInfo = (item.listing_day_gain_percentage !== undefined && item.listing_day_gain_percentage !== null && item.listing_day_gain_percentage !== '') || (closePrice > 0);
 
                       return (
                         <tr
@@ -308,14 +322,8 @@ export default function ListingDayGainClient({
                           <td className="px-4 py-7 text-center text-slate-700 font-semibold text-xs">{subs.retail}</td>
                           <td className="px-4 py-7 text-center text-slate-900 font-bold text-xs bg-slate-50/30">{subs.total}</td>
                           <td className="px-4 py-7 text-slate-600 text-xs whitespace-nowrap">{formatDate(item.listing_date)}</td>
-                          <td className="px-4 py-7 text-slate-900 font-medium text-xs">
-                            {openPrice > 0 ? `₹${openPrice.toFixed(2)}` : "—"}
-                          </td>
-                          <td className="px-4 py-7 text-slate-900 font-medium text-xs">
-                            {closePrice > 0 ? `₹${closePrice.toFixed(2)}` : "—"}
-                          </td>
                           <td className="px-5 py-7 text-right font-black text-xs">
-                            {closePrice > 0 ? (
+                            {hasGainInfo ? (
                               <span className={cn(
                                 "inline-flex items-center gap-1 px-2.5 py-1 rounded-full",
                                 isPositive && "bg-emerald-50 text-emerald-700 border border-emerald-200",
@@ -324,7 +332,7 @@ export default function ListingDayGainClient({
                               )}>
                                 {isPositive && <TrendingUp className="h-3 w-3" />}
                                 {isNegative && <TrendingDown className="h-3 w-3" />}
-                                {percentageGain > 0 ? `+` : ""}{percentageGain.toFixed(2)}%
+                                {displayText}
                               </span>
                             ) : (
                               <span className="text-slate-400 font-medium">—</span>
@@ -362,12 +370,27 @@ export default function ListingDayGainClient({
                     const openPrice = parseFloat(item.listing_day_open_nse as any) || parseFloat(item.listing_day_open_bse as any) || 0;
                     const closePrice = parseFloat(item.listing_day_close_nse as any) || parseFloat(item.listing_day_close_bse as any) || 0;
 
-                    const percentageGain = issuePrice > 0 && closePrice > 0
-                      ? ((closePrice - issuePrice) / issuePrice) * 100
-                      : 0;
+                    let isPositive = false;
+                    let isNegative = false;
+                    let displayText = "";
 
-                    const isPositive = percentageGain > 0;
-                    const isNegative = percentageGain < 0;
+                    if (item.listing_day_gain_percentage !== undefined && item.listing_day_gain_percentage !== null && item.listing_day_gain_percentage !== '') {
+                      displayText = String(item.listing_day_gain_percentage).trim();
+                      if (displayText.includes("-") || (displayText.startsWith("(") && displayText.endsWith(")")) || displayText.toLowerCase().includes("loss")) {
+                        isNegative = true;
+                      } else {
+                        isPositive = true;
+                      }
+                    } else {
+                      const calculatedPercentage = issuePrice > 0 && closePrice > 0
+                        ? ((closePrice - issuePrice) / issuePrice) * 100
+                        : 0;
+                      isPositive = calculatedPercentage > 0;
+                      isNegative = calculatedPercentage < 0;
+                      displayText = (calculatedPercentage > 0 ? "+" : "") + calculatedPercentage.toFixed(2) + "%";
+                    }
+
+                    const hasGainInfo = (item.listing_day_gain_percentage !== undefined && item.listing_day_gain_percentage !== null && item.listing_day_gain_percentage !== '') || (closePrice > 0);
 
                     return (
                       <div
@@ -389,7 +412,7 @@ export default function ListingDayGainClient({
                           </div>
 
                           <div className="shrink-0">
-                            {closePrice > 0 ? (
+                            {hasGainInfo ? (
                               <span className={cn(
                                 "inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold",
                                 isPositive && "bg-emerald-50 text-emerald-700 border border-emerald-200",
@@ -398,7 +421,7 @@ export default function ListingDayGainClient({
                               )}>
                                 {isPositive && <TrendingUp className="h-3.5 w-3.5" />}
                                 {isNegative && <TrendingDown className="h-3.5 w-3.5" />}
-                                {percentageGain > 0 ? `+` : ""}{percentageGain.toFixed(2)}%
+                                {displayText}
                               </span>
                             ) : (
                               <span className="text-slate-400 text-xs font-semibold">—</span>
@@ -407,15 +430,26 @@ export default function ListingDayGainClient({
                         </div>
 
                         <div className="p-4 grid grid-cols-2 gap-4 text-xs">
-                          <div>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Dates</p>
-                            <p className="font-bold text-slate-700">{formatDate(item.open_date, { day: '2-digit', month: 'short' })}</p>
-                            <p className="text-[10px] text-slate-400">Listed: {formatDate(item.listing_date, { day: '2-digit', month: 'short' })}</p>
+                          <div className="col-span-2">
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Dates & Price</p>
+                            <div className="flex justify-between items-center bg-slate-50 p-2.5 rounded-lg mt-1">
+                              <div>
+                                <p className="text-[10px] text-slate-400">Open Date</p>
+                                <p className="font-bold text-slate-700">{formatDate(item.open_date, { day: '2-digit', month: 'short' })}</p>
+                              </div>
+                              <div>
+                                <p className="text-[10px] text-slate-400">Listing Date</p>
+                                <p className="font-bold text-slate-700">{formatDate(item.listing_date, { day: '2-digit', month: 'short' })}</p>
+                              </div>
+                              <div>
+                                <p className="text-[10px] text-slate-400">Price Band</p>
+                                <p className="font-bold text-slate-850">₹{issuePrice || "—"}</p>
+                              </div>
+                            </div>
                           </div>
-                          <div>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Issue Size & Price</p>
-                            <p className="font-bold text-slate-800">{item.issue_size ? `₹${item.issue_size} Cr` : "—"}</p>
-                            <p className="text-[10px] text-slate-400">Price: ₹{issuePrice || "—"}</p>
+                          <div className="col-span-2">
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Issue Size</p>
+                            <p className="font-bold text-slate-800 bg-slate-50 p-2.5 rounded-lg mt-1">{item.issue_size ? `₹${item.issue_size} Cr` : "—"}</p>
                           </div>
                           <div className="col-span-2 bg-slate-50 p-2.5 rounded-lg grid grid-cols-4 gap-2 text-center text-[11px]">
                             <div>
@@ -434,14 +468,6 @@ export default function ListingDayGainClient({
                               <p className="text-[9px] text-slate-400 uppercase font-bold">Total</p>
                               <p className="font-black text-slate-800">{subs.total}</p>
                             </div>
-                          </div>
-                          <div>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Open Price</p>
-                            <p className="font-bold text-slate-800">{openPrice > 0 ? `₹${openPrice.toFixed(2)}` : "—"}</p>
-                          </div>
-                          <div>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Close Price</p>
-                            <p className="font-bold text-slate-800">{closePrice > 0 ? `₹${closePrice.toFixed(2)}` : "—"}</p>
                           </div>
                         </div>
                       </div>

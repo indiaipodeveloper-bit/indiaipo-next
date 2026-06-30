@@ -2531,6 +2531,9 @@ export default function IPOBlogDetailsClient({
     };
 
     const getListingGainPercent = (ipo: any) => {
+      if (ipo.listing_day_gain_percentage !== undefined && ipo.listing_day_gain_percentage !== null && ipo.listing_day_gain_percentage !== '') {
+        return ipo.listing_day_gain_percentage;
+      }
       const issuePrice = parseFloat(ipo.issue_highest_price || ipo.issue_lowest_price);
       if (!issuePrice || issuePrice <= 0) return null;
 
@@ -2541,11 +2544,28 @@ export default function IPOBlogDetailsClient({
     };
 
     const formatListingGain = (ipo: any) => {
-      const pct = getListingGainPercent(ipo);
-      if (pct === null) return <span className="text-slate-400 font-medium">—</span>;
-      const formatted = `${pct > 0 ? "+" : ""}${pct.toFixed(2)}%`;
+      const pctVal = getListingGainPercent(ipo);
+      if (pctVal === null || pctVal === '') return <span className="text-slate-400 font-medium">—</span>;
+
+      let isPositive = false;
+      let isNegative = false;
+      let formatted = "";
+
+      if (typeof pctVal === 'string') {
+        formatted = pctVal.trim();
+        if (formatted.includes("-") || (formatted.startsWith("(") && formatted.endsWith(")")) || formatted.toLowerCase().includes("loss")) {
+          isNegative = true;
+        } else {
+          isPositive = true;
+        }
+      } else {
+        isPositive = pctVal > 0;
+        isNegative = pctVal < 0;
+        formatted = `${pctVal > 0 ? "+" : ""}${pctVal.toFixed(2)}%`;
+      }
+
       return (
-        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold ${pct >= 0 ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700"}`}>
+        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold ${isPositive ? "bg-emerald-50 text-emerald-700" : isNegative ? "bg-rose-50 text-rose-700" : "bg-slate-50 text-slate-600"}`}>
           {formatted}
         </span>
       );

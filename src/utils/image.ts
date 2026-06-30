@@ -1,3 +1,5 @@
+import { API_URL } from "@/lib/constants";
+
 export const getImgSrc = (src: any) => {
   if (!src || src === "0" || src === 0 || src === "" || src === "null" || src === "undefined") return null;
   const s = String(src).trim();
@@ -19,6 +21,8 @@ export const getImgSrc = (src: any) => {
   } else {
     cleanPath = `/uploads/${cleanPath}`;
   }
+
+  const finalPath = `${API_URL}${cleanPath}`
   
-  return cleanPath;
+  return finalPath;
 };

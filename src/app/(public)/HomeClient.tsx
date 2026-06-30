@@ -10,7 +10,6 @@ import { Suspense, lazy } from "react";
 import LazySection from "@/components/LazySection";
 import AboutPreview from "@/components/AboutPreview";
 import ServicesSection from "@/components/ServicesSection";
-import Hero from "@/components/home/Hero";
 import { API_URL } from "@/lib/constants";
 import IPOConsultant from "@/components/home/IPOConsultant";
 
@@ -85,8 +84,6 @@ function HomeContent() {
 
   return (
     <>
-      <main>
-        <Hero />
         <IPOConsultant />
         <ServicesSection />
         <AboutPreview />
@@ -152,7 +149,6 @@ function HomeContent() {
             <Newsletter />
           </Suspense>
         </LazySection>
-      </main>
 
       <Suspense fallback={null}>
         <SitePopup />

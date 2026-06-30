@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { getImageUrl, cn, getLatestGmpValue } from "@/lib/utils";
+import { cn, getLatestGmpValue } from "@/lib/utils";
 import { motion } from "framer-motion";
 import {
   Home, ChevronRight, TrendingUp, Search, Calendar, BarChart3, PieChart,
@@ -260,7 +260,7 @@ export default function ReportsClient({
               loop
               playsInline
               className="w-full h-full object-cover opacity-20"
-              src={getImageUrl(initialBannerVideo || "video/ccvindia1.mp4")}
+              src={getImgSrc(initialBannerVideo || "video/ccvindia1.mp4")}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#001529]/90 via-[#001529]/60 to-[#001529]" />
           </div>

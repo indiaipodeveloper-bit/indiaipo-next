@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { servicesData } from "@/data/servicesData";
 import { Button } from "@/components/ui/button";
-import { getImageUrl } from "@/lib/utils";
 import {
   ArrowRight,
   ChevronRight,
@@ -93,6 +92,7 @@ interface ServicePageLayoutProps {
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { API_URL } from "@/lib/constants";
+import { getImgSrc } from "@/utils/image";
 
 const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({ slug, children }) => {
   const service = servicesData.find((s) => s.slug === slug);
@@ -173,7 +173,7 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({ slug, children })
                 loop
                 playsInline
                 className="w-full h-full object-cover opacity-40 mix-blend-overlay"
-                src={getImageUrl(bannerVideo)}
+                src={getImgSrc(bannerVideo)}
               />
               <div className={`absolute inset-0 bg-gradient-to-br ${cfg.gradient} opacity-80 mix-blend-multiply`} />
             </div>
@@ -181,7 +181,7 @@ const ServicePageLayout: React.FC<ServicePageLayoutProps> = ({ slug, children })
             <div className="absolute inset-0 z-0">
               <div
                 className="w-full h-full bg-cover bg-center opacity-40 mix-blend-overlay"
-                style={{ backgroundImage: `url(${getImageUrl(bannerImage)})` }}
+                style={{ backgroundImage: `url(${getImgSrc(bannerImage)})` }}
               />
               <div className={`absolute inset-0 bg-gradient-to-br ${cfg.gradient} opacity-80 mix-blend-multiply`} />
             </div>

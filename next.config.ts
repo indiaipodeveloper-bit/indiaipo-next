@@ -22,6 +22,16 @@ const nextConfig: NextConfig = {
         destination: "https://www.indiaipo.in/all-ipos/:path*",
         permanent: true,
       },
+      {
+        source: "/news/detail",
+        destination: "/news",
+        permanent: false,
+      },
+      {
+        source: "/news/:slug((?!detail\\b).+)",
+        destination: "/news",
+        permanent: false,
+      },
     ];
   },
   async rewrites() {

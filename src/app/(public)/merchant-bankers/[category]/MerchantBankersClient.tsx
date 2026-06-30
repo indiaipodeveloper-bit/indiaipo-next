@@ -15,7 +15,9 @@ import {
   Check,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getImageUrl, formatIndianNumber } from "@/lib/utils";
+import { formatIndianNumber } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
+import { getImgSrc } from "@/utils/image";
 
 interface Banker {
   id: string | number;
@@ -89,7 +91,7 @@ const ConnectModal = ({
         <div className="w-16 h-16 rounded-xl bg-white mb-4 p-2 shadow-xl overflow-hidden flex items-center justify-center shrink-0">
           {banker.image || banker.logo_url ? (
             <img
-              src={getImageUrl(banker.image || banker.logo_url)}
+              src={getImgSrc(banker.image || banker.logo_url)}
               alt={banker.title}
               className="w-full h-full object-contain"
             />
@@ -276,7 +278,7 @@ export default function MerchantBankersClient({
 
     const api = isSME ? "/api/bankers" : "/api/mainboard-bankers";
     fetch(
-      `${api}?page=${page}&limit=${limit}&search=${encodeURIComponent(debouncedSearch)}&category=${encodeURIComponent(category)}`
+      `${API_URL}${api}?page=${page}&limit=${limit}&search=${encodeURIComponent(debouncedSearch)}&category=${encodeURIComponent(category)}`
     )
       .then((r) => r.json())
       .then((body) => {
@@ -307,7 +309,7 @@ export default function MerchantBankersClient({
               loop
               playsInline
               className="w-full h-full object-cover opacity-30"
-              src={getImageUrl(bannerVideo || "/uploads/video/ccvindia1.mp4")}
+              src={getImgSrc(bannerVideo || "/uploads/video/ccvindia1.mp4")}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#001529]/80 via-[#001529]/40 to-[#001529]" />
           </div>
@@ -462,7 +464,7 @@ export default function MerchantBankersClient({
                         <div className="w-16 h-16 rounded-xl bg-white border border-slate-200 flex items-center justify-center p-2 shrink-0 shadow-sm group-hover:border-[#f59e08]/40 transition-colors overflow-hidden">
                           {banker.image || banker.logo_url ? (
                             <img
-                              src={getImageUrl(banker.image || banker.logo_url)}
+                              src={getImgSrc(banker.image || banker.logo_url)}
                               alt={banker.title}
                               className="w-full h-full object-contain"
                             />

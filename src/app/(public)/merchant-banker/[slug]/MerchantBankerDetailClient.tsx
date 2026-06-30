@@ -21,7 +21,8 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getImageUrl, formatIndianNumber } from "@/lib/utils";
+import { formatIndianNumber } from "@/lib/utils";
+import { getImgSrc } from "@/utils/image";
 
 interface Banker {
   id: string | number;
@@ -176,7 +177,7 @@ const ConnectModal = ({
         <div className="w-16 h-16 rounded-xl bg-white mb-4 p-2 shadow-xl overflow-hidden flex items-center justify-center shrink-0">
           {banker.image || banker.logo_url ? (
             <img
-              src={getImageUrl(banker.image || banker.logo_url)}
+              src={getImgSrc(banker.image || banker.logo_url)}
               alt={banker.title}
               className="w-full h-full object-contain"
             />
@@ -241,7 +242,7 @@ export default function MerchantBankerDetailClient({
   const faqsData = safeParseJSON(banker.faqs);
 
   const hasDesc = banker.description && banker.description.trim().length > 10;
-  const imgSrc = getImageUrl(banker.image || banker.logo_url);
+  const imgSrc = getImgSrc(banker.image || banker.logo_url);
   const webUrl = (w: string | undefined) =>
     !w ? "#" : w.startsWith("http") ? w : `https://${w}`;
 
@@ -652,7 +653,7 @@ export default function MerchantBankerDetailClient({
                         <div className="w-12 h-12 rounded-lg bg-white border border-slate-200 p-2 shrink-0 flex items-center justify-center overflow-hidden">
                           {rb.logo_url || rb.image ? (
                             <img
-                              src={getImageUrl(rb.logo_url || rb.image)}
+                              src={getImgSrc(rb.logo_url || rb.image)}
                               alt={rb.title || rb.name}
                               className="w-full h-full object-contain"
                             />

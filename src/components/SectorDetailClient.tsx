@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, ArrowLeft, FileText } from "lucide-react";
+import { Search, ArrowLeft, FileText, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { API_URL } from "@/lib/constants";
+import { useQuery } from "@tanstack/react-query";
 
 interface Sector {
   id: string | number;
@@ -20,9 +22,19 @@ interface IPOItem {
   open_date: string | null;
 }
 
+interface PaginatedResponse {
+  data: IPOItem[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
 interface SectorDetailClientProps {
   sector: Sector;
-  initialIpos: IPOItem[];
+  initialPaginatedData: PaginatedResponse;
   stats: {
     highest: number;
     lowest: number;
@@ -37,14 +49,45 @@ const formatDate = (dateStr: any) => {
   return isNaN(d.getTime()) ? "TBA" : d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 };
 
-export default function SectorDetailClient({ sector, initialIpos, stats }: SectorDetailClientProps) {
+export default function SectorDetailClient({ sector, initialPaginatedData, stats }: SectorDetailClientProps) {
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [page, setPage] = useState(1);
 
-  const filteredItems = initialIpos.filter(
-    (item) =>
-      item.issuer_company?.toLowerCase().includes(search.toLowerCase()) ||
-      item.issue_category?.toLowerCase().includes(search.toLowerCase())
-  );
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch]);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["sector-ipos", sector.name, page, debouncedSearch],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      params.append("by_sector", "true");
+      params.append("sector_name", sector.name);
+      params.append("limit", "15");
+      params.append("page", page.toString());
+      if (debouncedSearch.trim() !== "") {
+        params.append("search", debouncedSearch);
+      }
+      const res = await fetch(`${API_URL}/api/ipo-lists?${params.toString()}`);
+      if (!res.ok) throw new Error("Failed to fetch");
+      return res.json();
+    },
+    initialData: page === 1 && debouncedSearch === "" ? initialPaginatedData : undefined,
+    placeholderData: (prev) => prev,
+    staleTime: 30000,
+  });
+
+  const paginatedItems: IPOItem[] = data?.data || [];
+  const total = data?.pagination?.total || 0;
+  const totalPages = data?.pagination?.totalPages || 0;
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
@@ -124,28 +167,37 @@ export default function SectorDetailClient({ sector, initialIpos, stats }: Secto
             <div className="lg:col-span-3">
               <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
                 <div className="px-5 py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
-                  <span className="text-sm font-bold text-slate-700">{filteredItems.length} Companies Listed</span>
+                  <span className="text-sm font-bold text-slate-700">{total} Companies Listed</span>
                 </div>
 
-                {filteredItems.length === 0 ? (
-                  <div className="py-20 text-center">
-                    <FileText className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                    <p className="text-slate-500 font-semibold">No companies found in this sector matching your query.</p>
-                  </div>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="bg-[#001529] text-white">
-                          <th className="py-4 px-5 font-semibold text-xs uppercase tracking-widest whitespace-nowrap">Company Name</th>
-                          <th className="py-4 px-5 font-semibold text-xs uppercase tracking-widest whitespace-nowrap text-center">Type</th>
-                          <th className="py-4 px-5 font-semibold text-xs uppercase tracking-widest whitespace-nowrap text-right">IPO Size (Cr)</th>
-                          <th className="py-4 px-5 font-semibold text-xs uppercase tracking-widest whitespace-nowrap text-center">P/E Ratio</th>
-                          <th className="py-4 px-5 font-semibold text-xs uppercase tracking-widest whitespace-nowrap text-center">Issue Date</th>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-[#001529] text-white">
+                        <th className="py-4 px-5 font-semibold text-xs uppercase tracking-widest whitespace-nowrap">Company Name</th>
+                        <th className="py-4 px-5 font-semibold text-xs uppercase tracking-widest whitespace-nowrap text-center">Type</th>
+                        <th className="py-4 px-5 font-semibold text-xs uppercase tracking-widest whitespace-nowrap text-right">IPO Size (Cr)</th>
+                        <th className="py-4 px-5 font-semibold text-xs uppercase tracking-widest whitespace-nowrap text-center">P/E Ratio</th>
+                        <th className="py-4 px-5 font-semibold text-xs uppercase tracking-widest whitespace-nowrap text-center">Issue Date</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {isLoading ? (
+                        <tr>
+                          <td colSpan={5} className="py-20 text-center">
+                            <Loader2 className="w-8 h-8 animate-spin text-[#001529] mx-auto mb-2" />
+                            <p className="text-slate-500 font-semibold">Loading IPOs...</p>
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {filteredItems.map((item, idx) => (
+                      ) : paginatedItems.length === 0 ? (
+                        <tr>
+                          <td colSpan={5} className="py-20 text-center">
+                            <FileText className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                            <p className="text-slate-500 font-semibold">No companies found in this sector matching your query.</p>
+                          </td>
+                        </tr>
+                      ) : (
+                        paginatedItems.map((item, idx) => (
                           <tr
                             key={item.id}
                             className={cn(
@@ -178,9 +230,69 @@ export default function SectorDetailClient({ sector, initialIpos, stats }: Secto
                               {formatDate(item.open_date)}
                             </td>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Pagination Controls */}
+                {totalPages > 1 && (
+                  <div className="px-5 py-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between bg-slate-50/30 gap-4">
+                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest hidden md:block">
+                      Showing Page {page} of {totalPages}
+                    </p>
+                    <div className="flex items-center justify-between sm:justify-end gap-1.5 sm:gap-2 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
+                      <button
+                        onClick={() => setPage((p) => Math.max(1, p - 1))}
+                        disabled={page === 1}
+                        className="flex items-center justify-center border border-slate-200 rounded-xl h-10 px-3 font-bold disabled:opacity-40 disabled:cursor-not-allowed text-[#001529] bg-white hover:bg-slate-50 shrink-0 transition-colors"
+                      >
+                        <ChevronLeft className="h-4 w-4 sm:mr-1" /> <span className="hidden sm:inline">Prev</span>
+                      </button>
+                      <div className="flex items-center gap-1 sm:gap-1.5 px-1">
+                        {(() => {
+                          const pages = [];
+                          const delta = 1;
+                          for (let i = 1; i <= totalPages; i++) {
+                            if (
+                              i === 1 ||
+                              i === totalPages ||
+                              (i >= page - delta && i <= page + delta)
+                            ) {
+                              if (pages.length > 0 && i - pages[pages.length - 1] > 1) {
+                                pages.push(-1);
+                              }
+                              pages.push(i);
+                            }
+                          }
+                          return pages.map((p, idx) =>
+                            p === -1 ? (
+                              <span key={`ell-${idx}`} className="text-slate-350 px-1 text-xs sm:text-sm">...</span>
+                            ) : (
+                              <button
+                                key={p}
+                                onClick={() => setPage(p)}
+                                className={`h-9 w-9 flex-shrink-0 rounded-xl text-xs sm:text-sm font-black transition-all ${
+                                  page === p
+                                    ? "bg-[#001529] text-white shadow-lg shadow-[#001529]/30"
+                                    : "text-slate-400 hover:bg-slate-100"
+                                }`}
+                              >
+                                {p}
+                              </button>
+                            )
+                          );
+                        })()}
+                      </div>
+                      <button
+                        onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                        disabled={page >= totalPages}
+                        className="flex items-center justify-center border border-slate-200 rounded-xl h-10 px-3 font-bold disabled:opacity-40 disabled:cursor-not-allowed text-[#001529] bg-white hover:bg-slate-50 shrink-0 transition-colors"
+                      >
+                        <span className="hidden sm:inline">Next</span> <ChevronRight className="h-4 w-4 sm:ml-1" />
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>

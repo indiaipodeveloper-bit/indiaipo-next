@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { LayoutGrid, Search, ArrowRight, ChevronRight, TrendingUp, BarChart3, Home, Zap, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
-import { getImageUrl } from "@/lib/utils";
 import { API_URL } from "@/lib/constants";
+import { getImgSrc } from "@/utils/image";
 
 interface Sector {
   id: string | number;
@@ -86,7 +86,7 @@ export default function SectorsClient({ initialSectors, initialBannerVideo }: Se
               loop
               playsInline
               className="w-full h-full object-cover opacity-30"
-              src={getImageUrl(initialBannerVideo || "video/ccvindia1.mp4")}
+              src={getImgSrc(initialBannerVideo || "video/ccvindia1.mp4")}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#001529]/80 via-[#001529]/40 to-[#001529]" />
           </div>

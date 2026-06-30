@@ -10,10 +10,10 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import { getImageUrl } from "@/lib/utils";
 import Ribbon from "@/components/Ribbon";
 import simpleChatbotImg from "@/assets/simple_chatbot_image2.jpeg";
 import { API_URL, CHAT_URL } from "@/lib/constants";
+import { getImgSrc } from "@/utils/image";
 
 interface PopupData {
   title: string;
@@ -215,7 +215,7 @@ const SitePopup = () => {
                   >
                     {data.image_url ? (
                       <img
-                        src={getImageUrl(data.image_url)}
+                        src={getImgSrc(data.image_url)}
                         alt={data.title}
                         className="w-full h-full object-contain"
                       />
@@ -280,7 +280,7 @@ const SitePopup = () => {
                   >
                     {latestDigest.image ? (
                       <img
-                        src={getImageUrl(latestDigest.image)}
+                        src={getImgSrc(latestDigest.image)}
                         alt={latestDigest.title}
                         className="w-full h-full object-contain"
                       />
@@ -330,7 +330,7 @@ const SitePopup = () => {
                         if (latestDigest.linked_blog_slug != null) {
                           window.location.href = "/daily-reporter/" + latestDigest.linked_blog_slug;
                         } else {
-                          window.open(getImageUrl(latestDigest.pdf), "_blank")
+                          window.open(getImgSrc(latestDigest.pdf), "_blank")
                         }
                       }}
                     >

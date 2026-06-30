@@ -1,9 +1,9 @@
 import { API_URL } from "@/lib/constants";
 
 export const getImgSrc = (src: any) => {
-  if (!src || src === "0" || src === 0 || src === "" || src === "null" || src === "undefined") return null;
+  if (!src || src === "0" || src === 0 || src === "" || src === "null" || src === "undefined") return '';
   const s = String(src).trim();
-  if (s.toLowerCase() === 'null') return null;
+  if (s.toLowerCase() === 'null') return '';
 
   if (s.startsWith('http') || s.startsWith('https') || s.startsWith('data:')) {
     return s;

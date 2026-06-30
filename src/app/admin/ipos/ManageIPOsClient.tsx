@@ -43,6 +43,7 @@ interface IPO {
   listing_day_open_bse?: string | number;
   listing_day_open_nse?: string | number;
   listing_day_gain_percentage?: string | number | null;
+  listing_price?: string | number | null;
   status: string | number;
   upcoming: string | number;
   confidential: string | number;
@@ -77,7 +78,7 @@ const emptyIPO: Omit<IPO, "id"> = {
   listing_date: "", merchant_bankers: "", issue_lowest_price: 0, issue_highest_price: 0,
   issue_size: 0, lot_size: 0, exchange: "", gmp: 0, issue_category: "", sector_id: 0,
   merchant_banker: "", current_price: 0, ipo_pe_ratio: 0, listing_day_close_bse: 0,
-  listing_day_close_nse: 0, listing_day_open_bse: 0, listing_day_open_nse: 0, listing_day_gain_percentage: null, status: "Active", upcoming: "0", confidential: "0",
+  listing_day_close_nse: 0, listing_day_open_bse: 0, listing_day_open_nse: 0, listing_day_gain_percentage: null, listing_price: null, status: "Active", upcoming: "0", confidential: "0",
   upcoming_ipo_status: "", admin_blog_id: 0
 };
 
@@ -752,6 +753,16 @@ function ManageIPOsContent() {
                     placeholder="e.g. +15.50% or (12.50%) or [-3.45%]"
                     value={form.listing_day_gain_percentage || ""}
                     onChange={(e) => setForm({ ...form, listing_day_gain_percentage: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-1.5 block">Listed Price</label>
+                  <Input
+                    type="text"
+                    placeholder="e.g. ₹130"
+                    value={form.listing_price || ""}
+                    onChange={(e) => setForm({ ...form, listing_price: e.target.value })}
                   />
                 </div>
 

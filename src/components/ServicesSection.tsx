@@ -39,14 +39,14 @@ const ServicesSection = () => {
   const servicesImgSrc = typeof servicesImg === "string" ? servicesImg : servicesImg.src;
 
   return (
-    <section className="py-24 bg-background">
+    <section className="py-10 bg-background">
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div
-          className="mb-12 max-w-2xl"
+          className="mb-12 max-w-4xl mx-auto text-center"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-heading text-foreground mb-4 leading-tight">
-            Comprehensive <span className="text-primary">IPO Services</span>
+            Comprehensive <span className="text-[#F99810]">IPO Services</span>
           </h2>
           <p className="text-muted-foreground text-base">
             From planning to listing day, we offer complete IPO advisory services aligned to your business objectives.

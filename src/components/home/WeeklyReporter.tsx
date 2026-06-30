@@ -101,7 +101,7 @@ const WeeklyReporter = () => {
                     </Ribbon>
 
                     <h2 className="wr-heading">
-                        Get India's <span className="wr-heading-accent">Weekly IPO Report</span> Delivered to Your Inbox
+                        Get India's <span className="text-[#F99810]">Weekly IPO Report</span> Delivered to Your Inbox
                     </h2>
 
                     <p className="wr-desc">
@@ -167,7 +167,7 @@ const WeeklyReporter = () => {
                                     id="weekly-reporter-submit"
                                     type="submit"
                                     disabled={status === "loading"}
-                                    className="wr-btn cursor-pointer"
+                                    className="wr-btn cursor-pointer bg-[#f99810]"
                                 >
                                     {status === "loading" ? (
                                         <span className="wr-spinner" />

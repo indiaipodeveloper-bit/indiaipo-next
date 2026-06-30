@@ -48,7 +48,7 @@ const AboutPreview = () => {
           <div>
 
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold font-heading text-foreground mb-6 leading-tight">
-              Why Companies Choose <span className="text-primary">India IPO</span>
+              Why Companies Choose <span className="text-[#F99810]">India IPO</span>
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4 text-base">
               India IPO is a premier IPO consultancy firm helping companies navigate the complex process of going public. With a proven track record of <strong className="text-foreground">9,200+ successful consultancies</strong>, we provide end-to-end IPO consultancy, guiding companies through planning, positioning and execution.
@@ -71,7 +71,7 @@ const AboutPreview = () => {
               ))}
             </div>
 
-            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-base px-8 rounded-xl group" asChild>
+            <Button size="lg" className="bg-[#F99810] text-primary-foreground hover:bg-primary/90 font-semibold text-base px-8 rounded-xl group" asChild>
               <Link href="/about">
                 Explore Our Journey
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />

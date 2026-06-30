@@ -1,14 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   ChevronLeft,
   Share2,
   BookOpen,
-  X,
-  Maximize,
-  Minimize,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -54,9 +50,9 @@ export default function MagazineViewerClient({
 
   return (
     <div className={`min-h-screen bg-[#F8FAFC] flex flex-col`}>
-      <main className={`flex-grow flex flex-col`}>
+      <main className={`grow flex flex-col`}>
         {/* Reader Toolbar */}
-        <div className="bg-white border-b border-border sticky top-[68px] z-30 py-3 shadow-sm">
+        <div className="bg-white border-b border-border sticky top-17 z-30 py-3 shadow-sm">
           <div className="container mx-auto px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <Button

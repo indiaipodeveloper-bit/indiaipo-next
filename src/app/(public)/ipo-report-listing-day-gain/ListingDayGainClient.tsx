@@ -45,6 +45,7 @@ interface IPOItem {
   listing_day_close_bse?: string | number | null;
   listing_day_close_nse?: string | number | null;
   listing_day_gain_percentage?: string | number | null;
+  listing_price?: string | number | null;
 }
 
 const formatDate = (dateStr: any, options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' }) => {
@@ -248,20 +249,21 @@ export default function ListingDayGainClient({
                     <th className="px-4 py-4 text-center font-bold text-[11px] uppercase tracking-wider whitespace-nowrap">Retail</th>
                     <th className="px-4 py-4 text-center font-bold text-[11px] uppercase tracking-wider whitespace-nowrap">Total</th>
                     <th className="px-4 py-4 text-left font-bold text-[11px] uppercase tracking-wider whitespace-nowrap">Listing Date</th>
+                    <th className="px-4 py-4 text-left font-bold text-[11px] uppercase tracking-wider whitespace-nowrap">Listed Price</th>
                     <th className="px-5 py-4 text-right font-bold text-[11px] uppercase tracking-wider whitespace-nowrap">% Gain/Loss</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {isLoading ? (
                     <tr>
-                      <td colSpan={11} className="py-24 text-center">
+                      <td colSpan={12} className="py-24 text-center">
                         <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
                         <span className="text-slate-500 font-bold uppercase tracking-widest text-xs">Syncing with Exchange...</span>
                       </td>
                     </tr>
                   ) : paginatedItems.length === 0 ? (
                     <tr>
-                      <td colSpan={11} className="py-24 text-center">
+                      <td colSpan={12} className="py-24 text-center">
                         <div className="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
                           <FileText className="h-8 w-8" />
                         </div>
@@ -322,6 +324,11 @@ export default function ListingDayGainClient({
                           <td className="px-4 py-7 text-center text-slate-700 font-semibold text-xs">{subs.retail}</td>
                           <td className="px-4 py-7 text-center text-slate-900 font-bold text-xs bg-slate-50/30">{subs.total}</td>
                           <td className="px-4 py-7 text-slate-600 text-xs whitespace-nowrap">{formatDate(item.listing_date)}</td>
+                          <td className="px-4 py-7 text-slate-900 font-bold text-xs">
+                            {item.listing_price ? (item.listing_price.toString().startsWith("₹") ? item.listing_price : `₹${item.listing_price}`) : (
+                              openPrice > 0 ? `₹${openPrice}` : "—"
+                            )}
+                          </td>
                           <td className="px-5 py-7 text-right font-black text-xs">
                             {hasGainInfo ? (
                               <span className={cn(
@@ -432,7 +439,7 @@ export default function ListingDayGainClient({
                         <div className="p-4 grid grid-cols-2 gap-4 text-xs">
                           <div className="col-span-2">
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Dates & Price</p>
-                            <div className="flex justify-between items-center bg-slate-50 p-2.5 rounded-lg mt-1">
+                            <div className="grid grid-cols-4 gap-2 bg-slate-50 p-2.5 rounded-lg mt-1 text-left">
                               <div>
                                 <p className="text-[10px] text-slate-400">Open Date</p>
                                 <p className="font-bold text-slate-700">{formatDate(item.open_date, { day: '2-digit', month: 'short' })}</p>
@@ -442,8 +449,16 @@ export default function ListingDayGainClient({
                                 <p className="font-bold text-slate-700">{formatDate(item.listing_date, { day: '2-digit', month: 'short' })}</p>
                               </div>
                               <div>
-                                <p className="text-[10px] text-slate-400">Price Band</p>
+                                <p className="text-[10px] text-slate-400">Issue Price</p>
                                 <p className="font-bold text-slate-850">₹{issuePrice || "—"}</p>
+                              </div>
+                              <div>
+                                <p className="text-[10px] text-slate-400">Listed Price</p>
+                                <p className="font-bold text-slate-850">
+                                  {item.listing_price ? (item.listing_price.toString().startsWith("₹") ? item.listing_price : `₹${item.listing_price}`) : (
+                                    openPrice > 0 ? `₹${openPrice}` : "—"
+                                  )}
+                                </p>
                               </div>
                             </div>
                           </div>

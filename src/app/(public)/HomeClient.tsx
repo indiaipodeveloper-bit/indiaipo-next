@@ -12,6 +12,7 @@ import AboutPreview from "@/components/AboutPreview";
 import ServicesSection from "@/components/ServicesSection";
 import Hero from "@/components/home/Hero";
 import { API_URL } from "@/lib/constants";
+import IPOConsultant from "@/components/home/IPOConsultant";
 
 const LiveIPOs = lazy(() => import("@/components/home/LiveIPOs"));
 const GMPSection = lazy(() => import("@/components/home/GMPSection"));
@@ -86,8 +87,9 @@ function HomeContent() {
     <>
       <main>
         <Hero />
-        <AboutPreview />
+        <IPOConsultant />
         <ServicesSection />
+        <AboutPreview />
 
         <LazySection>
           <Suspense fallback={null}>

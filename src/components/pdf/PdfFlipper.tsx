@@ -81,9 +81,9 @@ export default function PdfFlipper({ url }: PdfFlipperProps) {
   }, [url]);
 
   useEffect(() => {
-    if (scaleref.current) {
-      scaleref.current.scrollIntoView({ behavior: "smooth" });
-    }
+    // if (scaleref.current) {
+    //   scaleref.current.scrollIntoView({ behavior: "smooth" });
+    // }
   }, [totalPages]);
 
   const renderPage = useCallback(
@@ -321,12 +321,12 @@ export default function PdfFlipper({ url }: PdfFlipperProps) {
                 <MoveRight />
               </div>
               <div
-                className={`h-full outline-none border-none mx-auto flex justify-center items-center w-full transition-all duration-300`}
+                className={`h-full outline-none border-none mx-auto flex w-full transition-all duration-300`}
               >
                 <FlipBookWrapper
                   singlePage={true}
                   className={`
-                  w-full outline-none mdx:-mx-0 border-none overflow-hidden transition-all m-auto duration-500`}
+                  w-full outline-none mdx:-mx-0 border-none ${pageNum <= 1 ? "md:-mx-[25%]" : "md:mx-0"}  overflow-hidden transition-all m-auto duration-500`}
                   currentPage={pageNum}
                   onPageChange={handlePageChange}
                 >

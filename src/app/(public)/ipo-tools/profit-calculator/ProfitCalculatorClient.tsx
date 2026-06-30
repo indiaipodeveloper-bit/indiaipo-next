@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { API_URL } from "@/lib/constants";
 
-export default function ProfitCalculatorClient() {
+export default function ProfitCalculatorClient({ id }: { id?: string }) {
   const searchParams = useSearchParams();
 
   // Dynamic state for selected IPO details (defaulted to RCL Retail IPO values)
@@ -20,28 +21,64 @@ export default function ProfitCalculatorClient() {
   const [sharesToApply, setSharesToApply] = useState<number>(50000);
   const [totalAmount, setTotalAmount] = useState<number>(500000);
 
-  // Read URL search params on mount or param changes
+  // Read URL search params or fetch by id
   useEffect(() => {
-    const nameParam = searchParams.get("name");
-    const lotSizeParam = searchParams.get("lotSize");
-    const priceParam = searchParams.get("price");
+    if (id) {
+      const fetchIpoDetails = async () => {
+        try {
+          const res = await fetch(`${API_URL}/api/ipo-lists/${id}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data) {
+              if (data.issuer_company) {
+                setIpoName(data.issuer_company);
+              }
+              if (data.lot_size) {
+                const parsedLot = typeof data.lot_size === 'string'
+                  ? parseInt(data.lot_size.replace(/[^0-9]/g, ""), 10)
+                  : Number(data.lot_size);
+                if (!isNaN(parsedLot) && parsedLot > 0) {
+                  setLotSize(parsedLot);
+                }
+              }
+              const price = data.issue_highest_price || data.issue_lowest_price;
+              if (price) {
+                const parsedPrice = typeof price === 'string'
+                  ? parseFloat(price)
+                  : Number(price);
+                if (!isNaN(parsedPrice) && parsedPrice > 0) {
+                  setIssuePrice(parsedPrice);
+                }
+              }
+            }
+          }
+        } catch (err) {
+          console.error("Error fetching IPO details in calculator:", err);
+        }
+      };
+      fetchIpoDetails();
+    } else {
+      const nameParam = searchParams.get("name");
+      const lotSizeParam = searchParams.get("lotSize");
+      const priceParam = searchParams.get("price");
 
-    if (nameParam) {
-      setIpoName(nameParam);
-    }
-    if (lotSizeParam) {
-      const parsedLot = parseInt(lotSizeParam.replace(/[^0-9]/g, ""), 10);
-      if (!isNaN(parsedLot) && parsedLot > 0) {
-        setLotSize(parsedLot);
+      if (nameParam) {
+        setIpoName(nameParam);
+      }
+      if (lotSizeParam) {
+        const parsedLot = parseInt(lotSizeParam.replace(/[^0-9]/g, ""), 10);
+        if (!isNaN(parsedLot) && parsedLot > 0) {
+          setLotSize(parsedLot);
+        }
+      }
+      if (priceParam) {
+        const parsedPrice = parseFloat(priceParam);
+        if (!isNaN(parsedPrice) && parsedPrice > 0) {
+          setIssuePrice(parsedPrice);
+        }
       }
     }
-    if (priceParam) {
-      const parsedPrice = parseFloat(priceParam);
-      if (!isNaN(parsedPrice) && parsedPrice > 0) {
-        setIssuePrice(parsedPrice);
-      }
-    }
-  }, [searchParams]);
+  }, [id, searchParams]);
 
   const calculateShares = () => {
     const rawAmount = parseFloat(amountText.replace(/,/g, "")) || 0;

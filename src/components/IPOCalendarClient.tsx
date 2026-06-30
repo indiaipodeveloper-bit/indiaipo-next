@@ -455,7 +455,7 @@ export default function IPOCalendarClient({
                         </td>
                         <td className="px-8 py-6 text-right" onClick={(e) => e.stopPropagation()}>
                           <Link
-                            href={`/ipo-tools/profit-calculator?name=${encodeURIComponent(item.issuer_company)}&lotSize=${item.lot_size || ""}&price=${item.issue_highest_price || item.issue_lowest_price || ""}`}
+                            href={`/ipo-tools/profit-calculator/${item.id}`}
                             className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold px-4 py-2 text-sm shadow-lg shadow-blue-600/10"
                           >
                             Calculator <ArrowUpRight className="h-4 w-4 ml-1.5" />
@@ -607,7 +607,7 @@ export default function IPOCalendarClient({
 
                         <div className="px-4 pb-4 mt-auto" onClick={(e) => e.stopPropagation()}>
                           <Link
-                            href={`/ipo-tools/profit-calculator?name=${encodeURIComponent(item.issuer_company)}&lotSize=${item.lot_size || ""}&price=${item.issue_highest_price || item.issue_lowest_price || ""}`}
+                            href={`/ipo-tools/profit-calculator/${item.id}`}
                             className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg shadow-blue-600/10 h-10 w-full text-sm"
                           >
                             Calculator <ArrowUpRight className="h-4 w-4 ml-1.5" />

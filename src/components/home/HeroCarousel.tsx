@@ -148,7 +148,7 @@ export default function HeroCarousel({ banners }: Props) {
                 {banner.cta_text && (
                   <Link
                     href={banner.cta_link || "/all-ipos"}
-                    className="px-5 py-2.5 md:px-8 md:py-4 bg-green-700 text-white rounded-lg md:rounded-xl font-bold text-sm md:text-lg shadow-lg hover:bg-green-600 hover:shadow-green-900/20 transition-colors flex items-center gap-2 active:scale-95"
+                    className="px-5 py-2.5 md:px-8 md:py-4 bg-orange-600 text-white rounded-lg md:rounded-xl font-bold text-sm md:text-lg shadow-lg hover:bg-orange-700 hover:shadow-orange-900/20 transition-colors flex items-center gap-2 active:scale-95"
                   >
                     {banner.cta_text}
                     <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />

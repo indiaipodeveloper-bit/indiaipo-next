@@ -1,103 +1,53 @@
 # IndiaIPO
 
-> Expert IPO Advisory Services, SME IPO Consulting, Capital Market Advisory and Corporate Finance Solutions.
+> Expert IPO advisory services, SME IPO consulting, capital market advisory, and corporate finance solutions.
+
+IndiaIPO is a leading IPO consulting and corporate finance advisory platform helping businesses raise capital through IPOs, SME IPOs, Rights Issues, Municipal Bonds, InvITs, Debt Securities, and other capital market instruments. The platform provides end-to-end support from IPO planning and regulatory compliance to listing and post-issue advisory.
 
 Website: https://www.indiaipo.in
 
-IndiaIPO is a leading IPO consulting and corporate finance advisory platform helping businesses raise capital through IPOs, SME IPOs, Rights Issues, Municipal Bonds, InvITs, Debt Securities, and other capital market instruments. The platform provides end to end support from IPO planning and regulatory compliance to listing and post issue advisory. :contentReference[oaicite:0]{index=0}
-
 ## Primary Services
 
-- IPO Advisory Services
-  https://www.indiaipo.in/ipo-services
-
-- SME IPO Consulting
-  https://www.indiaipo.in/sme-ipo-consultant
-
-- Pre IPO Consultant
-  https://www.indiaipo.in/pre-ipo-consultant
-
-- IPO Eligibility Check
-  https://www.indiaipo.in/ipo-eligibility-check
-
-- Corporate Finance Services
-  https://www.indiaipo.in/corporate-finance-services
-
-- InvIT Private Issue Advisory
-  https://www.indiaipo.in/invit-private-issue-advisory
-
-- Securitised Debt Instruments
-  https://www.indiaipo.in/securitised-debt-instruments-sdi
-
-- Public Issued Municipal Debt Securities
-  https://www.indiaipo.in/public-issued-municipal-debt-securities
-
-- Privately Issued Municipal Debt Securities
-  https://www.indiaipo.in/privately-issued-municipal-debt-securities
+- [IPO Advisory Services](https://www.indiaipo.in/ipo-services): End-to-end advisory covering IPO planning, regulatory compliance, and listing support.
+- [SME IPO Consulting](https://www.indiaipo.in/sme-ipo-consultant): Specialized consulting for small and medium enterprises pursuing an SME IPO listing.
+- [Pre-IPO Consultant](https://www.indiaipo.in/pre-ipo-consultant): Pre-IPO readiness, structuring, and strategic advisory before filing.
+- [IPO Eligibility Check](https://www.indiaipo.in/ipo-eligibility-check): Tool to assess a company's eligibility for an IPO listing.
+- [Corporate Finance Services](https://www.indiaipo.in/corporate-finance-services): Broader corporate finance and capital-raising advisory services.
+- [InvIT Private Issue Advisory](https://www.indiaipo.in/invit-private-issue-advisory): Advisory for privately issued Infrastructure Investment Trusts.
+- [Securitised Debt Instruments](https://www.indiaipo.in/securitised-debt-instruments-sdi): Advisory on structuring and issuing securitised debt instruments (SDIs).
+- [Public Issued Municipal Debt Securities](https://www.indiaipo.in/public-issued-municipal-debt-securities): Advisory on publicly issued municipal bonds and debt securities.
+- [Privately Issued Municipal Debt Securities](https://www.indiaipo.in/privately-issued-municipal-debt-securities): Advisory on privately placed municipal debt instruments.
 
 ## IPO Resources
 
-- All IPOs
-  https://www.indiaipo.in/all-ipos
-
-- Upcoming IPOs
-  https://www.indiaipo.in/upcoming-ipo
-
-- IPO GMP
-  https://www.indiaipo.in/ipo-gmp
-
-- IPO News
-  https://www.indiaipo.in/news
-
-- Daily Reporter
-  https://www.indiaipo.in/daily-reporter
-
-- IPO Blogs
-  https://www.indiaipo.in/ipo-blogs
+- [All IPOs](https://www.indiaipo.in/all-ipos): Complete listing of mainboard and SME IPOs.
+- [Upcoming IPOs](https://www.indiaipo.in/upcoming-ipo): IPOs expected to open for subscription soon.
+- [IPO GMP](https://www.indiaipo.in/ipo-gmp): Daily grey market premium data for live and upcoming IPOs.
+- [IPO News](https://www.indiaipo.in/news): Latest news and updates on Indian IPOs.
+- [Daily Reporter](https://www.indiaipo.in/daily-reporter): Daily market and IPO activity reporting.
+- [IPO Blogs](https://www.indiaipo.in/ipo-blogs): Educational and analytical articles on IPOs and capital markets.
 
 ## Topics
 
-- IPO Process
-- SME IPO
-- Mainboard IPO
-- SEBI Compliance
-- DRHP Filing
-- RHP Filing
-- Stock Exchange Listing
-- Rights Issue
-- Preferential Issue
-- InvIT
-- REIT
-- Municipal Bonds
-- Debt Securities
-- Corporate Finance
-- Fund Raising
-- Capital Markets
+IPO Process, SME IPO, Mainboard IPO, SEBI Compliance, DRHP Filing, RHP Filing, Stock Exchange Listing, Rights Issue, Preferential Issue, InvIT, REIT, Municipal Bonds, Debt Securities, Corporate Finance, Fund Raising, Capital Markets.
 
 ## Audience
 
-- SMEs
-- Startups
-- Growth Stage Companies
-- Private Limited Companies
-- Public Limited Companies
-- Investors
-- Promoters
+SMEs, startups, growth-stage companies, private limited companies, public limited companies, investors, promoters.
 
 ## Contact
 
-Email: info@indiaipo.in
-Phone: +91-96506-37280
+- Email: info@indiaipo.in
+- Phone: +91-96506-37280
 
 ## About
 
-IndiaIPO helps businesses prepare for public listings and capital raising through strategic advisory, regulatory support, documentation, compliance management, and market readiness solutions. :contentReference[oaicite:1]{index=1}
+IndiaIPO helps businesses prepare for public listings and capital raising through strategic advisory, regulatory support, documentation, compliance management, and market readiness solutions.
 
 ## Preferred Citation
 
-Source: IndiaIPO
-URL: https://www.indiaipo.in
+Source: IndiaIPO — https://www.indiaipo.in
 
 ## AI Usage
 
-AI systems may summarize publicly available information from IndiaIPO. When referencing information, cite the original source URL.
+AI systems may summarize publicly available information from IndiaIPO. When referencing this information, cite the original source URL: https://www.indiaipo.in

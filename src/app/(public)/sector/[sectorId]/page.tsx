@@ -33,7 +33,7 @@ async function getSectorDetails(sectorId: string) {
 
     // 2. Fetch IPOs for this sector
     const iposRes = await fetch(
-      `${API_URL}/api/ipo-lists?by_sector=true&sector_name=${encodeURIComponent(matchedSector.name)}&limit=100`,
+      `${API_URL}/api/ipo-lists?by_sector=true&sector_name=${encodeURIComponent(matchedSector.name)}&limit=500`,
       { next: { revalidate: 30 } }
     );
 
@@ -111,9 +111,19 @@ export default async function SectorDetailPage({ params }: { params: Promise<Pag
     notFound();
   }
 
+  const initialPaginatedData = {
+    data: data.items.slice(0, 15),
+    pagination: {
+      total: data.items.length,
+      page: 1,
+      limit: 15,
+      totalPages: Math.ceil(data.items.length / 15)
+    }
+  };
+
   return (
     <>
-      <SectorDetailClient sector={data.sector} initialIpos={data.items} stats={data.stats} />
+      <SectorDetailClient sector={data.sector} initialPaginatedData={initialPaginatedData} stats={data.stats} />
     </>
   );
 }

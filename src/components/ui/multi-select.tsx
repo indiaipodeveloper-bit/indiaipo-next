@@ -43,11 +43,11 @@ export function MultiSelect({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
+        <div
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between h-auto min-h-11 py-2 border-2 border-slate-200 bg-white hover:bg-slate-50 transition-all shadow-sm"
+          tabIndex={0}
+          className="flex w-full items-center justify-between gap-2 rounded-md text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer h-auto min-h-11 py-2 px-3 border-2 border-slate-200 bg-white hover:bg-slate-50 shadow-sm text-foreground"
         >
           <div className="flex flex-wrap gap-1">
             {selected.length > 0 ? (
@@ -87,7 +87,7 @@ export function MultiSelect({
             )}
           </div>
           <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
-        </Button>
+        </div>
       </PopoverTrigger>
       <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
         <div className="flex items-center border-b px-3">

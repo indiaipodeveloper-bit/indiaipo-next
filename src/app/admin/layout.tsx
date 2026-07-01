@@ -19,6 +19,7 @@ const sidebarLinks = [
   { label: "Manage IPO Calendar", href: "/admin/ipos", icon: TrendingUp },
   { label: "Manage Sectors", href: "/admin/sectors", icon: LayoutGrid },
   { label: "List IPO By Sector", href: "/admin/sector-ipos", icon: LayoutGrid },
+  { label: "SME Migration List", href: "/admin/sme-migration", icon: FileText },
 
   { label: "Manage Magazines", href: "/admin/magazines", icon: BookOpen },
   { label: "News / Updates", href: "/admin/news", icon: Newspaper },

@@ -375,7 +375,7 @@ export default function ContactClient() {
                 {
                   icon: <Phone className="h-5 w-5" />,
                   title: "Call Us",
-                  lines: ["+91-74283-37280", "+91-96509-82781"],
+                  lines: ["+91-74283-37280", "+91-9650637280"],
                   link: "tel:+917428337280",
                   gradient: "linear-gradient(135deg, hsl(222 47% 11%), hsl(222 47% 20%))",
                   accent: false,

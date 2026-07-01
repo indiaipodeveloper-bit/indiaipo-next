@@ -114,7 +114,7 @@ const Footer = () => {
                   <span className="text-sm font-semibold text-background/80">Mobile: </span>
                   <a href="tel:+917428337280" className="text-sm text-background/60 hover:text-accent transition-colors">+91-74283-37280</a>
                   <span className="text-background/40">, </span>
-                  <a href="tel:+919650982781" className="text-sm text-background/60 hover:text-accent transition-colors">+91-96509-82781</a>
+                  <a href="tel:+919650982781" className="text-sm text-background/60 hover:text-accent transition-colors">+91-96506-37280</a>
                 </div>
               </div>
             </div>

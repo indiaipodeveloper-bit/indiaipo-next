@@ -8,12 +8,20 @@ import { toast } from "sonner";
 import { Plus, Trash2, Edit2, Save, X, Upload, FileText, Eye, ImageIcon, Loader2 } from "lucide-react";
 import { getImageUrl } from "@/lib/utils";
 import { API_URL } from "@/lib/constants";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface WeeklyDigestData {
   id: number;
   title: string;
   image: string | null;
   pdf: string | null;
+  type: "weekly" | "monthly";
   created_at: string;
   updated_at: string;
 }
@@ -22,7 +30,10 @@ export default function WeeklyDigestsClient() {
   const [digests, setDigests] = useState<WeeklyDigestData[]>([]);
   const [loading, setLoading] = useState(true);
   const [showNew, setShowNew] = useState(false);
-  const [newData, setNewData] = useState({ title: "" });
+  const [newData, setNewData] = useState({
+    title: "",
+    type: "weekly",
+  });
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editData, setEditData] = useState<Partial<WeeklyDigestData>>({});
   const [uploading, setUploading] = useState<{ id: number; type: 'image' | 'pdf' } | null>(null);
@@ -70,12 +81,13 @@ export default function WeeklyDigestsClient() {
         method: "POST",
         headers: getHeaders(),
         body: JSON.stringify({
-          title: newData.title
+          title: newData.title,
+          type: newData.type
         })
       });
       if (!res.ok) throw new Error("Failed to add weekly digest");
       toast.success("Weekly edition added successfully!");
-      setNewData({ title: "" });
+      setNewData({ title: "", type: "weekly" });
       setShowNew(false);
       fetchData(page);
     } catch (err: any) {
@@ -174,17 +186,17 @@ export default function WeeklyDigestsClient() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Weekly Reporter (Weekly Digests)</h1>
-          <p className="text-sm text-muted-foreground">Manage weekly market reports and Sunday updates</p>
+          <h1 className="text-2xl font-bold text-foreground">Reporter Digests</h1>
+          <p className="text-sm text-muted-foreground">Manage market reports</p>
         </div>
         <Button onClick={() => setShowNew(true)} className="bg-primary text-primary-foreground">
-          <Plus className="h-4 w-4 mr-2" /> Add Weekly Digest
+          <Plus className="h-4 w-4 mr-2" /> Add New Digest
         </Button>
       </div>
 
       {showNew && (
         <div className="bg-card border border-border rounded-xl p-5 space-y-3 shadow-sm animate-in fade-in slide-in-from-top-2">
-          <h3 className="font-semibold text-foreground">New Weekly Digest</h3>
+          <h3 className="font-semibold text-foreground">New Digest</h3>
           <div className="grid grid-cols-1 gap-3">
             <Input
               placeholder="Title/Headline *"
@@ -192,6 +204,29 @@ export default function WeeklyDigestsClient() {
               onChange={(e) => setNewData({ ...newData, title: e.target.value })}
               className="text-foreground"
             />
+            <Select
+              value={newData.type}
+              onValueChange={(value) =>
+                setNewData({
+                  ...newData,
+                  type: value,
+                })
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select Type" />
+              </SelectTrigger>
+
+              <SelectContent>
+                <SelectItem value="weekly">
+                  Weekly Report
+                </SelectItem>
+
+                <SelectItem value="monthly">
+                  Monthly Report
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="flex gap-2">
             <Button onClick={add} className="bg-primary text-primary-foreground"><Save className="h-4 w-4 mr-1" /> Save</Button>
@@ -203,11 +238,11 @@ export default function WeeklyDigestsClient() {
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20">
           <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
-          <p className="text-muted-foreground">Loading weekly digests...</p>
+          <p className="text-muted-foreground">Loading reporter digests...</p>
         </div>
       ) : digests.length === 0 ? (
         <div className="bg-card border border-dashed border-border rounded-xl p-12 text-center">
-          <p className="text-muted-foreground">No weekly digests found. Click "Add Weekly Digest" to get started.</p>
+          <p className="text-muted-foreground">No reporter digests found. Click "Add New Digest" to get started.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -222,6 +257,35 @@ export default function WeeklyDigestsClient() {
                       onChange={(e) => setEditData({ ...editData, title: e.target.value })}
                       className="text-foreground"
                     />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase text-muted-foreground">
+                      Type
+                    </label>
+
+                    <Select
+                      value={editData.type || "weekly"}
+                      onValueChange={(value: "weekly" | "monthly") =>
+                        setEditData({
+                          ...editData,
+                          type: value,
+                        })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Type" />
+                      </SelectTrigger>
+
+                      <SelectContent>
+                        <SelectItem value="weekly">
+                          Weekly Report
+                        </SelectItem>
+
+                        <SelectItem value="monthly">
+                          Monthly Report
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div className="flex gap-2">
                     <Button size="sm" onClick={saveEdit} className="bg-primary text-primary-foreground"><Save className="h-3.5 w-3.5 mr-1" /> Save Changes</Button>
@@ -245,12 +309,29 @@ export default function WeeklyDigestsClient() {
                           <FileText className="h-3 w-3" />
                           {new Date(d.created_at).toLocaleDateString()}
                         </span>
-                        {d.pdf ? (
-                          <Badge className="bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 border-emerald-500/20 text-[10px]">PDF Ready</Badge>
-                        ) : (
-                          <Badge variant="secondary" className="text-[10px]">No PDF</Badge>
-                        )}
-                        {!d.image && <Badge variant="secondary" className="text-[10px]">No Image</Badge>}
+                        <div className="flex items-center gap-2 mt-1 flex-wrap">
+                          <Badge variant="outline">
+                            {d.type === "weekly"
+                              ? "Weekly Report"
+                              : "Monthly Report"}
+                          </Badge>
+
+                          {d.pdf ? (
+                            <Badge className="bg-emerald-500/10 text-emerald-500">
+                              PDF Ready
+                            </Badge>
+                          ) : (
+                            <Badge variant="secondary">
+                              No PDF
+                            </Badge>
+                          )}
+
+                          {!d.image && (
+                            <Badge variant="secondary">
+                              No Image
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

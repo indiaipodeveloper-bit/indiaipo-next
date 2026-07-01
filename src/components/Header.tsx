@@ -353,9 +353,9 @@ const REPORTS_COLUMN: MegaColumn = {
       badgeColor: "bg-emerald-500 text-white",
     },
     {
-      label: "Weekly Reporter",
-      href: "/weekly-ipo-report",
-      badge: "Weekly Reporter",
+      label: "IPO Reporter",
+      href: "/ipo-report",
+      badge: "IPO Reporter",
       badgeColor: "bg-emerald-500 text-white animate-pulse",
     },
     { label: "IPO Calendar", href: "/all-ipos" },

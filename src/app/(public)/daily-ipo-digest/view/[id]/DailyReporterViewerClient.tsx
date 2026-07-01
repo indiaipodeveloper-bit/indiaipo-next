@@ -15,8 +15,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { getImageUrl } from "@/lib/utils";
 import dynamic from "next/dynamic";
+import { getImgSrc } from "@/utils/image";
 const PdfViewer = dynamic(() => import("@/components/pdf/SimplePdfViewer"), {
   ssr: false,
 });
@@ -46,7 +46,7 @@ export default function DailyReporterViewerClient({
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
-  const pdfUrl = digest.pdf ? getImageUrl(digest.pdf) : null;
+  const pdfUrl = digest.pdf ? getImgSrc(digest.pdf) : null;
 
   return (
     <div

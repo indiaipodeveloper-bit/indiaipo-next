@@ -65,7 +65,7 @@ export default function WeeklyReporterViewerClient({
                   asChild
                   className="rounded-lg hover:bg-slate-100 cursor-pointer"
                 >
-                  <Link href="/weekly-ipo-report">
+                  <Link href="/ipo-report">
                     <ChevronLeft className="h-4 w-4 mr-1" />
                     Back
                   </Link>
@@ -77,7 +77,7 @@ export default function WeeklyReporterViewerClient({
                     {digest.title}
                   </h1>
                   <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
-                    Weekly IPO Report
+                    IPO Report
                   </p>
                 </div>
               </div>

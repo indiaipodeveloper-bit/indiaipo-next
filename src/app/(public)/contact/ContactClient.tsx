@@ -23,8 +23,8 @@ import {
 import { toast } from "sonner";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { getImageUrl } from "@/lib/utils";
 import { API_URL } from "@/lib/constants";
+import { getImgSrc } from "@/utils/image";
 
 const customEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -273,7 +273,7 @@ export default function ContactClient() {
             <div className="absolute inset-0 z-0">
               <video autoPlay muted loop playsInline
                 className="w-full h-full object-cover opacity-25"
-                src={getImageUrl(bannerVideo)}
+                src={getImgSrc(bannerVideo)}
               />
               <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, hsl(222 47% 11% / 0.95) 0%, hsl(222 47% 15% / 0.5) 50%, hsl(222 47% 11% / 0.95) 100%)" }} />
             </div>

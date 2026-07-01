@@ -1,8 +1,8 @@
 import IPOBlogDetailsClient from "../../ipo-blogs/[slug]/IPOBlogDetailsClient";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { getImageUrl } from "@/lib/utils";
 import { API_URL, BASE_URL } from "@/lib/constants";
+import { getImgSrc } from "@/utils/image";
 
 interface AdminBlogFull {
   id: string;
@@ -103,7 +103,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const siteUrl = BASE_URL;
-  const blogImage = getImageUrl(blog.image);
+  const blogImage = getImgSrc(blog.image);
   const resolvedImage = blogImage
     ? (blogImage.startsWith("http")
       ? blogImage
@@ -163,7 +163,7 @@ export default async function Page({ params }: Props) {
   }
 
   const siteUrl = BASE_URL;
-  const blogImage = getImageUrl(blog.image);
+  const blogImage = getImgSrc(blog.image);
   const resolvedImage = blogImage
     ? (blogImage.startsWith("http")
       ? blogImage

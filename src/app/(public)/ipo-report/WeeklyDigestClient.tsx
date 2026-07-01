@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Home, ChevronRight, ChevronLeft, Calendar, Eye,
-  Search, ArrowRight, Newspaper, Loader2, TrendingUp, BarChart3, Zap, X, Mail
+  Search, ArrowRight, Newspaper, Loader2, PieChart, BarChart3, Zap, X, Mail, Calendar1, ChartLine
 } from "lucide-react";
 import { getImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ interface WeeklyDigestData {
   title: string;
   image: string | null;
   pdf: string | null;
+  type: "weekly" | "monthly";
   created_at: string;
   updated_at: string;
 }
@@ -27,12 +28,19 @@ const fadeUp = {
   visible: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.06, duration: 0.45 } }),
 };
 
-const stats = [
-  { icon: Newspaper, value: "Weekly", label: "Every Sunday" },
-  { icon: BarChart3, value: "50+", label: "Weekly Editions" },
-  { icon: TrendingUp, value: "Deep-Dive", label: "Market Trends" },
-  { icon: Zap, value: "100%", label: "Expert Analysis" },
+const reporterTypes = [
+  { icon: Calendar1, value: "WEEKLY", label: "Every Sunday" },
+  { icon: Calendar1, value: "MONTHLY", label: "Every Month End" },
+  { icon: BarChart3, value: "QUARTERLY", label: "Every Quarter End" },
+  { icon: PieChart, value: "HALF YEARLY", label: "Every 6 Months" },
+  { icon: ChartLine, value: "YEARLY", label: "Every Year End" },
 ];
+
+const reportFilters = [
+  { value: "all", label: "All Reports" },
+  { value: "weekly", label: "Weekly" },
+  { value: "monthly", label: "Monthly" },
+] as const;
 
 export default function WeeklyDigestClient({
   initialDigests,
@@ -50,6 +58,7 @@ export default function WeeklyDigestClient({
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(initialTotalPages);
   const [total, setTotal] = useState(initialTotal);
+  const [type, setType] = useState<"all" | "weekly" | "monthly">("all");
 
   const [showSubscribeModal, setShowSubscribeModal] = useState(false);
   const [email, setEmail] = useState("");
@@ -64,10 +73,29 @@ export default function WeeklyDigestClient({
     return () => clearTimeout(handler);
   }, [searchInput]);
 
-  const fetchData = async (currentPage: number, currentSearch: string) => {
+  const fetchData = async (currentPage: number, currentSearch: string, currentType: "all" | "weekly" | "monthly" ) => {
     try {
       setLoading(true);
-      const res = await fetch(`${API_URL}/api/weekly-digests?page=${currentPage}&limit=12&search=${encodeURIComponent(currentSearch)}`);
+        let params = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: "12",
+      });
+
+      params = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: "12",
+      });
+
+      if (currentSearch.trim()) {
+        params.set("search", currentSearch);
+      }
+
+      if (currentType !== "all") {
+        params.set("type", currentType);
+      }
+
+
+      const res = await fetch(`${API_URL}/api/weekly-digests?${params.toString()}`);
       if (res.ok) {
         const result = await res.json();
         setDigests(result.data || []);
@@ -82,10 +110,8 @@ export default function WeeklyDigestClient({
   };
 
   useEffect(() => {
-    if (page !== 1 || search !== "") {
-      fetchData(page, search);
-    }
-  }, [page, search]);
+    fetchData(page, search, type);
+  }, [page, search, type]);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -144,33 +170,22 @@ export default function WeeklyDigestClient({
                 <Home className="h-3.5 w-3.5 text-[#fbbf24]" /> Home
               </Link>
               <ChevronRight className="h-4 w-4 text-white/30" />
-              <span className="text-white/80">Weekly Reporter</span>
+              <span className="text-white/80">IPO Reporter</span>
             </div>
 
             <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-left md:text-center flex flex-col items-start md:items-center">
               <h1 className="text-4xl md:text-5xl font-black text-white mb-5 leading-tight max-w-3xl mr-auto md:mx-auto">
-                India IPO <span className="text-[#fbbf24]">Weekly IPO Report</span>
+                IPO Reports By <span className="text-[#fbbf24]">India IPO</span>
               </h1>
               <p className="text-white/65 max-w-2xl text-base md:text-lg font-medium leading-relaxed mb-10 mr-auto md:mx-auto">
-                Every Sunday, receive a complete summary of India's IPO market covering IPO listings, launches, DRHP filings, SEBI approvals, subscription trends, listing performance and key market insights - all in one report.
+                Stay informed with comprehensive insights into India's IPO market. Our reports are available in multiple frequencies to match your information needs - from weekly updates to yearly deep dives.
               </p>
-
-              <div className="relative w-full max-w-lg mr-auto md:mx-auto">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
-                <input
-                  type="text"
-                  placeholder="Search weekly reports by title…"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/10 border border-white/20 text-white placeholder:text-white/40 text-sm font-medium focus:outline-none focus:bg-white/15 focus:border-[#fbbf24]/50 transition-all"
-                />
-              </div>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="mt-8"
+                className="5"
               >
                 <Button
                   onClick={() => setShowSubscribeModal(true)}
@@ -186,14 +201,23 @@ export default function WeeklyDigestClient({
 
         <section className="bg-gradient-to-r from-[#001529] to-[#003380] py-10 -mt-1 relative z-10">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {stats.map((s, i) => (
-                <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center hover:bg-white/10 transition-all">
+            <div className="flex flex-wrap justify-center gap-4">
+              {reporterTypes.map((s, i) => (
+                <div
+                  key={i}
+                  className="w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.75rem)] lg:w-[calc(20%-0.8rem)] max-w-[220px] bg-white/5 border border-white/10 rounded-2xl p-5 text-center hover:bg-white/10 transition-all"
+                >
                   <div className="w-11 h-11 rounded-xl bg-[#fbbf24]/20 flex items-center justify-center mx-auto mb-3">
                     <s.icon className="h-5 w-5 text-[#fbbf24]" />
                   </div>
-                  <div className="text-2xl font-black text-white mb-1">{s.value}</div>
-                  <div className="text-white/55 text-xs font-semibold">{s.label}</div>
+
+                  <div className="text-xl font-black text-white mb-1">
+                    {s.value}
+                  </div>
+
+                  <div className="text-white/55 text-xs font-semibold">
+                    {s.label}
+                  </div>
                 </div>
               ))}
             </div>
@@ -204,15 +228,43 @@ export default function WeeklyDigestClient({
           <div className="container mx-auto px-4">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-1 h-8 rounded-full bg-[#fbbf24]" />
-              <h2 className="text-2xl font-black text-[#001529]">Latest Weekly Editions</h2>
+              <h2 className="text-2xl font-black text-[#001529]">Latest Editions</h2>
+              <div className="relative w-full max-w-lg mr-auto md:mx-auto">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-black/40" />
+                <input
+                  type="text"
+                  placeholder="Search IPO reports"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl bg-black/10 border border-black/20 text-black placeholder:text-black/40 text-sm font-medium focus:outline-none focus:bg-black/15 focus:border-[#fbbf24]/50 transition-all"
+                />
+              </div>
             </div>
-
+            
+              <div className="flex flex-wrap gap-3 mb-8">
+              {reportFilters.map((item) => (
+                <button
+                  key={item.value.toLowerCase()}
+                  onClick={() =>
+                    setType(item.value.toLowerCase() as "all" | "weekly" | "monthly")
+                  }
+                  className={`px-5 py-2 rounded-full text-sm font-semibold transition-all cursor-pointer
+                  ${
+                    type === item.value
+                      ? "bg-[#001529] text-white shadow-lg"
+                      : "bg-white border border-slate-200 text-slate-600 hover:border-[#001529]"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
             {loading ? (
               <div className="flex flex-col items-center justify-center py-24 gap-4">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#001529] to-[#003380] flex items-center justify-center">
                   <Loader2 className="h-8 w-8 animate-spin text-[#fbbf24]" />
                 </div>
-                <p className="text-slate-500 font-semibold">Fetching weekly reports…</p>
+                <p className="text-slate-500 font-semibold">Fetching latest editions…</p>
               </div>
             ) : digests.length === 0 ? (
               <div className="py-24 text-center bg-white rounded-3xl border border-slate-200">
@@ -238,8 +290,8 @@ export default function WeeklyDigestClient({
 
                       <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                         {digest.pdf && (
-                          <Link href={`/weekly-ipo-report/view/${digest.id}`} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-[#001529] text-xs font-black hover:bg-white/90 transition-all font-semibold">
-                            <Eye className="h-3.5 w-3.5 text-[#fbbf24]" /> View Weekly PDF
+                          <Link href={`/ipo-report/view/${digest.id}`} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-[#001529] text-xs font-black hover:bg-white/90 transition-all font-semibold">
+                            <Eye className="h-3.5 w-3.5 text-[#fbbf24]" /> View {digest.type} pdf
                           </Link>
                         )}
                       </div>
@@ -261,7 +313,7 @@ export default function WeeklyDigestClient({
                       </h3>
                       <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                         {digest.pdf ? (
-                          <Link href={`/weekly-ipo-report/view/${digest.id}`} className="inline-flex items-center gap-1 text-xs font-black text-[#001529] hover:text-[#fbbf24] transition-colors">
+                          <Link href={`/ipo-report/view/${digest.id}`} className="inline-flex items-center gap-1 text-xs font-black text-[#001529] hover:text-[#fbbf24] transition-colors">
                             Open Report <ArrowRight className="h-3.5 w-3.5 text-[#fbbf24]" />
                           </Link>
                         ) : (

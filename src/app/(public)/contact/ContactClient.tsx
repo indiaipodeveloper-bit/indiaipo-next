@@ -305,7 +305,7 @@ export default function ContactClient() {
               style={{ fontFamily: "var(--font-heading)" }}
             >
               Get In{" "}
-              <span style={{ background: "linear-gradient(135deg, hsl(35 95% 55%), hsl(45 93% 68%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              <span style={{ color: "#f99810" }}>
                 Touch
               </span>{" "}
               With Us
@@ -338,7 +338,7 @@ export default function ContactClient() {
           <div className="container mx-auto px-4">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="text-center mb-10">
               <h2 className="text-2xl md:text-3xl font-extrabold" style={{ color: "hsl(220 72% 20%)", fontFamily: "var(--font-heading)" }}>
-                Find Us <span style={{ background: "linear-gradient(135deg, hsl(35 95% 52%), hsl(45 93% 60%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Anywhere</span>
+                Find Us <span style={{ color: "#f99810" }}>Anywhere</span>
               </h2>
             </motion.div>
 
@@ -465,7 +465,7 @@ export default function ContactClient() {
                 style={{ color: "hsl(222 47% 11%)", fontFamily: "var(--font-heading)" }}
               >
                 Find Us &amp;{" "}
-                <span style={{ background: "linear-gradient(135deg, hsl(35 95% 52%), hsl(45 93% 60%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                <span style={{ color: "#f99810" }}>
                   Send a Message
                 </span>
               </motion.h2>
@@ -678,7 +678,7 @@ export default function ContactClient() {
                 style={{ fontFamily: "var(--font-heading)" }}
               >
                 Why Connect With{" "}
-                <span style={{ background: "linear-gradient(135deg, hsl(35 95% 55%), hsl(45 93% 68%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                <span style={{ color: "#f99810" }}>
                   India IPO?
                 </span>
               </motion.h2>
@@ -738,7 +738,7 @@ export default function ContactClient() {
                 style={{ color: "hsl(220 72% 20%)", fontFamily: "var(--font-heading)" }}
               >
                 Frequently Asked{" "}
-                <span style={{ background: "linear-gradient(135deg, hsl(35 95% 52%), hsl(45 93% 60%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                <span style={{ color: "#f99810" }}>
                   Questions
                 </span>
               </motion.h2>
@@ -848,7 +848,7 @@ export default function ContactClient() {
               <a
                 href="tel:+917428337280"
                 className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl font-bold text-sm transition-all hover:scale-105 hover:shadow-2xl"
-                style={{ background: "linear-gradient(135deg, hsl(35 95% 52%), hsl(45 93% 62%))", color: "white", boxShadow: "0 8px 32px hsl(35 95% 52% / 0.4)" }}
+                style={{ background: "#f99810", color: "white", }}
               >
                 <Phone className="h-4 w-4" />
                 Call Now: +91-74283-37280

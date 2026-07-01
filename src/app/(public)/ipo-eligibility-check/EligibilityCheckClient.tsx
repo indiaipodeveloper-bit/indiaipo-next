@@ -203,9 +203,9 @@ export default function EligibilityCheckClient() {
                   Take the first step towards massive capital scaling. Our expert Eligibility check accurately gauges your readiness for the Mainboard or SME exchanges.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Button 
-                    size="lg" 
-                    className="h-14 px-8 text-lg bg-accent text-accent-foreground hover:bg-accent/90 rounded-full w-full sm:w-auto font-bold cursor-pointer" 
+                  <Button
+                    size="lg"
+                    className="h-14 px-8 text-lg bg-accent text-accent-foreground hover:bg-accent/90 rounded-full w-full sm:w-auto font-bold cursor-pointer"
                     onClick={() => document.getElementById("Eligibility-form")?.scrollIntoView({ behavior: "smooth" })}
                   >
                     Start Assessment Now
@@ -232,7 +232,7 @@ export default function EligibilityCheckClient() {
             >
               <h2 className="text-4xl md:text-5xl font-black font-heading text-foreground mb-5 tracking-tight" style={{ fontFamily: "var(--font-heading)" }}>
                 Eligibility Check for{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+                <span className="text-[#F99810]">
                   SME and Mainboard IPO
                 </span>{" "}
                 in India
@@ -439,7 +439,7 @@ export default function EligibilityCheckClient() {
         <section className="container mx-auto px-4">
           <div className="max-w-3xl mb-16">
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-foreground mb-4" style={{ fontFamily: "var(--font-heading)" }}>
-              Why Assess Your <strong className="text-accent">IPO</strong> Readiness?
+              Why Assess Your <strong className="text-[#F99810]">IPO</strong> Readiness?
             </h2>
             <p className="text-muted-foreground text-lg">An IPO is a critical milestone. Assessing Eligibility ensures you understand the regulatory, financial, and strategic transformations required.</p>
           </div>
@@ -532,7 +532,7 @@ export default function EligibilityCheckClient() {
                 <div className="pt-8 pb-4">
                   <div className="flex items-center gap-2 mb-6">
                     <div className="w-1.5 h-6 bg-primary rounded-full"></div>
-                    <h3 className="text-xl font-bold font-heading text-primary" style={{ fontFamily: "var(--font-heading)" }}>
+                    <h3 className="text-xl font-bold font-heading text-[#F99810]" style={{ fontFamily: "var(--font-heading)" }}>
                       Eligibility Criteria
                     </h3>
                   </div>
@@ -648,13 +648,13 @@ export default function EligibilityCheckClient() {
                         <Calendar className="w-3.5 h-3.5" />
                         {new Date(news.created_at).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}
                       </div>
-                      <h3 className="font-bold text-lg font-heading text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-3" style={{ fontFamily: "var(--font-heading)" }}>
+                      <h3 className="font-bold text-lg font-heading text-foreground group-hover:text-[#F99810] transition-colors line-clamp-2 mb-3" style={{ fontFamily: "var(--font-heading)" }}>
                         {news.title}
                       </h3>
                       <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
                         {news.excerpt || "Read more about this latest update inside..."}
                       </p>
-                      <div className="mt-auto flex items-center text-sm font-semibold text-primary">
+                      <div className="mt-auto flex items-center text-sm font-semibold text-[#F99810]">
                         Read Full Article <ArrowUpRight className="ml-1 w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                       </div>
                     </div>
@@ -699,13 +699,13 @@ export default function EligibilityCheckClient() {
                         <Calendar className="w-3.5 h-3.5" />
                         {new Date(blog.created_at).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}
                       </div>
-                      <h3 className="font-bold text-lg font-heading text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-3" style={{ fontFamily: "var(--font-heading)" }}>
+                      <h3 className="font-bold text-lg font-heading text-[#F99810] group-hover:text-[#F99810] transition-colors line-clamp-2 mb-3" style={{ fontFamily: "var(--font-heading)" }}>
                         {blog.title}
                       </h3>
                       <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
                         {blog.description || "Read comprehensive reviews and analysis about this IPO..."}
                       </p>
-                      <div className="mt-auto flex items-center text-sm font-semibold text-primary">
+                      <div className="mt-auto flex items-center text-sm font-semibold text-[#F99810]">
                         Read Full Details <ArrowUpRight className="ml-1 w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                       </div>
                     </div>
@@ -765,7 +765,7 @@ const ResultModal = ({ isOpen, onClose, status, companyName }: { isOpen: boolean
               className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center shadow-lg ${status === "Eligible"
                 ? "bg-emerald-50 text-emerald-600 border border-emerald-100"
                 : "bg-amber-50 text-amber-600 border border-amber-100"
-              }`}
+                }`}
             >
               {status === "Eligible" ? <Sparkles className="w-8 h-8 md:w-9 md:h-9" /> : <AlertCircle className="w-8 h-8 md:w-9 md:h-9" />}
             </motion.div>

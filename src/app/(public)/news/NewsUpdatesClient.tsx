@@ -244,7 +244,7 @@ export default function NewsUpdatesClient({
               <h1 className="text-4xl md:text-6xl font-black text-white mb-5 leading-tight max-w-4xl">
                 IPO News &amp; <span className="text-[#f59e08]">Market Updates</span>
               </h1>
-              <p className="text-white/65 max-w-2xl text-base md:text-lg font-medium leading-relaxed mb-10">
+              <p className="text-white max-w-2xl text-base md:text-lg font-medium leading-relaxed mb-10">
                 Stay ahead with the latest news from IPO markets, regulatory updates, BSE/NSE announcements, and capital market intelligence — all in one place, updated daily.
               </p>
 
@@ -365,7 +365,7 @@ export default function NewsUpdatesClient({
                                     <Calendar className="h-3 w-3" /> {date}
                                   </span>
                                 </div>
-                                <h3 className="font-black text-base leading-snug line-clamp-2 mb-2 text-[#001529] group-hover:text-[#f59e08] transition-colors">
+                                <h3 className="font-black text-base leading-snug line-clamp-2 mb-2 text-[#001529] group-hover:text-[#f99810] transition-colors">
                                   {item.title}
                                 </h3>
                                 {item.description && (
@@ -598,7 +598,7 @@ export default function NewsUpdatesClient({
           <div className="container mx-auto px-4">
             <div className="mb-12">
               <h2 className="text-3xl md:text-4xl font-black text-[#001529] mb-4">
-                What We <span className="text-[#f59e08]">Cover</span>
+                What We <span className="text-[#f99810]">Cover</span>
               </h2>
               <p className="text-slate-500 font-medium max-w-2xl">
                 India IPO's news desk monitors and analyses every major development in India's capital markets — so you never miss a beat.

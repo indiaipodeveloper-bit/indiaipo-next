@@ -23,6 +23,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { formatIndianNumber } from "@/lib/utils";
 import { getImgSrc } from "@/utils/image";
+import Ribbon from "@/components/Ribbon";
 
 interface Banker {
   id: string | number;
@@ -201,11 +202,10 @@ const ConnectModal = ({
       <div className="p-8">
         <div className="pt-2">
           <Link
-            href={`/merchant-contact?ipo_type=${
-              banker.mcat_id === "list-of-sme-merchant-bankers" || banker.mcat_id === "SME"
-                ? "SME-IPO"
-                : "Mainboard-IPO"
-            }`}
+            href={`/merchant-contact?ipo_type=${banker.mcat_id === "list-of-sme-merchant-bankers" || banker.mcat_id === "SME"
+              ? "SME-IPO"
+              : "Mainboard-IPO"
+              }`}
             className="block"
           >
             <button
@@ -341,16 +341,14 @@ export default function MerchantBankerDetailClient({
               </div>
 
               <div className="flex-1">
-                <div
-                  className="inline-flex items-center gap-2 rounded-full px-5 py-2 mb-4 text-xs font-black uppercase tracking-widest"
-                  style={{
-                    background: "rgba(245,158,8,0.2)",
-                    color: G,
-                    border: "1px solid rgba(245,158,8,0.35)",
-                  }}
+                <Ribbon
+                  color="linear-gradient(135deg, #002a52 0%, #0052a3 60%, #0080ff 100%)"
+                  fontSize="14px"
+                  cutout="0.5em"
+                  className="inline-flex items-center gap-2 mb-4 font-black uppercase tracking-widest text-white"
                 >
                   <Shield className="h-3.5 w-3.5" /> Expert Merchant Banker
-                </div>
+                </Ribbon>
                 <h1 className="text-3xl md:text-5xl font-black text-white mb-2 leading-tight">
                   {banker.title}
                 </h1>
@@ -367,16 +365,7 @@ export default function MerchantBankerDetailClient({
                   >
                     <Mail className="w-4 h-4" /> Connect Now
                   </button>
-                  {(banker.cweblink || banker.website) && (
-                    <a
-                      href={webUrl(banker.cweblink || banker.website)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-6 h-11 rounded-xl font-black text-sm text-white border border-white/25 hover:bg-white/10 transition-all cursor-pointer"
-                    >
-                      <Globe className="w-4 h-4" /> Visit Website
-                    </a>
-                  )}
+
                 </div>
               </div>
             </div>
@@ -404,8 +393,8 @@ export default function MerchantBankerDetailClient({
                   value: banker.avgsubscription
                     ? `${banker.avgsubscription}x`
                     : banker.avg_subscription
-                    ? `${banker.avg_subscription}x`
-                    : "—",
+                      ? `${banker.avg_subscription}x`
+                      : "—",
                 },
               ].map((s, i) => (
                 <div key={i} className="flex flex-col items-center text-center py-6 px-4">

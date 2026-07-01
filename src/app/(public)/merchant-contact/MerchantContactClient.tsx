@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import heroBg from "@/assets/hero-bg.jpg";
+import Ribbon from "@/components/Ribbon";
 import { API_URL } from "@/lib/constants";
 
 interface FormData {
@@ -245,11 +246,16 @@ export default function MerchantContactClient() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                <div className="inline-flex items-center gap-2 bg-primary/20 text-primary border border-primary/30 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest mb-6">
-                  <ShieldCheck className="w-4 h-4 text-primary" /> Professional IPO Support
-                </div>
+                <Ribbon
+                  color="linear-gradient(135deg, #002a52 0%, #0052a3 60%, #0080ff 100%)"
+                  fontSize="14px"
+                  cutout="0.5em"
+                  className="inline-flex items-center gap-2 mb-6 font-black uppercase tracking-widest text-white"
+                >
+                  <ShieldCheck className="w-4 h-4 text-white" /> Professional IPO Support
+                </Ribbon>
                 <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
-                  Connect with Our Network of <span className="text-primary">40+ Top Merchant Bankers</span>
+                  Connect with Our Network of <span className="text-[#F99810]">40+ Top Merchant Bankers</span>
                 </h1>
                 <p className="text-lg text-white/70 mb-8 max-w-xl font-medium leading-relaxed">
                   Start your IPO journey with expert guidance. Whether it's an SME IPO or a Mainboard listing, our network of expert merchant bankers is here to ensure your success.
@@ -297,7 +303,7 @@ export default function MerchantContactClient() {
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-20">
               <h2 className="text-3xl md:text-5xl font-black text-[#001529] mb-6">
-                Expert Services for Your <span className="text-primary">Financial Success</span>
+                Expert Services for Your <span className="text-[#F99810]">Financial Success</span>
               </h2>
               <div className="w-24 h-2 rounded-full bg-primary mx-auto mb-8" />
               <p className="text-slate-500 font-medium">
@@ -347,7 +353,7 @@ export default function MerchantContactClient() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div>
                 <h2 className="text-3xl md:text-5xl font-black text-[#001529] mb-8 leading-tight">
-                  Ready to take the <span className="text-primary">Next Step?</span>
+                  Ready to take the <span className="text-[#f99810]">Next Step?</span>
                 </h2>
                 <p className="text-lg text-slate-500 mb-10 font-medium leading-relaxed">
                   Don't miss the opportunity to grow your business exponentially. We are experts in identifying the right market timing and valuation for your company.
@@ -393,7 +399,7 @@ export default function MerchantContactClient() {
                 ></iframe>
               </div>
               <div className="order-1 lg:order-2 space-y-8">
-                <h2 className="text-3xl md:text-5xl font-black text-[#001529]">Visit Our <span className="text-primary">Corporate Office</span></h2>
+                <h2 className="text-3xl md:text-5xl font-black text-[#001529]">Visit Our <span className="text-[#f99810]">Corporate Office</span></h2>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0 border border-blue-100">

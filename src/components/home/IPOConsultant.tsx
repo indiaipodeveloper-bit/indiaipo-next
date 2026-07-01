@@ -29,7 +29,7 @@ const IPOConsultant = () => {
 
                     <div className="space-y-6">
                         <p className="text-muted-foreground leading-relaxed text-base">
-                            <strong style={{ color: "#000000" }}> India IPO </strong> is a leading  <a href="/consultant">  <strong style={{ color: "#000000" }}>IPO Consultant</strong></a> and <a href="/ipo-services"><strong style={{ color: "#000000" }}>IPO Advisory</strong></a> platform in India, helping companies successfully access the Indian Capital Markets. We offer end-to-end IPO services for businesses looking to conduct an SME IPO or a Mainboard IPO, helping promoters at every step of their journey from education and strategic planning to execution and post-listing visibility.
+                            <strong style={{ color: "#000000" }}> India IPO </strong> is a leading    <strong style={{ color: "#000000" }}>IPO Consultant</strong> and <a href="/ipo-services"><strong style={{ color: "#000000" }}>IPO Advisory</strong></a> platform in India, helping companies successfully access the Indian Capital Markets. We offer end-to-end IPO services for businesses looking to conduct an SME IPO or a Mainboard IPO, helping promoters at every step of their journey from education and strategic planning to execution and post-listing visibility.
                         </p>
 
                         <p className="text-muted-foreground leading-relaxed text-base">

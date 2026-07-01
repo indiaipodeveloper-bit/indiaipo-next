@@ -283,14 +283,14 @@ export default function VideoUpdatesClient() {
                             <Calendar className="w-3.5 h-3.5" />
                             {new Date(video.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                           </div>
-                          <h3 className={`font-bold font-heading text-foreground group-hover:text-primary transition-colors line-clamp-2 ${viewMode === "list" ? "text-xl md:text-2xl mb-4" : "text-lg mb-2"}`}>
+                          <h3 className={`font-bold font-heading text-foreground group-hover:text-[#f99810] transition-colors line-clamp-2 ${viewMode === "list" ? "text-xl md:text-2xl mb-4" : "text-lg mb-2"}`}>
                             {video.title}
                           </h3>
                           <div className="mt-auto pt-4 border-t border-border/50 flex items-center justify-between">
                             {!isPlaying ? (
                               <button
                                 onClick={() => setPlayingVideoId(video.id)}
-                                className="text-sm font-bold text-primary group-hover:text-gold transition-colors flex items-center focus:outline-none"
+                                className="text-sm font-bold text-[#f99810] group-hover:text-[#f99810] transition-colors flex items-center focus:outline-none"
                               >
                                 Play Video
                                 <PlayCircle className="w-4 h-4 ml-1.5 opacity-80 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all fill-accent/10" />

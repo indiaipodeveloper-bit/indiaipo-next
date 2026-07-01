@@ -7,11 +7,11 @@ import {
   Home, ChevronRight, ChevronLeft, Calendar, Eye,
   Search, ArrowRight, Newspaper, Loader2, TrendingUp, BarChart3, Zap, X, Mail
 } from "lucide-react";
-import { getImageUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useRecaptcha } from "@/hooks/useRecaptcha";
 import { toast } from "sonner";
 import { API_URL } from "@/lib/constants";
+import { getImgSrc } from "@/utils/image";
 
 interface DailyDigest {
   id: number;
@@ -134,7 +134,7 @@ export default function DailyReporterClient({
               loop
               playsInline
               className="w-full h-full object-cover opacity-30"
-              src={getImageUrl(bannerVideo || "video/ccvindia1.mp4")}
+              src={getImgSrc(bannerVideo || "video/ccvindia1.mp4")}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#001529]/80 via-[#001529]/40 to-[#001529]" />
           </div>
@@ -236,7 +236,7 @@ export default function DailyReporterClient({
                   <div key={digest.id} className="group bg-white shadow-2xl border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-1.5 transition-all flex flex-col">
                     <div className="relative aspect-video overflow-hidden bg-white">
                       {digest.image ? (
-                        <img src={getImageUrl(digest.image)} alt={digest.title} className="w-full h-full object-fill group-hover:scale-110 transition-transform duration-700" />
+                        <img src={getImgSrc(digest.image)} alt={digest.title} className="w-full h-full object-fill group-hover:scale-110 transition-transform duration-700" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(0,21,41,0.08), rgba(0,51,128,0.12))" }}>
                           <Newspaper className="h-12 w-12 text-[#001529]/20" />

@@ -15,7 +15,8 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { getImageUrl, formatIndianNumber } from "@/lib/utils";
+import { formatIndianNumber } from "@/lib/utils";
+import { getImgSrc } from "@/utils/image";
 
 interface Banker {
   id: string | number;
@@ -119,7 +120,7 @@ const Row = ({
 };
 
 const BkCard = ({ bk, color, label }: { bk: Banker; color: string; label: string }) => {
-  const img = getImageUrl(bk.image || bk.logo_url);
+  const img = getImgSrc(bk.image || bk.logo_url);
   return (
     <div className="flex flex-col items-center gap-4 p-6 w-full">
       <span

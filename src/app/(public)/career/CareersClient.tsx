@@ -551,13 +551,7 @@ export default function CareersClient() {
                             ))
                           ) : (
                             <>
-                              <option value="CEO">CEO</option>
-                              <option value="Business Analyst">Business Analyst</option>
-                              <option value="MERN Stack Developer">MERN Stack Developer</option>
-                              <option value="IPO Advisory Specialist">IPO Advisory Specialist</option>
-                              <option value="Sales Executive">Sales Executive</option>
-                              <option value="HR Manager">HR Manager</option>
-                              <option value="SEO & Content Writer">SEO & Content Writer</option>
+                              <option value=""></option>
                             </>
                           )}
                         </select>
